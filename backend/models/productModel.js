@@ -10,15 +10,14 @@ const productSchema = new Schema({
     },
     brand: {
         type: String,
-        // required: true // could be required?
-        default: 'Generic' // comment out if required: true
+        default: 'Generic' 
     },
     description: {
         type: String,
         required: true
     },
     images: {
-        type: Array,
+        type: [String], // Temporary
         required: true
     },
     quantity: {
