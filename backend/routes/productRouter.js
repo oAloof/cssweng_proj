@@ -4,9 +4,17 @@
 const express = require('express')
 const router = express.Router()
 
+const Product = require('../models/productModel')
+const mongoose = require('mongoose')
+
 // GET all products
-router.get('/', (req, res) => {
-    res.send('Get all products') // placeholder
+router.get('/', async (req, res) => {
+    try {
+        const products = await Product.find({}) // find all products
+        res.send(products)
+    } catch (err) {
+        res.status(500).send(err)
+    }
 })
 
 // GET a single product

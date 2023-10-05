@@ -28,6 +28,11 @@ const productSchema = new Schema({
     price: {
         type: Number, 
         required: true
+    },
+    status: {
+        type: String,
+        enum: ['Listed', 'Unlisted'],
+        default: 'Listed'
     }
 })
 
