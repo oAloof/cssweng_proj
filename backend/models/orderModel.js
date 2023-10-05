@@ -35,7 +35,8 @@ const orderSchema = new Schema({
     },
     customerCity: {
         type: String,
-        enum: ['Metro Manila', 'Batangas', 'Laguna', 'Cavite']
+        enum: ['Metro Manila', 'Batangas', 'Laguna', 'Cavite'],
+        required: true
     },
     customerZip: {
         type: Number,
