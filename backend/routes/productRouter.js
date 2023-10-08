@@ -81,8 +81,43 @@ router.delete('/:id', async (req, res) => {
 })
 
 // UPDATE a product
-router.patch('/:id', (req, res) => {
-    res.send('Update a product') // placeholder
+router.patch('/:id', async (req, res) => {
+    const objID = '0000' // placeholder -- change to getting the object id from the request
+    const name = 'Product Name' // placeholder
+    const brand = 'Product Brand' // placeholder
+    const description = 'Product Description' // placeholder
+    const images = ['image1', 'image2', 'image3'] // placeholder
+    const quantity = 10 // placeholder
+    const price = 100 // placeholder
+    const status = 'Listed' // placeholder
+
+    // check if the id is valid
+    if (!mongoose.isValidObjectId(objID)) {
+        res.status(400).send('Invalid object id')
+        return
+    }
+
+    // update the product
+    try {
+        const product = await Product.findByIdAndUpdate(
+            {_id: objID},
+            {
+                name: name,
+                brand: brand,
+                description: description,
+                images: images,
+                quantity: quantity,
+                price: price,
+                status: status
+            },
+            { new: true },
+        )
+        console.log(product)
+        res.send(product)
+    } catch (err) {
+        console.log(err)
+        res.send(err)
+    }
 }) 
 
 // export the router
