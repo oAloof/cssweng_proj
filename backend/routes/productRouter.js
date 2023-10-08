@@ -13,23 +13,71 @@ router.get('/', async (req, res) => {
         const products = await Product.find({}) // find all products
         res.send(products)
     } catch (err) {
+        console.log(err)
         res.status(500).send(err)
     }
 })
 
 // GET a single product
-router.get('/:id', (req, res) => {
-    res.send('Get a single product') // placeholder
+router.get('/:id', async (req, res) => {
+    const objID = '0000' // placeholder -- change to getting the object id from the request
+    
+    try {
+        const product = await Product.findById(objID) // find a single product
+        res.send(product)
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    }
 })
 
 // POST a new product
-router.post('/', (req, res) => {
-    res.send('Post a new product') // placeholder
-})
+router.post('/', async (req, res) => {
+    // * Try to implement req.body destructuring
+    const name = 'Product Name' // placeholder
+    const brand = 'Product Brand' // placeholder
+    const description = 'Product Description' // placeholder
+    const images = ['image1', 'image2', 'image3'] // placeholder
+    const quantity = 10 // placeholder
+    const price = 100 // placeholder
+    const status = 'Listed' // placeholder
+
+    try {
+        const product = await Product.create({
+            name,
+            brand,
+            description,
+            images,
+            quantity,
+            price,
+            status
+        })
+        res.send(product)
+    } catch (err) {
+        console.log(err)
+        res.send(err)
+    }
+})       
 
 // DELETE a product
-router.delete('/:id', (req, res) => {    
-    res.send('Delete a product') // placeholder
+router.delete('/:id', async (req, res) => {    
+    const objID = '0000' // placeholder -- change to getting the object id from the request
+
+    // check if the id is valid
+    if (!mongoose.isValidObjectId(objID)) {
+        res.status(400).send('Invalid object id')
+        return
+    }
+
+    // delete the product
+    try {
+        const product = await Product.findByIdAndDelete({_id: objID})
+        console.log(product)
+        res.send(product)
+    } catch (err) {
+        console.log(err)
+        res.send(err)
+    }
 })
 
 // UPDATE a product
