@@ -13,10 +13,15 @@ const customerSchema = new Schema({
         type: String,
         required: true
     },
+    userType:  {
+        type: String,
+        enum: ['Customer', 'Admin'],
+        required: true
+    },
     city: {
         type: String,
         enum: ['Metro Manila', 'Batangas', 'Laguna', 'Cavite'],
-        required: true
+        required: false
     },
     email: {
         type: String,

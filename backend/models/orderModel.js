@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const Customer = require('../models/customerModel')
+const Customer = require('./userModel')
 
 // Order schema
 const orderSchema = new Schema({
