@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
+const Customer = require('../models/customerModel')
+
 // Order schema
 const orderSchema = new Schema({
     orderNumber: {
@@ -21,29 +23,9 @@ const orderSchema = new Schema({
         type: Number,
         required: true
     },
-    customerName: {
-        type: String,
-        required: true
-    },
-    customerCellNumber: {
-        type: [Number], 
-        required: true
-    },
-    customerBillingAdd: {
-        type: String,
-        required: true
-    },
-    customerCity: {
-        type: String,
-        enum: ['Metro Manila', 'Batangas', 'Laguna', 'Cavite'],
-        required: true
-    },
-    customerZip: {
-        type: Number,
-        required: true
-    },
-    customerEmail: {
-        type: String,
+    customer: { // idk if correct
+        type: Schema.Types.ObjectId, 
+        ref: 'Customer', 
         required: true
     },
     personReceiving: {
