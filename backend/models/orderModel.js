@@ -8,7 +8,8 @@ const Customer = require('./userModel')
 const orderSchema = new Schema({
     orderNumber: {
         type: Number,
-        required: true
+        required: true, 
+        unique: true
     },
     status: {
         type: String,
@@ -16,7 +17,8 @@ const orderSchema = new Schema({
         default: 'Requires Payment Verification'
     },
     order: {
-        type: [Number],
+        type: Map,
+        of: Number,
         required: true
     },
     totalCost: {
