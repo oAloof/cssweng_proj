@@ -11,7 +11,9 @@ const productRoutes = require('./routes/productRouter')
 const app = express()
 
 // middlewares
-app.use(express.json()) // allows the req.body parameter to be accessed
+
+app.use(express.json()) //to parse json content
+app.use( express.urlencoded( { extended: true }) ) //to parse body from url
 
 app.use((req, res, next) => {
     console.log(req.path, req.method) // log the path and method of the request
