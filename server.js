@@ -10,10 +10,13 @@ const productRoutes = require('./routes/productRouter')
 // express app
 const app = express()
 
-// middlewares
+// set view engine
+app.set('view engine', 'ejs')
 
+// middlewares
 app.use(express.json()) //to parse json content
 app.use( express.urlencoded( { extended: true }) ) //to parse body from url
+app.use(express.static('public')) // to serve static files
 
 app.use((req, res, next) => {
     console.log(req.path, req.method) // log the path and method of the request
@@ -21,7 +24,11 @@ app.use((req, res, next) => {
 })
 
 // routes
-app.use('/api/products', productRoutes) // all routes in productRoutes will start with /api/products
+app.get('/', (req, res) => {
+    res.render('homepage')
+})
+
+app.use('/products', productRoutes) // routes related to products
 
 // connect to the mongoDB database
 mongoose.connect(process.env.MONGODB_URI, {
