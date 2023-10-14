@@ -10,12 +10,18 @@ const mongoose = require('mongoose')
 // GET all products
 router.get('/', async (req, res) => {
     try {
-        const products = await Product.find({}) // find all products
-        res.send(products)
+        // const products = await Product.find({}) // find all products
+        // res.send(products)
+        res.render('allProductsView')
     } catch (err) {
         console.log(err)
         res.status(500).send(err)
     }
+})
+
+// GET the add product page
+router.get('/add', (req, res) => {
+    res.render('addProduct')
 })
 
 // GET a single product
@@ -32,7 +38,7 @@ router.get('/:id', async (req, res) => {
 })
 
 // POST a new product
-router.post('/', async (req, res) => {
+router.post('/new', async (req, res) => {
     // * Try to implement req.body destructuring
     const name = 'Product Name' // placeholder
     const brand = 'Product Brand' // placeholder
