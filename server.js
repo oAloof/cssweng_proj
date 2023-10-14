@@ -28,7 +28,6 @@ app.get('/', (req, res) => {
     res.render('homepage')
 })
 
-
 app.use('/products', productRoutes) // routes related to products
 
 // connect to the mongoDB database
