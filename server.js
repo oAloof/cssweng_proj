@@ -5,13 +5,14 @@ require('dotenv').config() // loads the environment variables from .env file
 // import necessary node_modules
 const express = require('express')
 const mongoose = require('mongoose')
-const productRoutes = require('./routes/productRouter')
+const productRoutes = require('./src/routes/productRouter')
 
 // express app
 const app = express()
 
-// set view engine
+// express app settings
 app.set('view engine', 'ejs')
+app.set('views', './src/views')
 
 // middlewares
 app.use(express.json()) //to parse json content

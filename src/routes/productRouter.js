@@ -2,7 +2,7 @@
 const express = require('express')
 const router = express.Router()
 
-const Product = require('../../models/productModel')
+const Product = require('../models/productModel')
 const mongoose = require('mongoose')
 
 // GET all products
