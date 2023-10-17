@@ -1,10 +1,8 @@
-// Router for requests to /api/products
-
 // import necessary node_modules
 const express = require('express')
 const router = express.Router()
 
-const Product = require('../models/productModel')
+const Product = require('../../models/productModel')
 const mongoose = require('mongoose')
 
 // GET all products
@@ -24,21 +22,8 @@ router.get('/add', (req, res) => {
     res.render('addProduct')
 })
 
-// GET a single product
-router.get('/:id', async (req, res) => {
-    const objID = '0000' // placeholder -- change to getting the object id from the request
-    
-    try {
-        const product = await Product.findById(objID) // find a single product
-        res.send(product)
-    } catch (err) {
-        console.log(err)
-        res.status(500).send(err)
-    }
-})
-
 // POST a new product
-router.post('/new', async (req, res) => {
+router.post('/add', async (req, res) => {
     // * Try to implement req.body destructuring
     const name = 'Product Name' // placeholder
     const brand = 'Product Brand' // placeholder
@@ -83,6 +68,19 @@ router.delete('/:id', async (req, res) => {
     } catch (err) {
         console.log(err)
         res.send(err)
+    }
+})
+
+// GET a single product
+router.get('/:id', async (req, res) => {
+    const objID = '0000' // placeholder -- change to getting the object id from the request
+    
+    try {
+        const product = await Product.findById(objID) // find a single product
+        res.send(product)
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
     }
 })
 
