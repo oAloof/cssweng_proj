@@ -5,7 +5,7 @@ require('dotenv').config() // loads the environment variables from .env file
 // import necessary node_modules
 const express = require('express')
 const mongoose = require('mongoose')
-const productRoutes = require('./src/routes/productRouter')
+const adminProductRoutes = require('./src/routes/adminProductRouter')
 
 // express app
 const app = express()
@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
     res.render('homepage')
 })
 
-app.use('/products', productRoutes) // routes related to products
+app.use('/admin/products', adminProductRoutes) // routes related to products
 
 // connect to the mongoDB database
 mongoose.connect(process.env.MONGODB_URI, {
