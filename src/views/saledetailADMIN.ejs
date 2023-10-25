@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="saledetails.css" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>View Sale Details (admin)</title>
+
+</head>
+<body>
+	
+
+<div id="main-content">
+	<div class="logo-container"> <!--Website Logo-->
+                <a href="#"><img class="logo" src="/images/BXlogo.png" alt="Logo"></a> <!--The logo link should send you to the homepage-->
+            </div>
+            <div class="navbar"> <!--Navbar (LINKS OF NAVBAR UNAVAILABLE FOR NOW)-->
+                <a class="home-button" href="#">Home</a>
+                <a class="navbar-divider">|</a>
+                <a class="bodega-sale-button" href="#">Bodega Sale!!!</a>
+                <a class="navbar-divider">|</a>
+                <a class="product-catalog-button" href="#">Product Catalog</a>
+                <a class="navbar-divider">|</a>
+                <a class="my-cart-button" href="#">My Cart</a>
+                <a class="navbar-divider">|</a>
+                <a class="my-profile-button" href="#">My Profile</a>
+            </div>
+            <div class="admin-indicator"> <!--Admin indicator-->
+                <a>You are in Admin mode</a> 
+            </div>
+    <div class="details">
+    	<!--    Change the date and time of bodega sale                      -->
+    	<form>
+    	<div class="detailsInfo">
+		     <img class="icon" src="/images/date.png">
+		
+	        <label for="date">Select a Date:</label>
+	        <input type="date" id="date" name="date">
+
+	        <label for="time">Select a Time:</label>
+	        <input type="time" id="time" name="time">
+
+
+		</div> 
+    	</form>
+		
+    </div>
+    	
+   
+    	<div class="details">
+    	<!--    Change the current location of the sale                      -->	
+    		<form>
+		  	<div class="detailsInfo">
+		        <img class="icon" src="/images/location.png">
+
+		       
+			        <label for="location">Bodega Location: </label>
+			        <select id="location" name="location">
+			            <option value="option1">Quezon City</option>
+			            <option value="option2">Metro Manila</option>
+			            <option value="option3">Pasay</option>
+			            <option value="option4">Baguio</option>
+			        </select>
+
+			 </div> 
+			 </form>
+		     
+			
+		</div>
+
+		<div class="details">
+		  	<div class="detailsInfo">
+		        <img class="icon" src="/images/available.png">
+		        <span class="availableLabel">
+		     		Available products:
+		     	</span>
+		     
+			</div> 
+		</div>
+<hr>
+		<div class="availableProducts">		  
+		<!--    Change the list of types sold in the bodega                      -->		
+			<form>
+		        <div class="checkbox-container">
+
+		        	
+		            <div class="checkboxColumn">
+
+			            <label for="checkbox1">
+			                <input type="checkbox" id="checkbox1" name="checkbox1"> Option 1
+			            </label>
+
+			            <label for="checkbox2">
+			                <input type="checkbox" id="checkbox2" name="checkbox2"> Option 2
+			            </label>
+
+			            <label for="checkbox3">
+			                <input type="checkbox" id="checkbox3" name="checkbox3"> Option 3
+			            </label>  
+
+		            </div>
+
+		            <div class="checkboxColumn">
+
+			            <label for="checkbox4">
+			                <input type="checkbox" id="checkbox1" name="checkbox1"> Option 1
+			            </label>
+
+			            <label for="checkbox5">
+			                <input type="checkbox" id="checkbox2" name="checkbox2"> Option 2
+			            </label>
+
+			            <label for="checkbox6">
+			                <input type="checkbox" id="checkbox3" name="checkbox3"> Option 3
+			            </label>  
+
+		            </div>
+
+		            <div class="checkboxColumn">
+			            <label for="checkbox7">
+			                <input type="checkbox" id="checkbox1" name="checkbox1"> Option 1
+			            </label>
+
+
+			            <label for="checkbox8">
+			                <input type="checkbox" id="checkbox2" name="checkbox2"> Option 2
+			            </label>
+
+			            <label for="checkbox9">
+			                <input type="checkbox" id="checkbox3" name="checkbox3"> Option 3
+			            </label>  
+
+		            </div>
+
+		            <div class="checkboxColumn">
+			            <label for="checkbox8">
+			                <input type="checkbox" id="checkbox1" name="checkbox1"> Option 1
+			            </label>
+
+
+			            <label for="checkbox9">
+			                <input type="checkbox" id="checkbox2" name="checkbox2"> Option 2
+			            </label>
+
+			            <label for="checkbox10">
+			                <input type="checkbox" id="checkbox3" name="checkbox3"> Option 3
+			            </label>  
+
+		            </div>
+		   
+		        </div>
+		    </form>
+
+		 
+
+		</div>
+
+		<br><br>
+		<div class="details">
+		   <form>
+				<label for="planned">Set Planned sale: </label>
+			     <select id="planned" name="planned">
+			         <option value="option1">ManilaRUSH</option>
+			         <option value="option2">ChristMUST</option>
+			         <option value="option3">New Year New Sale</option>
+
+			     </select>
+
+			 </form>
+	    </div>
+
+	    <br><br>
+	    <div class="btnContainer">
+	    <button class="updateBtn" type="button" onclick="updateDetails()">Update</button>
+	    </div>
+
+
+</div>
+</body>
+</html>

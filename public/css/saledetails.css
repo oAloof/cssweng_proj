@@ -1,0 +1,232 @@
+hr {
+    width: 100%;
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+.logoContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+
+}
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 285px;
+    height: 85px;
+}
+
+.navbar {
+    background-color: #004aad;
+    border-style: none;
+    border-radius: 25px;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.navbar-divider {
+    color: white;
+}
+
+.home-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.bodega-sale-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.product-catalog-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.my-cart-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.my-profile-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.admin-indicator {
+    background-color: #4caf50;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+    margin-left: 600px;
+    margin-right: 600px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+
+.location{
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2rem;
+}
+
+
+.details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.detailsInfo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+
+.productList {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.icon {
+    
+    width: 80px;
+    height: 80px;
+}
+
+.dateLabel {
+    font-size: 3rem;
+}
+
+.locationLabel {
+    font-size: 3rem;
+}
+
+.availableLabel {
+    font-size: 3rem;
+}
+
+.availableProducts{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.productLabel{
+    font-size: 3rem;
+}
+
+
+.shopBtn{
+    border-radius: 12px;
+    border-color: black;
+    background-color: #063970;
+    color: white;
+    width: 120px;
+    align-self: center;
+    margin-top: 10px;
+}
+
+.shopBtn:hover{
+    border-radius: 12px;
+    background-color: white;
+    border-color: black;
+    color: black;
+    width: 120px;
+    align-self: center;
+    margin-top: 10px;
+}
+
+/* Admin side -=--------------------------------- */
+
+label{
+    margin-right: 5px;
+    font-size: 20px;
+}
+
+input[type="date"]{
+    font-size: 16px; 
+    width: 140px;   
+}
+input[type="time"]{
+    font-size: 16px; 
+    width: 100px;   
+}
+
+select {
+    padding: 4px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+}
+
+select:focus {
+    border-color: #063970;
+}
+
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkboxColumn{
+    flex: 1;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.btnContainer{
+   
+    text-align: center;
+}
+
+.updateBtn{
+    border-radius: 12px;
+    border-color: black;
+    background-color: green;
+    color: white;
+    width: 120px;
+    align-self: center;
+    margin-top: 10px;
+}
+
+.updateBtn:hover{
+    border-radius: 12px;
+    background-color: white;
+    border-color: black;
+    color: black;
+    width: 120px;
+    align-self: center;
+    margin-top: 10px;
+}
+
+
+
