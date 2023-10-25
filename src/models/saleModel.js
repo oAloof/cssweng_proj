@@ -16,6 +16,11 @@ const saleSchema = new Schema({
     endDate: {
         type: Date,
         required: true
+    }, 
+    saleList: {
+        type: Map,
+        of: Number,
+        required: true
     }
 })
 

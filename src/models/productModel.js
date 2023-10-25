@@ -20,18 +20,17 @@ const productSchema = new Schema({
         type: [String], // Temporary
         required: true
     },
-    quantity: {
+    totalQuantity: {
+        type: Number,
+        required: true
+    },
+    availableQuantity: {
         type: Number,
         required: true
     },
     price: {
         type: Number, 
         required: true
-    },
-    status: {
-        type: String,
-        enum: ['Listed', 'Unlisted'],
-        default: 'Listed'
     }
 })
 

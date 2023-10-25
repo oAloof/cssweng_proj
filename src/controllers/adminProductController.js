@@ -1,29 +1,23 @@
-// import necessary node_modules
-const express = require('express')
-const router = express.Router()
-
 const Product = require('../models/productModel')
 const mongoose = require('mongoose')
 
-// GET all products
-router.get('/', async (req, res) => {
+// GET all products view
+const allProductsView = (req, res) => {
     try {
         // const products = await Product.find({}) // find all products
         // res.send(products)
-        res.render('allProductsView')
+        res.render('adminViews/allProductsView')
     } catch (err) {
         console.log(err)
         res.status(500).send(err)
     }
-})
+}
 
-// GET the add product page
-router.get('/add', (req, res) => {
-    res.render('addProduct')
-})
+const addProductView = (req, res) => {
+    res.render('adminViews/addProduct')
+}
 
-// POST a new product
-router.post('/add', async (req, res) => {
+const addNewProduct = async (req, res) => {
     // * Try to implement req.body destructuring
     const name = 'Product Name' // placeholder
     const brand = 'Product Brand' // placeholder
@@ -48,10 +42,9 @@ router.post('/add', async (req, res) => {
         console.log(err)
         res.send(err)
     }
-})       
+}
 
-// DELETE a product
-router.delete('/:id', async (req, res) => {    
+const deleteProduct = async (req, res) => {    
     const objID = '0000' // placeholder -- change to getting the object id from the request
 
     // check if the id is valid
@@ -69,10 +62,9 @@ router.delete('/:id', async (req, res) => {
         console.log(err)
         res.send(err)
     }
-})
+}
 
-// GET a single product
-router.get('/:id', async (req, res) => {
+const updateProductView = async (req, res) => {
     const objID = '0000' // placeholder -- change to getting the object id from the request
     
     try {
@@ -82,10 +74,9 @@ router.get('/:id', async (req, res) => {
         console.log(err)
         res.status(500).send(err)
     }
-})
+}
 
-// UPDATE a product
-router.patch('/:id', async (req, res) => {
+const updateProduct = async (req, res) => {
     const objID = '0000' // placeholder -- change to getting the object id from the request
     const name = 'Product Name' // placeholder
     const brand = 'Product Brand' // placeholder
@@ -122,7 +113,13 @@ router.patch('/:id', async (req, res) => {
         console.log(err)
         res.send(err)
     }
-}) 
+}
 
-// export the router
-module.exports = router
+module.exports = {
+    allProductsView,
+    addProductView,
+    addNewProduct,
+    deleteProduct,
+    updateProductView,
+    updateProduct
+}
