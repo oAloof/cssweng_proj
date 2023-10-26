@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!--Made by: Sandeon Gavan-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage (Admin)</title>
+    <link rel="stylesheet" type="text/css" media="all" href="/css/homepage_admin_style.css">
+
+</head>
+<body>
+    <header>
+        <h1> BX Appliances</h1>
+        <nav>
+            navbar
+        </nav>
+    </header>
+    <div class="container">
+        <aside>
+            <div id="profile">
+                <img src="/images/profile.png">
+                <h1>John Doe</h1>
+                <p>A basic description of the user Lorem ipsum dolor sit amet consectetur, adipisicing elit. Error, unde aliquam incidunt quisquam molestias pariatur maxime expedita minima molestiae? Maiores!</p>
+            </div>
+        </aside>
+        <div id="controls_container">
+            <div id="analytics">
+                <h1>Analytics</h1>
+                <div class="metrics_list">
+                    <div class="metric_item">
+                        <p>0</p>
+                        <p>Total Orders</p>
+                     </div>
+                    <div class="metric_item">
+                        <p>0</p>
+                        <p>To-Process Shipment</p>
+                    </div>
+                    <div class="metric_item">
+                        <p>0</p>
+                        <p>Processed Shipment</p>
+                    </div>
+                    <div class="metric_item">
+                        <p>0</p>
+                        <p>Pending Cancellations</p>
+                    </div>
+                    <div class="metric_item">
+                        <p>0</p>
+                        <p>Sold Out Products</p>
+                     </div>
+                </div>
+        </div>
+        <div id="admin_control">
+            <h1>What would you like to do...</h1>
+            <div id="admin_buttons"> <!--buttons that redirect to mentioned page-->
+                <button class="redirect_button" onclick="redirectToAllProductsView()">Product List</button>
+                <button class="redirect_button" onclick="redirectToBodegaSaleView()">Bodega Sale List</button>
+                <button class="redirect_button" onclick="redirectToOrdersListView()">Orders List</button>
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+    <script>
+        function redirectToAllProductsView() {    //src/views/adminViews/allProductsView.ejs
+            window.location.href = '/login'; //redirects to login.ejs
+        }
+
+        function redirectToBodegaSaleView() {
+            window.location.href = '/login'; //redirects to login.ejs
+        }
+
+        function redirectToOrdersListView() {
+            window.location.href = '/login'; //redirects to login.ejs
+        }
+        //for now, all buttons redirect to All Products View
+    </script>
+</body>
+</html>

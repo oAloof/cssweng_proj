@@ -29,6 +29,22 @@ app.get('/', (req, res) => {
     res.render('homepage')
 })
 
+app.get('/homepage_admin', (req, res) => {
+    res.render('adminViews/homepage_admin')
+})
+
+app.get('/view_user_cart', (req, res) => {
+    res.render('adminViews/cart_user')
+})
+
+app.get('/login', (req, res) => {
+    res.render('adminViews/login')
+})
+
+app.get('/signup', (req, res) => {
+    res.render('adminViews/signup')
+})
+
 app.use('/admin/products', adminProductRoutes) // routes related to products
 
 // connect to the mongoDB database
