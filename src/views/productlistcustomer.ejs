@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Assigned to Ryan-->
+        <link rel="stylesheet" href="/css/productlistcustomer.css">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Product List View (Customer)</title>
+    </head>
+    <body>
+        <div class="page-container">
+            <div class="logo-container"> <!--Website Logo-->
+                <a href="#"><img class="logo" src="/images/BXlogo.png" alt="Logo"></a> <!--The logo link should send you to the homepage-->
+            </div>
+            <div class="navbar"> <!--Navbar (LINKS OF NAVBAR UNAVAILABLE FOR NOW)-->
+                <a class="home-button" href="#">Home</a>
+                <a class="navbar-divider">|</a>
+                <a class="bodega-sale-button" href="#">Bodega Sale!!!</a>
+                <a class="navbar-divider">|</a>
+                <a class="product-catalog-button" href="#">Product Catalog</a>
+                <a class="navbar-divider">|</a>
+                <a class="my-cart-button" href="#">My Cart</a>
+                <a class="navbar-divider">|</a>
+                <a class="my-profile-button" href="#">My Profile</a>
+            </div>
+            <div class="search-container"> <!--Contains search bar and search button-->
+                <input class="search bar" size="50" type="text" placeholder="Search for products..">
+                <a href="#"><img class="search-icon" src="/images/search.png"></a>
+            </div>
+
+            <hr class="top-line"> <!--Horizontal line-->
+            
+            <div class="content-container"> <!--Contains most of the stuff inside the page-->
+                <div class="left-outer-shell"> <!--Contains filters, add, and delete product buttons-->
+                    <div class="sort-button">
+                        <a class="sort-text" href="#">Sort</a>
+                    </div>
+                    <div class="brand-text">
+                        Brand
+                    </div>
+                    <select name="brand" class="dropdown-brand">
+                        <option value="null">--Choose a Brand--</option>
+                        <option value="union">Union</option>
+                        <option value="promac">Promac</option>
+                        <option value="nakatomi">Nakatomi</option>
+                    </select>
+                    <div class="type-text">
+                        Type
+                    </div>
+                    <select name="type" class="dropdown-type">
+                        <option value="null">--Choose a Type--</option>
+                        <option value="cooler">Cooler</option>
+                        <option value="cooker">Cooker</option>
+                        <option value="fan">Fan</option>
+                    </select>
+                    <div class="price-range-text">
+                        Price Range
+                    </div>
+                    <select name="pricerange" class="dropdown-pricerange">
+                        <option value="null">--Choose a Price Range--</option>
+                        <option value="cheap">Below PHP1000</option>
+                        <option value="average">PHP 1000 to PHP 2000</option>
+                        <option value="expensive">Over PHP2000</option>
+                    </select>
+                </div>
+                <div class="right-outer-shell"> <!--Contains product list, checkboxes, and horizontal lines-->
+                    <div class="listing-checkbox-split"> <!--Contains a single product listing-->
+                        <div class="product-listing">
+                            <div class="left-inner-shell">
+                                <a href="#"><img class="product-image" src="/images/aircon.png"></a>
+                            </div>
+                            <div class="center-inner-shell">
+                                <a class="product-details">
+                                    Product Name | Brand | Type | XX Stock Available
+                                </a>
+                                <hr clas="hr-product">
+                                <a class="price">
+                                    P X,XXX
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="listing-checkbox-split"> <!--Contains a single product listing-->
+                        <div class="product-listing">
+                            <div class="left-inner-shell">
+                                <a href="#"><img class="product-image" src="/images/aircon.png"></a>
+                            </div>
+                            <div class="center-inner-shell">
+                                <a class="product-details">
+                                    Product Name | Brand | Type | XX Stock Available
+                                </a>
+                                <hr clas="hr-product">
+                                <a class="price">
+                                    P X,XXX
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="listing-checkbox-split"> <!--Contains a single product listing-->
+                        <div class="product-listing">
+                            <div class="left-inner-shell">
+                                <a href="#"><img class="product-image" src="/images/aircon.png"></a>
+                            </div>
+                            <div class="center-inner-shell">
+                                <a class="product-details">
+                                    Product Name | Brand | Type | XX Stock Available
+                                </a>
+                                <hr clas="hr-product">
+                                <a class="price">
+                                    P X,XXX
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="bottom-line"> <!--Horizontal line-->
+        </div>
+    </body>
+</html>

@@ -1,0 +1,366 @@
+/*Assigned to Ryan*/
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 285px;
+    height: 85px;
+}
+
+.navbar {
+    background-color: #004aad;
+    border-style: none;
+    border-radius: 25px;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.navbar-divider {
+    color: white;
+}
+
+.home-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.bodega-sale-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.product-catalog-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.my-cart-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.my-profile-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.admin-indicator {
+    background-color: #4caf50;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+    margin-left: 600px;
+    margin-right: 600px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.outermost-shell {
+    display: flex;
+    flex-direction: row;
+}
+
+.left-outer-shell{
+    display: flex;
+    flex-direction: column;
+}
+
+.scroll-image {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    height: 150px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: center;
+    padding: 20px;
+    margin-left: 150px;
+    margin-top: 10px;
+}
+
+.image{
+    border-style: solid;
+    border-radius: 15px;
+    border-color: #004aad;
+    margin-left: 150px;
+    margin-top: 75px;
+    height: 150px;
+    width: 150px;
+}
+
+.addimage{
+    border-style: solid;
+    border-radius: 15px;
+    height: 105px;
+    width: 105px;
+    border-color: #004aad;
+}
+
+.right-outer-shell {
+    display: flex;
+    flex-direction: column;
+}
+
+.right-inner-shell-row-1 {
+    display: flex;
+    flex-direction: row;
+    margin-top: 75px;
+    margin-left: 45px;
+}
+
+.input-product-name{
+    border-style: solid;
+    border-radius: 15px;
+    border-color: #004aad;
+    height: 30px;
+    width: 350px;
+    padding-left: 10px;
+}
+
+.price {
+    font-size: 18.5px;
+    margin-top: 5px;
+}
+
+.product-name {
+    font-size: 22.5px;
+    margin-top: 7.5px;
+}
+
+.input-product-price {
+    margin-left: 10px;
+    border-style: solid;
+    border-radius: 15px;
+    border-color: #004aad;
+    height: 30px;
+    width: 20px;
+    padding-left: 15px;
+}
+
+.right-inner-shell-row-2 {
+    display: flex;
+    flex-direction: row;
+    margin-left: 45px;
+    margin-top: 10px;
+}
+
+.input-product-brand {
+    border-style: solid;
+    border-radius: 15px;
+    border-color: #004aad;
+    height: 30px;
+    width: 200px;
+    padding-left: 10px;
+}
+
+.input-product-type {
+    border-style: solid;
+    border-radius: 15px;
+    border-color: #004aad;
+    height: 30px;
+    width: 200px;
+    padding-left: 10px;
+    margin-left: 10px;
+}
+
+.right-inner-shell-row-3 {
+    display: flex;
+    flex-direction: row;
+    margin-left: 45px;
+    margin-top: 10px;
+}
+
+.input-product-stock {
+    border-style: solid;
+    border-radius: 15px;
+    border-color: #004aad;
+    height: 30px;
+    width: 20px;
+    padding-left: 15px;
+}
+
+.stock-available-text {
+    font-size: 17.5px;
+    margin-top: 8px;
+    margin-left: 10px;
+    color: gray;
+}
+
+.dropdown-sale-category {
+    margin-left: 10px;
+    border-style: solid;
+    border-radius: 15px;
+    border-color: #004aad;
+    width: 200px;
+    text-align: center;
+}
+
+.sale-category-text {
+    font-size: 17.5px;
+    margin-top: 7.5px;
+    margin-left: 10px;
+}
+
+.right-inner-shell-row-4 {
+    display: flex;
+    flex-direction: row;
+    margin-left: 45px;
+    margin-top: 10px;
+}
+
+.input-product-description {
+    border-style: solid;
+    border-radius: 15px;
+    border-color: #004aad;
+    padding-left: 15px;
+    padding-bottom: 175px;
+    width: 750px;
+    height: 50px;
+}
+
+.right-inner-shell-row-5 {
+    display: flex;
+    flex-direction: row;
+    margin-left: 45px;
+    margin-top: 10px;
+}
+
+.save-button {
+    background-color: #4caf50;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-left: 390px;
+    padding: 10px;
+    text-align: center;
+    width: 150px;
+}
+
+.discount-tag {
+    background-color: #fff67a;
+    border-color:#004aad;
+    border-style: solid;
+    border-radius: 25px;
+    margin-left: 10px;
+    padding: 10px;
+    text-align: center;
+    width: 50px;
+    height: 10px;
+}
+
+.discount-text {
+    color: #004aad;
+    text-decoration: none;
+    font-size: 12px;
+    position: relative;
+    bottom: 12.5px;
+}
+
+.save-text {
+    color: white;
+    text-decoration: none;
+}
+
+.delete-button {
+    background-color: #db1f30;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-left: 35px;
+    padding: 10px;
+    text-align: center;
+    width: 150px;
+}
+
+.delete-text {
+    color: white;
+    text-decoration: none;
+}
+
+.minus {
+    height: 12px;
+    width: 12px;
+    margin-top: 11px;
+}
+
+.plus {
+    height: 12px;
+    width: 12px;
+    margin-top: 11px;
+    margin-left: 10px;
+}
+
+.quantity {
+    background-color: white;
+    border-color:#004aad;
+    border-style: solid;
+    border-radius: 25px;
+    margin-left: 10px;
+    padding: 10px;
+    text-align: center;
+    width: 25px;
+    height: 10px;
+}
+
+.quantity-text {
+    text-decoration: none;
+    font-size: 17.5px;
+    position: relative;
+    bottom: 22.5px;
+}
+
+.add-to-cart-button {
+    background-color: #004aad;
+    border-radius: 10px;
+    margin-left: 35px;
+    padding: 10px;
+    text-align: center;
+    width: 80px;
+}
+
+.add-to-cart-text {
+    color: white;
+    text-decoration: none;
+}
+
+.buy-now-button {
+    background-color: #004aad;
+    border-radius: 10px;
+    margin-left: 15px;
+    padding: 10px;
+    text-align: center;
+    width: 80px;
+}
+
+.buy-now-text {
+    color: white;
+    text-decoration: none;
+}
+
+.line-divider {
+    margin-left: 45px;
+    width: 800px;
+}
+
+.right-inner-shell-row-5 {
+    display: flex;
+    flex-direction: row;
+    margin-left: 45px;
+    margin-top: 10px;
+}
+
+.right-inner-shell-row-6 {
+    display: flex;
+    flex-direction: row;
+    margin-left: 45px;
+    margin-top: 10px;
+}

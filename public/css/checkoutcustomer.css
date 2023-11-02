@@ -1,0 +1,311 @@
+/*Assigned to Ryan*/
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 285px;
+    height: 85px;
+}
+
+.navbar {
+    background-color: #004aad;
+    border-style: none;
+    border-radius: 25px;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.navbar-divider {
+    color: white;
+}
+
+.bodega-sale-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.home-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.right-outermost-shell {
+    border-style: solid;
+    border-color: #004aad;
+    border-radius: 15px;
+    margin-left: 30px;
+    height: 375px;
+    width: 450px;
+}
+
+.left-outermost-shell {
+    display: flex;
+    flex-direction: column;
+}
+
+.line-divider {
+    width: 750px;
+}
+
+.my-cart-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.my-profile-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.outermost-shell {
+    display: flex;
+    flex-direction: row;
+    margin-top: 75px;
+    margin-left: 100px;
+}
+
+.product-catalog-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.right-row-1 {
+    display: flex;
+    flex-direction: row;
+}
+
+.your-cart-header {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.unit-price-header {
+    font-size: 20px;
+    margin-left: 235px;
+}
+
+.quantity-header {
+    font-size: 20px;
+    margin-left: 235px;
+}
+
+.order-details-header-container {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.order-details-header {
+    font-size: 20px;
+}
+
+.inner-line-divider {
+    width: 410px;
+}
+
+.subtotal-header-container {
+    margin-left: 20px;
+}
+
+.subtotal-header {
+    font-size: 17.5px;
+}
+
+.subtotal-amount-header-container {
+    margin-left: 225px;
+}
+
+.subtotal-amount-header {
+    font-size: 20px;
+}
+
+.order-button {
+    background-color: #004aad;
+    border-radius: 10px;
+    margin-top: 30px;
+    margin-left: 140px;
+    padding: 10px;
+    text-align: center;
+    width: 150px;
+}
+
+.order-text {
+    color: white;
+    text-decoration: none;
+}
+
+.image {
+    height: 100px;
+    width: 100px;
+    border-style: solid;
+    border-color: #004aad;
+    border-radius: 15px;
+    margin-left: 15px;
+}
+
+.price {
+    font-size: 20px;
+}
+
+.price-container {
+    margin-top: 40px;
+    margin-left: 110px;
+}
+
+.right-row-2 {
+    display: flex;
+    flex-direction: row;
+}
+
+.product-text {
+    font-size: 20px;
+    text-decoration: none;
+    color: black;
+    margin-top: 40px;
+    margin-left: 10px;
+}
+
+.quantity {
+    margin-left: 250px;
+    margin-top: 37px;
+    padding: 10px;
+    text-align: center;
+}
+
+.quantity-text {
+    text-decoration: none;
+    font-size: 17.5px;
+    position: relative;
+    bottom: 22.5px;
+}
+
+.inner-order-shell-row-1 {
+    display: flex;
+    flex-direction: row;
+}
+
+.inner-order-shell-row-2 {
+    display: flex;
+    flex-direction: row;
+}
+
+.inner-order-shell-row-3 {
+    display: flex;
+    flex-direction: row;
+}
+
+.shipping-header-container {
+    margin-left: 20px;
+}
+
+.shipping-header {
+    font-size: 17.5px;
+}
+
+.shipping-amount-header-container {
+    margin-left: 184px;
+}
+
+.shipping-amount-header {
+    font-size: 20px;
+}
+
+.payment-header-container {
+    margin-left: 20px;
+}
+
+.payment-header {
+    font-size: 17.5px;
+}
+
+.payment-amount-header-container {
+    margin-left: 184px;
+}
+
+.payment-amount-header {
+    font-size: 20px;
+}
+
+.left-upper-bottomshell {
+    display: flex;
+    flex-direction: column;
+}
+
+.left-bottom-bottomshell {
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-method-container {
+    margin-left: 20px;
+}
+
+.payment-method-text {
+    font-size: 17.5px;
+}
+
+.address-container {
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+.address-text {
+    font-size: 17.5px;
+}
+
+.edit-container {
+    margin-left: 60px;
+    margin-top: 5px;
+}
+
+.edit-text {
+    font-size: 15px;
+}
+
+.bottom-shell-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.payment-image {
+    height: 50px;
+    width: 50px;
+    border-style: solid;
+    border-color: #004aad;
+    border-radius: 15px;
+    margin-left: 15px;
+}
+
+.right-upper-bottomshell {
+    display: flex;
+    flex-direction: row;
+}
+
+.card-end-text-container {
+    margin-left: 20px;
+}
+
+.card-end-text {
+    font-size: 15px;
+}
+
+.right-bottom-bottomshell {
+    display: flex;
+    flex-direction: row;
+}
+
+.postage-container {
+    margin-left: 50px;
+    margin-top: 11px;
+}
+
+.postage-text {
+    font-size: 15px;
+}
