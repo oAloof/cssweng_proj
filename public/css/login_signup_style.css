@@ -59,7 +59,30 @@
      border-radius: 10px;
      font-size: 15px;
  }
+
+ .enter_form select{
+    width: 95%;
+    height:25px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    text-align: left;
+    text-indent: 8px;
+    border-radius: 10px;
+    font-size: 15px;
+    color:rgb(113, 113, 113);
+}
  
+.enter_form select > option{
+    width: 95%;
+    height:25px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    text-align: left;
+    text-indent: 8px;
+    border-radius: 10px;
+    font-size: 15px;
+    color:rgb(113, 113, 113);
+}
  .register{
      color:white;
      margin-top: 10px;
