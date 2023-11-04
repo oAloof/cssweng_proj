@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 
 const productController = require('../controllers/adminProductController')
+const upload = require('../middlewares/fileUpload')
 
 // GET all products
 router.get('/', productController.allProductsView)
@@ -11,7 +12,7 @@ router.get('/', productController.allProductsView)
 router.get('/add', productController.addProductView)
 
 // POST a new product
-router.post('/add', productController.addNewProduct)       
+router.post('/add', upload.uploadImage.any(), productController.addNewProduct)        
 
 // DELETE a product
 router.delete('/:id', productController.deleteProduct)

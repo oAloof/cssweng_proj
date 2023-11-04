@@ -5,6 +5,7 @@ require('dotenv').config() // loads the environment variables from .env file
 // import necessary node_modules
 const express = require('express')
 const mongoose = require('mongoose')
+const multer = require('multer')
 const adminProductRoutes = require('./src/routes/adminProductRouter')
 
 // express app
@@ -36,6 +37,19 @@ app.get('/admin', (req, res) => {
 })
 
 app.use('/admin/products', adminProductRoutes) // routes related to admin products
+
+app.use((error, req, res, next) => {
+    if (error instanceof multer.MulterError) {
+      // A Multer error occurred when uploading 
+      return res.status(400).json({ message: error.message });
+    } else if (error) {
+      // An unknown error occurred 
+      return res.status(500).json({ message: error.message });
+    }
+  
+    // If this middleware was called without an error, just pass to next middleware
+    next()
+  })
 
 // connect to the mongoDB database
 mongoose.connect(process.env.MONGODB_URI, {

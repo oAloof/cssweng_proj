@@ -1,5 +1,8 @@
-const Product = require('../models/productModel')
 const mongoose = require('mongoose')
+
+const Product = require('../models/productModel')
+const upload = require('../middlewares/fileUpload')
+
 
 // GET all products view
 const allProductsView = (req, res) => {
@@ -19,26 +22,41 @@ const addProductView = (req, res) => {
 }
 
 const addNewProduct = async (req, res) => {
-    // * Try to implement req.body destructuring
-    const name = 'Product Name' // placeholder
-    const brand = 'Product Brand' // placeholder
-    const description = 'Product Description' // placeholder
-    const images = ['image1', 'image2', 'image3'] // placeholder
-    const quantity = 10 // placeholder
-    const price = 100 // placeholder
-    const status = 'Listed' // placeholder
+    const { name, brand, price, quantity, description } = req.body
+    const imageFiles = req.files
+    const totalQuantity = quantity
+    const availableQuantity = quantity
 
     try {
+        // Check if the product with the same name and brand already exists
+        const result = await Product.find({ name: name, brand: brand })
+        if (result.length > 0) {
+            res.send('Product already exists')
+            return
+        }
+        // upload the product images to google drive
+        let images = []
+        try {
+            for (let image of imageFiles) {
+                const imageId = await upload.uploadFile(image)
+                images.push(imageId)
+            }
+        } catch (err) {
+            console.log(err)
+            res.send(err)
+            return
+        }
+        
         const product = await Product.create({
             name,
             brand,
             description,
             images,
-            quantity,
-            price,
-            status
+            totalQuantity,
+            availableQuantity,
+            price
         })
-        res.send(product)
+        res.redirect('/admin/products')
     } catch (err) {
         console.log(err)
         res.send(err)
