@@ -58,7 +58,11 @@ app.get('/profile_edit', (req, res) => {
 })
 
 
-app.use('/admin/products', adminProductRoutes) // routes related to products
+app.get('/admin/editProducts', (req, res) => {
+    res.render('editproductdetailsadmin')
+})
+
+app.use('/admin/products', adminProductRoutes) // routes related to admin products
 
 // connect to the mongoDB database
 mongoose.connect(process.env.MONGODB_URI, {
