@@ -6,7 +6,8 @@ const allProductsView = (req, res) => {
     try {
         // const products = await Product.find({}) // find all products
         // res.send(products)
-        res.render('adminViews/allProductsView')
+        // res.render('adminViews/allProductsView')
+        res.render('adminViews/productListAdmin')
     } catch (err) {
         console.log(err)
         res.status(500).send(err)

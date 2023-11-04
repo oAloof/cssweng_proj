@@ -35,22 +35,6 @@ app.get('/admin', (req, res) => {
     res.render('adminViews/homepage_admin')
 })
 
-app.get('/admin/bodegasaleVIEW', (req, res) => {
-    res.render('bodegasaleVIEW')
-})
-
-app.get('/admin/bodegasaleEDIT', (req, res) => {
-    res.render('bodegasaleEDIT')
-})
-
-app.get('/admin/saledetail', (req, res) => {
-    res.render('saledetailADMIN')
-})
-
-app.get('/admin/viewbodega', (req, res) => {
-    res.render('viewbodega')
-})
-
 app.use('/admin/products', adminProductRoutes) // routes related to admin products
 
 // connect to the mongoDB database
