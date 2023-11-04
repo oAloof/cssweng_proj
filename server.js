@@ -24,42 +24,31 @@ app.use((req, res, next) => {
     next()
 })
 
-// routes
+// ROUTES 
+// cutomer views
 app.get('/', (req, res) => {
-    res.render('homepage')
+    res.render('customerViews/homepage_general')
 })
 
-app.get('/homepage_admin', (req, res) => {
+// admin views
+app.get('/admin', (req, res) => {
     res.render('adminViews/homepage_admin')
 })
 
-app.get('/view_user_cart', (req, res) => {
-    res.render('adminViews/cart_user')
+app.get('/admin/bodegasaleVIEW', (req, res) => {
+    res.render('bodegasaleVIEW')
 })
 
-app.get('/login', (req, res) => {
-    res.render('adminViews/login')
+app.get('/admin/bodegasaleEDIT', (req, res) => {
+    res.render('bodegasaleEDIT')
 })
 
-app.get('/signup', (req, res) => {
-    res.render('adminViews/signup')
+app.get('/admin/saledetail', (req, res) => {
+    res.render('saledetailADMIN')
 })
 
-app.get('/homepage_general', (req, res) => {
-    res.render('homepage_general')
-})
-
-app.get('/profile', (req, res) => {
-    res.render('profile_customer')
-})
-
-app.get('/profile_edit', (req, res) => {
-    res.render('profile_customer_edit')
-})
-
-
-app.get('/admin/editProducts', (req, res) => {
-    res.render('editproductdetailsadmin')
+app.get('/admin/viewbodega', (req, res) => {
+    res.render('viewbodega')
 })
 
 app.use('/admin/products', adminProductRoutes) // routes related to admin products
