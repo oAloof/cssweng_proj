@@ -113,7 +113,7 @@ const updateProduct = async (req, res) => {
         return
     }
 
-    // * Implement when available quantity field is implemented
+    // * Implement when available quantity field is implemented on frontend
     // Check if total quantity is valid
     // // Total quantity cannot be less than its difference with the available quantity
     // if (totalQuantity < (totalQuantity - availableQuantity)) {
