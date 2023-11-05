@@ -8,7 +8,6 @@ const upload = require('../middlewares/fileUpload')
 const allProductsView = async (req, res) => {
     try {
         const products = await Product.find({}) // find all products
-    
         res.render('adminViews/productListAdmin', { products: products })
     } catch (err) {
         console.log(err)

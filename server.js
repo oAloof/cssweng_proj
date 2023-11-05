@@ -36,6 +36,10 @@ app.get('/admin', (req, res) => {
     res.render('adminViews/homepage_admin')
 })
 
+app.get('/admin/sales', (req, res) => {
+    res.render('adminViews/viewbodega')
+})
+
 app.use('/admin/products', adminProductRoutes) // routes related to admin products
 
 app.use((error, req, res, next) => {
