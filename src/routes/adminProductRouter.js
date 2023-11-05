@@ -24,7 +24,7 @@ router.delete('/:id', productController.deleteProduct)
 router.get('/edit/:id', productController.updateProductView)
 
 // UPDATE a product
-router.patch('/:id', productController.updateProduct) 
+router.patch('/edit/:id', productController.updateProduct) 
 
 // export the router
 module.exports = router

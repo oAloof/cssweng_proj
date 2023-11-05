@@ -70,5 +70,40 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelector('.save-button').addEventListener('click', () => {
+                    const name = document.querySelector('.input-product-name').value
+                    const brand = document.querySelector('.input-product-brand').value
+                    const price = document.querySelector('.input-product-price').value
+                    const totalQuantity = document.querySelector('.input-product-stock').value
+                    const description = document.querySelector('.input-product-description').value
+
+                    const pathArray = window.location.pathname.split('/')
+                    const productId = pathArray[pathArray.length - 1]
+                    const data = {
+                        name,
+                        brand,
+                        price,
+                        totalQuantity,
+                        description, 
+                        productId
+                    }
+
+                    fetch('/admin/products/edit/:id', {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then( data => {
+                        console.log(data)
+                        window.location.href = '/admin/products?' + new Date().getTime() // This is to refresh the page
+                    })
+                })
+            })
+        </script>
     </body>
 </html>

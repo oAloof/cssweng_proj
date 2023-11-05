@@ -87,7 +87,6 @@ const singleProductView = async (req, res) => {
 }
 
 const updateProductView = async (req, res) => {
-    console.log(req.params.id)
     const product = await Product.findById(req.params.id)
     res.render('adminViews/editProductDetailsAdmin', { product: product })
     // const objID = '0000' // placeholder -- change to getting the object id from the request
@@ -102,37 +101,38 @@ const updateProductView = async (req, res) => {
 }
 
 const updateProduct = async (req, res) => {
-    const objID = '0000' // placeholder -- change to getting the object id from the request
-    const name = 'Product Name' // placeholder
-    const brand = 'Product Brand' // placeholder
-    const description = 'Product Description' // placeholder
-    const images = ['image1', 'image2', 'image3'] // placeholder
-    const quantity = 10 // placeholder
-    const price = 100 // placeholder
-    const status = 'Listed' // placeholder
+    const { name, brand, price, totalQuantity, description, productId } = req.body
 
     // check if the id is valid
-    if (!mongoose.isValidObjectId(objID)) {
-        res.status(400).send('Invalid object id')
+    if (!mongoose.isValidObjectId(productId)) {
+        res.status(400).send('Invalid product id')
         return
     }
+
+    // * Implement when available quantity field is implemented
+    // Check if total quantity is valid
+    // // Total quantity cannot be less than its difference with the available quantity
+    // if (totalQuantity < (totalQuantity - availableQuantity)) {
+    //     res.status(400).send('Invalid total quantity')
+    //     return
+    // }
+    // availableQuantity = availableQuantity - (totalQuantity - availableQuantity)
 
     // update the product
     try {
         const product = await Product.findByIdAndUpdate(
-            {_id: objID},
+            {_id: productId},
             {
                 name: name,
                 brand: brand,
                 description: description,
-                images: images,
-                quantity: quantity,
-                price: price,
-                status: status
+                // * Implement image update
+                totalQuantity: totalQuantity,
+                // * Implement available quantity update
+                price: price
             },
             { new: true },
         )
-        console.log(product)
         res.send(product)
     } catch (err) {
         console.log(err)
