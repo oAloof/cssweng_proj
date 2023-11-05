@@ -5,12 +5,11 @@ const upload = require('../middlewares/fileUpload')
 
 
 // GET all products view
-const allProductsView = (req, res) => {
+const allProductsView = async (req, res) => {
     try {
-        // const products = await Product.find({}) // find all products
-        // res.send(products)
-        // res.render('adminViews/allProductsView')
-        res.render('adminViews/productListAdmin')
+        const products = await Product.find({}) // find all products
+    
+        res.render('adminViews/productListAdmin', { products: products })
     } catch (err) {
         console.log(err)
         res.status(500).send(err)
