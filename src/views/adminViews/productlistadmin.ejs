@@ -87,5 +87,29 @@
                 <a class="add-to-sale-button" href="#">Add to Ongoing Bodega Sale</a>
             </div>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var edit_buttons = document.getElementsByClassName('edit-button')
+
+                Array.from(edit_buttons).forEach( (button) => {
+                        button.addEventListener('click', () => {
+                        product_id = button.parentNode.parentNode.parentNode.getAttribute('db_id')
+                        
+                        window.location.href = '/admin/products/edit/' + product_id
+                        // fetch('/admin/products/edit/:id', {
+                        //     method: 'GET',
+                        //     headers: {
+                        //         'Content-Type': 'application/json'
+                        //     },
+                        //     body: JSON.stringify({
+                        //         product_id: product_id
+                        //     })
+                        // })
+                        
+                    })
+                })
+            })
+        </script>
     </body>
 </html>

@@ -37,27 +37,27 @@
                 </div>
                 <div class="right-outer shell"> <!--Contains text & drop down inputs-->
                     <div class="right-inner-shell-row-1"> <!--Product Name & Price-->
-                        <input class="input-product-name" type="text" placeholder="Product name..">
+                        <input class="input-product-name" type="text" placeholder="Product name.." value="<%= product.name %>">
                         <a class="peso-symbol">₱</a>
-                        <input class="input-product-price" type="text" placeholder="0">
+                        <input class="input-product-price" type="text" placeholder="0" value="<%= product.price %>">
                     </div>
                     <div class="right-inner-shell-row-2"> <!--Product Brand & Type-->
-                        <input class="input-product-brand" type="text" placeholder="Product brand..">
-                        <input class="input-product-type" type="text" placeholder="Product type..">
+                        <input class="input-product-brand" type="text" placeholder="Product brand.." value="<%= product.brand %>">
+                        <!-- <input class="input-product-type" type="text" placeholder="Product type.."> No need for this -->
                     </div>
                     <div class="right-inner-shell-row-3"> <!--Avaialble Stock & Sale Category-->
-                        <input class="input-product-stock" type="text" placeholder="0">
-                        <a class="stock-available-text">Stock Available</a>
-                        <select name="sale-category" class="dropdown-sale-category">
+                        <input class="input-product-stock" type="text" placeholder="0" value="<%= product.totalQuantity %>">
+                        <a class="stock-available-text">Total Quantity</a>
+                        <!-- <select name="sale-category" class="dropdown-sale-category">
                             <option value="null">--Choose a location--</option>
                             <option value="union">Quezon City</option>
                             <option value="promac">Makati City</option>
                             <option value="nakatomi">Paranaque City</option>
                         </select>
-                        <a class="sale-category-text">Sale Category</a>
+                        <a class="sale-category-text">Sale Category</a> No need for this-->
                     </div>
                     <div class="right-inner-shell-row-4"> <!--Product Description-->
-                        <input class="input-product-description" type="text" placeholder="Product description..">
+                        <input class="input-product-description" type="text" placeholder="Product description.." value="<%= product.description %>">
                     </div>
                     <div class="right-inner-shell-row-5"> <!--Delete & Save Buttons-->
                         <div class="save-button">

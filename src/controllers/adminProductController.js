@@ -82,16 +82,23 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+const singleProductView = async (req, res) => {
+
+}
+
 const updateProductView = async (req, res) => {
-    const objID = '0000' // placeholder -- change to getting the object id from the request
+    console.log(req.params.id)
+    const product = await Product.findById(req.params.id)
+    res.render('adminViews/editProductDetailsAdmin', { product: product })
+    // const objID = '0000' // placeholder -- change to getting the object id from the request
     
-    try {
-        const product = await Product.findById(objID) // find a single product
-        res.send(product)
-    } catch (err) {
-        console.log(err)
-        res.status(500).send(err)
-    }
+    // try {
+    //     const product = await Product.findById(objID) // find a single product
+    //     res.send(product)
+    // } catch (err) {
+    //     console.log(err)
+    //     res.status(500).send(err)
+    // }
 }
 
 const updateProduct = async (req, res) => {
