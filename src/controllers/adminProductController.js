@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Product = require('../models/productModel')
 const upload = require('../middlewares/fileUpload')
-
+const { deleteFile } = require('../middlewares/fileDelete')
 
 // GET all products view
 const allProductsView = async (req, res) => {
@@ -63,18 +63,31 @@ const addNewProduct = async (req, res) => {
 }
 
 const deleteProduct = async (req, res) => {    
-    const objID = '0000' // placeholder -- change to getting the object id from the request
+    const objID = req.body.productId
 
     // check if the id is valid
     if (!mongoose.isValidObjectId(objID)) {
         res.status(400).send('Invalid object id')
         return
     }
+    // Get the fileID of the images of the product
+    var images = []
+    try {
+        const product = await Product.findById(objID)
+        images = product.images
+        
+        for (let image of images) {
+            console.log(image)
+            await deleteFile(image)
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
 
     // delete the product
     try {
         const product = await Product.findByIdAndDelete({_id: objID})
-        console.log(product)
         res.send(product)
     } catch (err) {
         console.log(err)
@@ -89,15 +102,6 @@ const singleProductView = async (req, res) => {
 const updateProductView = async (req, res) => {
     const product = await Product.findById(req.params.id)
     res.render('adminViews/editProductDetailsAdmin', { product: product })
-    // const objID = '0000' // placeholder -- change to getting the object id from the request
-    
-    // try {
-    //     const product = await Product.findById(objID) // find a single product
-    //     res.send(product)
-    // } catch (err) {
-    //     console.log(err)
-    //     res.status(500).send(err)
-    // }
 }
 
 const updateProduct = async (req, res) => {
@@ -145,6 +149,7 @@ module.exports = {
     addProductView,
     addNewProduct,
     deleteProduct,
+    singleProductView,
     updateProductView,
     updateProduct
 }

@@ -43,11 +43,11 @@ const uploadFile = async (file) => {
                 },
                 requestBody: {
                     name: file.originalname,
-                parents: [gDriveFolderId]
+                    parents: [gDriveFolderId]
                 },
                 fields: "id, name"
             })
-
+            
             // Update the file name with its unique file id
             const fileId = uploadedFile.data.id
             const updatedFile = await google.drive({

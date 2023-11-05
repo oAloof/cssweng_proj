@@ -102,6 +102,32 @@
                         console.log(data)
                         window.location.href = '/admin/products?' + new Date().getTime() // This is to refresh the page
                     })
+                    .catch( err => {
+                        console.log(err)
+                    })
+                })
+
+                document.querySelector('.delete-button').addEventListener('click', () => {
+                    const pathArray = window.location.pathname.split('/')
+                    const productId = pathArray[pathArray.length - 1]
+                    const data = {
+                        productId
+                    }
+
+                    fetch('/admin/products/delete/:id', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then( data => {
+                        console.log(data)
+                        window.location.href = '/admin/products?' + new Date().getTime() // This is to refresh the page
+                    })
+                    .catch( err => {
+                        console.log(err)
+                    })
                 })
             })
         </script>

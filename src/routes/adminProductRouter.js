@@ -15,7 +15,7 @@ router.get('/add', productController.addProductView)
 router.post('/add', upload.uploadImage.any(), productController.addNewProduct)        
 
 // DELETE a product
-router.delete('/:id', productController.deleteProduct)
+router.delete('/delete/:id', productController.deleteProduct)
 
 // GET a single product
 // router.get('/:id', productController.singleProductView)
