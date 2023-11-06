@@ -5,6 +5,7 @@ require('dotenv').config() // loads the environment variables from .env file
 // import necessary node_modules
 const express = require('express')
 const mongoose = require('mongoose')
+const multer = require('multer')
 const adminProductRoutes = require('./src/routes/adminProductRouter')
 
 // express app
@@ -24,17 +25,19 @@ app.use((req, res, next) => {
     next()
 })
 
-// routes
+// ROUTES 
+// cutomer views
 app.get('/', (req, res) => {
-    res.render('homepage')
+    res.render('customerViews/homepage_general')
 })
 
-app.get('/homepage_admin', (req, res) => {
+// admin views
+app.get('/admin', (req, res) => {
     res.render('adminViews/homepage_admin')
 })
 
-app.get('/view_user_cart', (req, res) => {
-    res.render('adminViews/cart_user')
+app.get('/admin/sales', (req, res) => {
+    res.render('adminViews/viewbodega')
 })
 
 app.get('/login', (req, res) => {
@@ -57,13 +60,6 @@ app.get('/profile_edit', (req, res) => {
     res.render('profile_customer_edit')
 })
 
-app.get('/productlist_admin', (req, res) => {
-    res.render('productlistadmin')
-})
-
-app.get('/test', (req, res) => {
-    res.render('adminViews/allProductsView')
-})
 
 app.use('/admin/products', adminProductRoutes) // routes related to products
 

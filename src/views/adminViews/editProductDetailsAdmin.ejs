@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Assigned to Ryan-->
+        <link rel="stylesheet" href="/css/editproductdetailsadmin.css">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Edit Product Details (Admin)</title>
+    </head>
+    <body>
+        <div class="page-container">
+            <div class="logo-container"> <!--Website Logo-->
+                <a href="#"><img class="logo" src="/images/BXlogo.png" alt="Logo"></a> <!--The logo link should send you to the homepage-->
+            </div>
+            <div class="navbar"> <!--Navbar (LINKS OF NAVBAR UNAVAILABLE FOR NOW)-->
+                <a class="home-button" href="#">Home</a>
+                <a class="navbar-divider">|</a>
+                <a class="bodega-sale-button" href="#">Bodega Sale!!!</a>
+                <a class="navbar-divider">|</a>
+                <a class="product-catalog-button" href="#">Product Catalog</a>
+                <a class="navbar-divider">|</a>
+                <a class="my-cart-button" href="#">My Cart</a>
+                <a class="navbar-divider">|</a>
+                <a class="my-profile-button" href="#">My Profile</a>
+            </div>
+            <div class="admin-indicator"> <!--Admin indicator-->
+                <a>You are in Admin mode</a> 
+            </div>
+            <div class="outermost-shell"> <!--Contains all the input boxes and buttons-->
+                <div class="left-outer-shell"> <!--Contains input images & image scrollbar-->
+                    <a href="#"><img class="image" src="/images/addimage.png"></a>
+                    <div class="scroll-image">
+                        <a href="#"><img class="addimage" src="/images/addimage.png"></a>
+                        <a href="#"><img class="addimage" src="/images/addimage.png"></a>
+                        <a href="#"><img class="addimage" src="/images/addimage.png"></a>
+                    </div>
+                </div>
+                <div class="right-outer shell"> <!--Contains text & drop down inputs-->
+                    <div class="right-inner-shell-row-1"> <!--Product Name & Price-->
+                        <input class="input-product-name" type="text" placeholder="Product name.." value="<%= product.name %>">
+                        <a class="peso-symbol">₱</a>
+                        <input class="input-product-price" type="text" placeholder="0" value="<%= product.price %>">
+                    </div>
+                    <div class="right-inner-shell-row-2"> <!--Product Brand & Type-->
+                        <input class="input-product-brand" type="text" placeholder="Product brand.." value="<%= product.brand %>">
+                        <!-- <input class="input-product-type" type="text" placeholder="Product type.."> No need for this -->
+                    </div>
+                    <div class="right-inner-shell-row-3"> <!--Avaialble Stock & Sale Category-->
+                        <input class="input-product-stock" type="text" placeholder="0" value="<%= product.totalQuantity %>">
+                        <a class="stock-available-text">Total Quantity</a>
+                        <!-- <select name="sale-category" class="dropdown-sale-category">
+                            <option value="null">--Choose a location--</option>
+                            <option value="union">Quezon City</option>
+                            <option value="promac">Makati City</option>
+                            <option value="nakatomi">Paranaque City</option>
+                        </select>
+                        <a class="sale-category-text">Sale Category</a> No need for this-->
+                    </div>
+                    <div class="right-inner-shell-row-4"> <!--Product Description-->
+                        <input class="input-product-description" type="text" placeholder="Product description.." value="<%= product.description %>">
+                    </div>
+                    <div class="right-inner-shell-row-5"> <!--Delete & Save Buttons-->
+                        <div class="save-button">
+                            <a class="save-text" href="#">Save</a>
+                        </div>
+                        <div class="delete-button">
+                            <a class="delete-text" href="#">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelector('.save-button').addEventListener('click', () => {
+                    const name = document.querySelector('.input-product-name').value
+                    const brand = document.querySelector('.input-product-brand').value
+                    const price = document.querySelector('.input-product-price').value
+                    const totalQuantity = document.querySelector('.input-product-stock').value
+                    const description = document.querySelector('.input-product-description').value
+
+                    const pathArray = window.location.pathname.split('/')
+                    const productId = pathArray[pathArray.length - 1]
+                    const data = {
+                        name,
+                        brand,
+                        price,
+                        totalQuantity,
+                        description, 
+                        productId
+                    }
+
+                    fetch('/admin/products/edit/:id', {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then( data => {
+                        console.log(data)
+                        window.location.href = '/admin/products?' + new Date().getTime() // This is to refresh the page
+                    })
+                    .catch( err => {
+                        console.log(err)
+                    })
+                })
+
+                document.querySelector('.delete-button').addEventListener('click', () => {
+                    const pathArray = window.location.pathname.split('/')
+                    const productId = pathArray[pathArray.length - 1]
+                    const data = {
+                        productId
+                    }
+
+                    fetch('/admin/products/delete/:id', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then( data => {
+                        console.log(data)
+                        window.location.href = '/admin/products?' + new Date().getTime() // This is to refresh the page
+                    })
+                    .catch( err => {
+                        console.log(err)
+                    })
+                })
+            })
+        </script>
+    </body>
+</html>

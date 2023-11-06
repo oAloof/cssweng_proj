@@ -1,12 +1,15 @@
-const Product = require('../models/productModel')
 const mongoose = require('mongoose')
 
+const Product = require('../models/productModel')
+const upload = require('../middlewares/fileUpload')
+const { deleteFile } = require('../middlewares/fileDelete')
+
 // GET all products view
-const allProductsView = (req, res) => {
+const allProductsView = async (req, res) => {
     try {
-        // const products = await Product.find({}) // find all products
-        // res.send(products)
-        res.render('adminViews/allProductsView')
+        const products = await Product.find({}) // find all products
+        res.set('Cache-Control', 'public, max-age=86400')
+        res.render('adminViews/productListAdmin', { products: products })
     } catch (err) {
         console.log(err)
         res.status(500).send(err)
@@ -18,26 +21,41 @@ const addProductView = (req, res) => {
 }
 
 const addNewProduct = async (req, res) => {
-    // * Try to implement req.body destructuring
-    const name = 'Product Name' // placeholder
-    const brand = 'Product Brand' // placeholder
-    const description = 'Product Description' // placeholder
-    const images = ['image1', 'image2', 'image3'] // placeholder
-    const quantity = 10 // placeholder
-    const price = 100 // placeholder
-    const status = 'Listed' // placeholder
+    const { name, brand, price, quantity, description } = req.body
+    const imageFiles = req.files
+    const totalQuantity = quantity
+    const availableQuantity = quantity
 
     try {
+        // Check if the product with the same name and brand already exists
+        const result = await Product.find({ name: name, brand: brand })
+        if (result.length > 0) {
+            res.send('Product already exists')
+            return
+        }
+        // upload the product images to google drive
+        let images = []
+        try {
+            for (let image of imageFiles) {
+                const imageId = await upload.uploadFile(image)
+                images.push(imageId)
+            }
+        } catch (err) {
+            console.log(err)
+            res.send(err)
+            return
+        }
+        
         const product = await Product.create({
             name,
             brand,
             description,
             images,
-            quantity,
-            price,
-            status
+            totalQuantity,
+            availableQuantity,
+            price
         })
-        res.send(product)
+        res.redirect('/admin/products')
     } catch (err) {
         console.log(err)
         res.send(err)
@@ -45,18 +63,31 @@ const addNewProduct = async (req, res) => {
 }
 
 const deleteProduct = async (req, res) => {    
-    const objID = '0000' // placeholder -- change to getting the object id from the request
+    const objID = req.body.productId
 
     // check if the id is valid
     if (!mongoose.isValidObjectId(objID)) {
         res.status(400).send('Invalid object id')
         return
     }
+    // Get the fileID of the images of the product
+    var images = []
+    try {
+        const product = await Product.findById(objID)
+        images = product.images
+        
+        for (let image of images) {
+            console.log(image)
+            await deleteFile(image)
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
 
     // delete the product
     try {
         const product = await Product.findByIdAndDelete({_id: objID})
-        console.log(product)
         res.send(product)
     } catch (err) {
         console.log(err)
@@ -64,50 +95,48 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+const singleProductView = async (req, res) => {
+
+}
+
 const updateProductView = async (req, res) => {
-    const objID = '0000' // placeholder -- change to getting the object id from the request
-    
-    try {
-        const product = await Product.findById(objID) // find a single product
-        res.send(product)
-    } catch (err) {
-        console.log(err)
-        res.status(500).send(err)
-    }
+    const product = await Product.findById(req.params.id)
+    res.render('adminViews/editProductDetailsAdmin', { product: product })
 }
 
 const updateProduct = async (req, res) => {
-    const objID = '0000' // placeholder -- change to getting the object id from the request
-    const name = 'Product Name' // placeholder
-    const brand = 'Product Brand' // placeholder
-    const description = 'Product Description' // placeholder
-    const images = ['image1', 'image2', 'image3'] // placeholder
-    const quantity = 10 // placeholder
-    const price = 100 // placeholder
-    const status = 'Listed' // placeholder
+    const { name, brand, price, totalQuantity, description, productId } = req.body
 
     // check if the id is valid
-    if (!mongoose.isValidObjectId(objID)) {
-        res.status(400).send('Invalid object id')
+    if (!mongoose.isValidObjectId(productId)) {
+        res.status(400).send('Invalid product id')
         return
     }
+
+    // * Implement when available quantity field is implemented on frontend
+    // Check if total quantity is valid
+    // // Total quantity cannot be less than its difference with the available quantity
+    // if (totalQuantity < (totalQuantity - availableQuantity)) {
+    //     res.status(400).send('Invalid total quantity')
+    //     return
+    // }
+    // availableQuantity = availableQuantity - (totalQuantity - availableQuantity)
 
     // update the product
     try {
         const product = await Product.findByIdAndUpdate(
-            {_id: objID},
+            {_id: productId},
             {
                 name: name,
                 brand: brand,
                 description: description,
-                images: images,
-                quantity: quantity,
-                price: price,
-                status: status
+                // * Implement image update
+                totalQuantity: totalQuantity,
+                // * Implement available quantity update
+                price: price
             },
             { new: true },
         )
-        console.log(product)
         res.send(product)
     } catch (err) {
         console.log(err)
@@ -120,6 +149,7 @@ module.exports = {
     addProductView,
     addNewProduct,
     deleteProduct,
+    singleProductView,
     updateProductView,
     updateProduct
 }

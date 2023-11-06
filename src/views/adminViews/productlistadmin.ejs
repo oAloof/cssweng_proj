@@ -2,7 +2,7 @@
 <html>
     <head>
         <!--Assigned to Ryan-->
-        <link rel="stylesheet" href="/css/productlistadmin.css">
+        <link rel="stylesheet" href="/css/productListAdmin.css">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Product List View (Admin)</title>
@@ -66,81 +66,18 @@
                         <option value="expensive">Over PHP2000</option>
                     </select>
                     <div class="add-button">
-                        <a class="add-text" href="#">Add New Product</a>
+                        <a class="add-text" href="/admin/products/add">Add New Product</a>
                     </div>
                     <div class="delete-button">
                         <a class="delete-text" href="#">Delete</a>
                     </div>
                 </div>
                 <div class="right-outer-shell"> <!--Contains product list, checkboxes, and horizontal lines-->
-                    <div class="listing-checkbox-split"> <!--Contains a single product listing-->
-                        <div class="product-listing">
-                            <div class="left-inner-shell">
-                                <a href="#"><img class="product-image" src="/images/aircon.png"></a>
-                            </div>
-                            <div class="center-inner-shell">
-                                <a class="product-details">
-                                    Product Name | Brand | Type | XX Stock Available
-                                </a>
-                                <hr clas="hr-product">
-                                <a class="price">
-                                    P X,XXX
-                                </a>
-                            </div>
-                            <div class="right-inner-shell">
-                                <div class="edit-button">
-                                    <a class="edit-text" href="#">Edit</a>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="checkbox" class="checkbox" value="productname">
-                    </div>
-
-                    <div class="listing-checkbox-split"> <!--Contains a single product listing-->
-                        <div class="product-listing">
-                            <div class="left-inner-shell">
-                                <a href="#"><img class="product-image" src="/images/aircon.png"></a>
-                            </div>
-                            <div class="center-inner-shell">
-                                <a class="product-details">
-                                    Product Name | Brand | Type | XX Stock Available
-                                </a>
-                                <hr clas="hr-product">
-                                <a class="price">
-                                    P X,XXX
-                                </a>
-                            </div>
-                            <div class="right-inner-shell">
-                                <div class="edit-button">
-                                    <a class="edit-text" href="#">Edit</a>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="checkbox" class="checkbox" value="productname">
-                    </div>
-
-                    <div class="listing-checkbox-split"> <!--Contains a single product listing-->
-                        <div class="product-listing">
-                            <div class="left-inner-shell">
-                                <a href="#"><img class="product-image" src="/images/aircon.png"></a>
-                            </div>
-                            <div class="center-inner-shell">
-                                <a class="product-details">
-                                    Product Name | Brand | Type | XX Stock Available
-                                </a>
-                                <hr clas="hr-product">
-                                <a class="price">
-                                    P X,XXX
-                                </a>
-                            </div>
-                            <div class="right-inner-shell">
-                                <div class="edit-button">
-                                    <a class="edit-text" href="#">Edit</a>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="checkbox" class="checkbox" value="productname">
-                    </div>
+                    
+                    <% products.forEach( (product) => { %>
+                        <%- include('../partials/productListAdminProduct', { product: product }) %>
+                    <% }); %>
+                    
                 </div>
             </div>
 
@@ -150,5 +87,20 @@
                 <a class="add-to-sale-button" href="#">Add to Ongoing Bodega Sale</a>
             </div>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var edit_buttons = document.getElementsByClassName('edit-button')
+                Array.from(edit_buttons).forEach( (button) => {
+                        button.addEventListener('click', () => {
+                        product_id = button.parentNode.parentNode.parentNode.getAttribute('db_id')
+                        
+                        window.location.href = '/admin/products/edit/' + product_id
+                    })
+                })
+
+                
+            })
+        </script>
     </body>
 </html>

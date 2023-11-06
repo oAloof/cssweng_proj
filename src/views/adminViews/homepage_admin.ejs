@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage (Admin)</title>
-    <link rel="stylesheet" type="text/css" media="all" href="/css/homepage_admin_style.css">
+    <link rel="stylesheet" type="text/css" media="all" href="/css/homepage_admin.css">
 
 </head>
 <body>
@@ -64,15 +64,15 @@
 
     <script>
         function redirectToAllProductsView() {    //src/views/adminViews/allProductsView.ejs
-            window.location.href = '/login'; //redirects to login.ejs
+            window.location.href = '/admin/products'; // redirects to productListAdmin.ejs
         }
 
         function redirectToBodegaSaleView() {
-            window.location.href = '/login'; //redirects to login.ejs
+            window.location.href = '/admin/sales'; //redirects to login.ejs
         }
 
         function redirectToOrdersListView() {
-            window.location.href = '/login'; //redirects to login.ejs
+            window.location.href = '/login'; //redirects to viewbodega.ejs
         }
         //for now, all buttons redirect to All Products View
     </script>

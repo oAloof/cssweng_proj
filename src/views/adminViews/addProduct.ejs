@@ -11,18 +11,17 @@
 	<div id="contentContainer">
 	    <h1> Product Add</h1>
 
-	  
 	    <!-- Form Tab -->
 	    <div id="registerContainer" class="tabcontent">
-	        <form id="registerForm" name="registerForm">
-	            <input id="prodBrand" name="brand" type="text" placeholder="Product Brand" required />
+	        <form id="registerForm" name="registerForm" action="/admin/products/add" method="post" enctype="multipart/form-data">
 	            <input id="prodName" name="name" type="text" placeholder="Product Name" required />
-	            <input id="prodPrice" name="price" type="text" placeholder="Product Price" required />
-	          	<input type="number" min="1" step="1" id="prodQuantity" name="quantity" type="text" placeholder="Product Quantity" required />
-				<input type="file" name="files" multiple/>
+				<input id="prodBrand" name="brand" type="text" placeholder="Product Brand" />
+	            <input id="prodPrice" name="price" type="number" placeholder="Product Price" required />
+	          	<input type="number" min="1" step="1" id="prodQuantity" name="quantity" placeholder="Product Quantity" required />
+				<input type="file" name="images" multiple required />
 				<br>
-	          	<textarea cols="80" rows="5" value="description" placeholder="Product Description" required>  
-				</textarea> 
+	          	<textarea cols="80" rows="5" name="description" placeholder="Product Description" required></textarea> 
+				<br>
 	            <input class="submitBtn" id="registerBtn" type="submit" value="Add product"/>
 	        </form>
 	    </div>
