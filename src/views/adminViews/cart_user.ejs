@@ -10,17 +10,29 @@
 </head>
 <body>
     <header>
-        <h1> BX Appliances</h1>
-        <nav>
-            navbar
-        </nav>
-    </header>
+        <div class="logo">
+            <a href="#"><img class ="logo_png" src="/images/BXlogo.png"></a>
+        </div>
+        
+            <nav>
+                <a class="home-button" href="#">Home</a>
+                <a class="navbar-divider">|</a>   
+                <a class="product-catalog-button" href="#">Product Catalog</a>
+                <a class="navbar-divider">|</a>
+                <a class="my-profile-button" href="admin_profile.html">My Profile</a>
+            </nav>
+        </header>
     <div class="container">
         <aside>
             <div id="profile">
-                <img src="/images/profile.png">
+                <img src="images/profile.png">
                 <h1>John Doe</h1>
+                <p>123 Fake St., Fake Brgy, Fake City</p>
                 <p>A basic description of the user Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut quibusdam dolorem aspernatur tempora vero consequatur, fuga ullam vitae corporis quas!</p>
+                <p>Payment Method: X</p> <!--Use javascript to change X to appropriate payment method-->
+                <div id="editButton">
+                    <button id="editProfile" onclick="redirectToEditProfile()">Edit Profile</button>
+                </div>
             </div>
         </aside>
         <div id="cart">
@@ -199,5 +211,12 @@
         </div>
 
     </div>
+
+    <script>
+        function redirectToEditProfile() {    //src/views/profile_customer_edit
+                window.location.href = '/profile_customer_edit'; //redirects to profile_customer_edit.ejs
+                //for some reason it won't redirect to it
+            }
+    </script>
 </body>
 </html>

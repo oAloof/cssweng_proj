@@ -28,10 +28,17 @@
     color: white;
 }
 
+.home-button:hover {
+    color: #c3c3c3;
+}
 .bodega-sale-button {
     text-decoration: none;
     margin: 10px;
     color: white;
+}
+
+.bodega-sale-button:hover{
+    color: #c3c3c3;
 }
 
 .product-catalog-button {
@@ -40,16 +47,28 @@
     color: white;
 }
 
+.product-catalog-button:hover{
+    color: #c3c3c3;
+}
+
 .my-cart-button {
     text-decoration: none;
     margin: 10px;
     color: white;
 }
 
+.my-cart-button:hover{
+    color: #c3c3c3;
+}
+
 .my-profile-button {
     text-decoration: none;
     margin: 10px;
     color: white;
+}
+
+.my-profile-button:hover{
+    color: #c3c3c3;
 }
 
 .admin-indicator {
@@ -244,6 +263,10 @@
     text-decoration: none;
 }
 
+.save-button:hover{
+    background-color: #38843b;
+}
+
 .delete-button {
     background-color: #db1f30;
     border-radius: 10px;
@@ -252,6 +275,10 @@
     padding: 10px;
     text-align: center;
     width: 150px;
+}
+
+.delete-button:hover{
+    background-color: #b11825;
 }
 
 .delete-text {

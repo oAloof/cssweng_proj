@@ -57,6 +57,13 @@ app.get('/profile_edit', (req, res) => {
     res.render('profile_customer_edit')
 })
 
+app.get('/productlist_admin', (req, res) => {
+    res.render('productlistadmin')
+})
+
+app.get('/test', (req, res) => {
+    res.render('adminViews/allProductsView')
+})
 
 app.use('/admin/products', adminProductRoutes) // routes related to products
 
