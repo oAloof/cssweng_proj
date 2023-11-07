@@ -22,9 +22,16 @@
     color: white;
 }
 
+.home-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
 .home-button:hover {
     color: #c3c3c3;
 }
+
 .bodega-sale-button {
     text-decoration: none;
     margin: 10px;
