@@ -1,0 +1,114 @@
+/*Assigned to Ryan*/
+
+*{
+    font-family: 'Inter', sans-serif;
+}
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 285px;
+    height: 85px;
+}
+
+.navbar {
+    background-color: #004aad;
+    border-style: none;
+    border-radius: 25px;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.navbar-divider {
+    color: white;
+}
+
+.home-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+.home-button:hover {
+    color: #c3c3c3;
+}
+.bodega-sale-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.bodega-sale-button:hover{
+    color: #c3c3c3;
+}
+
+.product-catalog-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.product-catalog-button:hover{
+    color: #c3c3c3;
+}
+
+.my-cart-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.my-cart-button:hover{
+    color: #c3c3c3;
+}
+
+.my-profile-button {
+    text-decoration: none;
+    margin: 10px;
+    color: white;
+}
+
+.my-profile-button:hover{
+    color: #c3c3c3;
+}
+
+.blue-box {
+    position: absolute;
+    background-color: #004aad;
+    border:#004aad;
+    border-radius: 55px;
+    width: 500px;
+    height: 250px;
+    margin-left: 450px;
+    color: #004aad;
+    margin-top: 150px;
+}
+
+.error-icon { /*error-msg*/
+    z-index: 1;
+    position: absolute;
+    width: 250px;
+    height: 200px;
+    margin-left: 580px;
+    margin-top: 40px;
+}
+
+.error-msg-1 {
+    z-index: 2;
+    position: absolute;
+    margin-left: 580px;
+    margin-top: 275px;
+    color: white;
+    font-size: 20px;
+}
+
+.error-msg-2 {
+    z-index: 3;
+    position: absolute;
+    margin-left: 530px;
+    margin-top: 325px;
+    color: white;
+    font-size: 15px;
+}
