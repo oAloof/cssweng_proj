@@ -133,11 +133,19 @@ hr {
 }
 
 .productDetails{
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    margin-left: 10px;
+}
+
+.productDetails-price{
+    font-size: 1.1rem;
+    margin-left: 10px;
 }
 
 .borderDivider{
      border-top: 1px solid gray;
+     margin-top: 5px;
+     margin-bottom: 5px;
 }
 
 .leftDiv{
@@ -183,16 +191,16 @@ hr {
 }
 
 .titleLabel {
-    font-size: 2rem;
+    font-size: 1.5rem;
+    margin-top: 10px;
 }
 
 .locationLabel {
-    font-size: 3rem;
+    font-size: 2.5rem;
 }
 
 
 .dateContainer{
-
     width: 22.5rem;
     height: 7rem;
     display: flex;
@@ -201,11 +209,14 @@ hr {
 
 }
 
-.dateDetails{
-    font-size: 1.5rem;
+.dateDetails-start{
+    font-size: 1.25rem;
+    margin-bottom: 5px;
 }
 
-
+.dateDetails-end{
+    font-size: 1.25rem;
+}
 
 .productList {
     margin-left: auto;
