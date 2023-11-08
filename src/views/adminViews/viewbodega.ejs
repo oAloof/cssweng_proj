@@ -10,21 +10,7 @@
 	<title>View List of Bodega Sales (Admin)</title>
 </head>
 <body>
-
-	<div class="logo-container"> <!--Website Logo-->
-                <a href="#"><img class="logo" src="/images/BXlogo.png" alt="Logo"></a> <!--The logo link should send you to the homepage-->
-            </div>
-            <div class="navbar"> <!--Navbar (LINKS OF NAVBAR UNAVAILABLE FOR NOW)-->
-                <a class="home-button" href="#">Home</a>
-                <a class="navbar-divider">|</a>
-                <a class="bodega-sale-button" href="#">Bodega Sale!!!</a>
-                <a class="navbar-divider">|</a>
-                <a class="product-catalog-button" href="#">Product Catalog</a>
-                <a class="navbar-divider">|</a>
-                <a class="my-cart-button" href="#">My Cart</a>
-                <a class="navbar-divider">|</a>
-                <a class="my-profile-button" href="#">My Profile</a>
-            </div>
+	<%- include('../partials/admin_NavBar')%>
 	<br>
 
 	<div class="search">
@@ -33,83 +19,7 @@
    		<img class="searchIcon" src="/images/search.png" />
    	</div>	
 
-   	<hr>
-
-	<div class="bodegaContainer">
-
-		<div class="leftDiv">
-
-		 	<img class="bodegaIcon" src="/images/bodega.png" />
-		 </div>
-
-		<div class="rightDiv">
-
-		 	<div class="top-right">
-			  	<span class="bodegaDetails">Start date: 10/20/2023, End date: 10/23/2023</span>
-               		 
-           	</div>
-
-           	<div class="borderDivider"></div>
-
-           	<div class="bottom-right">
-				<span class="bodegaDetails">(Title) ManilaRush | Location : Metro Manila</span>
-					<button class="viewBtn">View</button>
-            </div>
-		</div>
-
-	</div>
-
-		<hr>
-
-	<div class="bodegaContainer">
-
-		<div class="leftDiv">
-
-		 	<img class="bodegaIcon" src="/images/bodega.png" />
-		 </div>
-
-		<div class="rightDiv">
-
-		 	<div class="top-right">
-			  	<span class="bodegaDetails">Start date: 12/25/2023, End date: 12/26/2023</span>
-               		 
-           	</div>
-
-           	<div class="borderDivider"></div>
-
-           	<div class="bottom-right">
-				<span class="bodegaDetails">(Title) ChristMUST | Location : Quezon City</span>
-					<button class="viewBtn">View</button>
-            </div>
-		</div>
-
-	</div>
-
-		<hr>
-
-	<div class="bodegaContainer">
-
-		<div class="leftDiv">
-
-		 	<img class="bodegaIcon" src="/images/bodega.png" />
-		 </div>
-
-		<div class="rightDiv">
-
-		 	<div class="top-right">
-			  	<span class="bodegaDetails">Start date: 01/01/2024, End date: 01/02/2024</span>
-               		 
-           	</div>
-
-           	<div class="borderDivider"></div>
-
-           	<div class="bottom-right">
-				<span class="bodegaDetails">(Title) New Year New Sale | Location : Baguio</span>
-					<button class="viewBtn">View</button>
-            </div>
-		</div>
-
-	</div>
-	
+	   <%- include('../partials/bodega_admin')%>
+	   <%- include('../partials/bodega_admin')%>
 </body>
 </html>
