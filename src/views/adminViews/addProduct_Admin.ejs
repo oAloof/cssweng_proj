@@ -28,88 +28,88 @@
                 <a class="my-profile-button" href="#">My Profile</a>
             </div>
 
-            <div class="outermost-shell"> <!--Contains all the input boxes and buttons-->
+            <form id="registerForm" name="registerForm" action="/admin/products/add" method="post" enctype="multipart/form-data"></form>
+                <div class="outermost-shell"> <!--Contains all the input boxes and buttons-->
+                        <div class="left-outer-shell"> <!--Contains input images & image scrollbar-->
+                            
+                            <div class="image-with-delete">
+                                <a class="img-container" href="#"><img class="image" src="/images/uploadimage.png"></a>
+                                <a class="del-hover" href="#">X</a>
+                            </div>
 
-                <form id="registerForm" name="registerForm" action="/admin/products/add" method="post" enctype="multipart/form-data">
-                    <div class="left-outer-shell"> <!--Contains input images & image scrollbar-->
-                        <div class="image-with-delete">
-                            <a class="img-container" href="#"><img class="image" src="/images/uploadimage.png"></a>
-                            <a class="del-hover" href="#">X</a>
+                            <div class="error-msg-container">
+                                <a class="error-msg-img">Upload at least (1) image</a>
+                            </div>
+
+                            <div class="img-grid">
+                                <div class="scroll-image-1">
+                                    <a class="addimage-container-1" href="#"><img class="addimage-1" src="/images/uploadimage.png"></a>
+                                    <a class="scroll-del-hover-1" href="#">X</a>
+                                    
+                                    <a class="addimage-container-2" href="#"><img class="addimage-2" src="/images/uploadimage.png"></a>
+                                    <a class="scroll-del-hover-2" href="#">X</a>
+                                    
+                                    <a class="addimage-container-3" href="#"><img class="addimage-3" src="/images/uploadimage.png"></a>
+                                    <a class="scroll-del-hover-3" href="#">X</a>
+                                </div>
+                                <div class="scroll-image-2">
+                                    <a class="addimage-container-1" href="#"><img class="addimage-1" src="/images/uploadimage.png"></a>
+
+                                    <a class="scroll-del-hover-1" href="#">X</a>
+                                    <a class="addimage-container-2" href="#"><img class="addimage-2" src="/images/uploadimage.png"></a>
+                                    
+                                    <a class="scroll-del-hover-2" href="#">X</a>
+                                    <a class="addimage-container-3" href="#"><img class="addimage-3" src="/images/uploadimage.png"></a>
+                                    <a class="scroll-del-hover-3" href="#">X</a>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="error-msg-container">
-                            <a class="error-msg-img">Upload at least (1) image</a>
-                        </div>
-
-                        <div class="img-grid">
-                            <div class="scroll-image-1">
-                                <a class="addimage-container-1" href="#"><img class="addimage-1" src="/images/uploadimage.png"></a>
-                                <a class="scroll-del-hover-1" href="#">X</a>
-                                
-                                <a class="addimage-container-2" href="#"><img class="addimage-2" src="/images/uploadimage.png"></a>
-                                <a class="scroll-del-hover-2" href="#">X</a>
-                                
-                                <a class="addimage-container-3" href="#"><img class="addimage-3" src="/images/uploadimage.png"></a>
-                                <a class="scroll-del-hover-3" href="#">X</a>
+                        <div class="right-outer shell"> <!--Contains text & drop down inputs-->
+                            <div class="right-inner-shell-row-1"> <!--Product Name & Price-->
+                                <div class="error-msg-container">
+                                    <input class="input-product-name" type="text" id="name" name="name" placeholder="Product name..">
+                                    <a class="error-msg-name-1">Please enter the product name</a>
+                                    <a class="error-msg-name-2">That product name is already listed</a>
+                                </div>
+                                <a class="peso-symbol">₱</a>
+                                <div class="error-msg-container">
+                                    <input class="input-product-price" type="number" id="price" name="price" placeholder="0">
+                                    <a class="error-msg-price">Please enter the product price</a>
+                                </div>
                             </div>
-                            <div class="scroll-image-2">
-                                <a class="addimage-container-1" href="#"><img class="addimage-1" src="/images/uploadimage.png"></a>
-
-                                <a class="scroll-del-hover-1" href="#">X</a>
-                                <a class="addimage-container-2" href="#"><img class="addimage-2" src="/images/uploadimage.png"></a>
-                                
-                                <a class="scroll-del-hover-2" href="#">X</a>
-                                <a class="addimage-container-3" href="#"><img class="addimage-3" src="/images/uploadimage.png"></a>
-                                <a class="scroll-del-hover-3" href="#">X</a>
+                            <div class="right-inner-shell-row-2"> <!--Product Brand-->
+                                <div class="error-msg-container">
+                                    <input class="input-product-brand" type="text" id="brand" name="brand" placeholder="Product brand..">
+                                    <a class="error-msg-brand">Please enter the product brand</a>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="right-outer shell"> <!--Contains text & drop down inputs-->
-                        <div class="right-inner-shell-row-1"> <!--Product Name & Price-->
-                            <div class="error-msg-container">
-                                <input class="input-product-name" type="email" id="name" placeholder="Product name..">
-                                <a class="error-msg-name-1">Please enter the product name</a>
-                                <a class="error-msg-name-2">That product name is already listed</a>
+                            <div class="right-inner-shell-row-3"> <!--Available Stock & Available Quantity-->
+                                <input class="input-product-stock" type="text" id="stock" name="quantity"  placeholder="0">
+                                <a class="stock-available-text">Stock Available</a>
+                                <div class="error-msg-container">
+                                    <select class="list-dropdown" name="status">
+                                        <option value="listed">--Select a List Status--</option>
+                                        <option value="listed">Listed</option>
+                                        <option value="unlisted">Unlisted</option>
+                                    </select>
+                                    <a class="error-msg-list">Please select this product's list status</a>
+                                </div>
+                                <a class="list-status-text">List Status</a>
                             </div>
-                            <a class="peso-symbol">₱</a>
-                            <div class="error-msg-container">
-                                <input class="input-product-price" type="number" id="price" placeholder="0">
-                                <a class="error-msg-price">Please enter the product price</a>
+                            <div class="right-inner-shell-row-4"> <!--Product Description-->
+                                <div class="error-msg-container">
+                                    <input class="input-product-description" type="text" id="description" name="description" placeholder="Product description..">
+                                    <a class="error-msg-description">Please enter the product description</a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="right-inner-shell-row-2"> <!--Product Brand-->
-                            <div class="error-msg-container">
-                                <input class="input-product-brand" type="text" id="brand" placeholder="Product brand..">
-                                <a class="error-msg-brand">Please enter the product brand</a>
+                            <div class="right-inner-shell-row-5"> <!--Discard Changess & Save Buttons-->
+                                <button class="save-button" type="submit">Add Product</button>
+                                <button class="discard-button" id="cancel-btn">Cancel</button>
                             </div>
                         </div>
-                        <div class="right-inner-shell-row-3"> <!--Available Stock & Available Quantity-->
-                            <input class="input-product-stock" type="text" id="stock" placeholder="0">
-                            <a class="stock-available-text">Stock Available</a>
-                            <div class="error-msg-container">
-                                <select class="list-dropdown">
-                                    <option value="listed">--Select a List Status--</option>
-                                    <option value="listed">Listed</option>
-                                    <option value="unlisted">Unlisted</option>
-                                </select>
-                                <a class="error-msg-list">Please select this product's list status</a>
-                            </div>
-                            <a class="list-status-text">List Status</a>
-                        </div>
-                        <div class="right-inner-shell-row-4"> <!--Product Description-->
-                            <div class="error-msg-container">
-                                <input class="input-product-description" type="text" id="description" placeholder="Product description..">
-                                <a class="error-msg-description">Please enter the product description</a>
-                            </div>
-                        </div>
-                        <div class="right-inner-shell-row-5"> <!--Discard Changess & Save Buttons-->
-                            <button class="save-button" type="submit">Add Product</button>
-                            <button class="discard-button" id="cancel-btn">Cancel</button>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
+                </div>
+            </form>
         </div>
 
         <script>
