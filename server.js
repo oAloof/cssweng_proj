@@ -7,6 +7,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const multer = require('multer')
 const adminProductRoutes = require('./src/routes/adminProductRouter')
+const customerRoutes = require('./src/routes/customerRouter')
 
 // express app
 const app = express()
@@ -26,10 +27,8 @@ app.use((req, res, next) => {
 })
 
 // ROUTES 
-// cutomer views
-app.get('/', (req, res) => {
-    res.render('customerViews/homepage_general')
-})
+// cutomer no-login views
+app.use('/', customerRoutes)
 
 // admin views
 app.get('/admin', (req, res) => {
