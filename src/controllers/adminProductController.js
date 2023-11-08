@@ -95,7 +95,7 @@ const deleteProduct = async (req, res) => {
 }
 
 const singleProductView = async (req, res) => {
-        
+
 }
 
 const updateProductView = async (req, res) => {
@@ -104,7 +104,7 @@ const updateProductView = async (req, res) => {
 }
 
 const updateProduct = async (req, res) => {
-    const { name, brand, price, totalQuantity, description, productId } = req.body
+    const { name, brand, price, quantity, description, status,  productId } = req.body
 
     // check if the id is valid
     if (!mongoose.isValidObjectId(productId)) {
@@ -121,9 +121,9 @@ const updateProduct = async (req, res) => {
                 brand: brand,
                 description: description,
                 // * Implement image update
-                totalQuantity: totalQuantity,
-                // * Implement available quantity update
-                price: price
+                quantity: quantity,
+                price: price,
+                status: status
             },
             { new: true },
         )

@@ -132,33 +132,27 @@
                     for (let i = 0; i < allImages.length; i++) {
                         const image = allImages[i]
                         const reader = new FileReader()
-                        // Put the 4th image and beyond in the second scroll grid
-                        
-                        // if (i > 2) {
-                        //     console.log("inside if");
-                        //     reader.onload = (e) => {
-                        //         const img = document.getElementsByClassName('addimage-' + (i - 2))[1]
-                        //         img.src = e.target.result
-                        //     }
-                        //     continue
-                        // }
+                    
                         reader.onload = (e) => {
                             const img = document.getElementsByClassName('addimage-' + (i + 1))[0]
                             const img_x_btn = document.getElementsByClassName('scroll-del-hover-' + (i + 1))[0]
+                            
+                            console.log(allImages.length);
 
                             img_x_btn.setAttribute('data_index', allImages.indexOf(image))
                             img_x_btn.addEventListener('click', (event) => {
                                 const index = parseInt(event.target.getAttribute('data_index'))
                                 allImages.splice(index, 1)
-                                // get list of children of parent node
-                                console.log(this)
+                                event.target.previousElementSibling.children[0].src = "/images/uploadimage.png"
                                 
+                                console.log(allImages.length);
                             })
                             img.src = e.target.result
                         }
                         reader.readAsDataURL(image)
                     }
-                })
+                })  
+
 
                 document.getElementById("save-btn").addEventListener("click", () => {
                     event.preventDefault()

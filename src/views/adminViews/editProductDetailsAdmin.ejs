@@ -29,13 +29,41 @@
                     </div>
                     <div class="img-grid">
                         <div class="scroll-image-1">
-                            <a class="addimage-container-1" href="#"><img class="addimage-1" src="/images/uploadimage.png"></a>
+                            <!-- <a class="addimage-container-1" href="#"><img class="addimage-1" src="/images/uploadimage.png"></a> -->
+                            <% if (product.images && product.images[0]) { %>
+                                <a class="addimage-container-1" href="#">
+                                  <!-- Ensure the file ID in the src URL is publicly accessible -->
+                                  <img class="addimage-1" src="https://drive.google.com/uc?export=view&id=<%= product.images[0] %>">
+                                </a>
+                              <% } else { %>
+                                <a class="addimage-container-1" href="#">
+                                  <img class="addimage-1" src="/images/uploadimage.png">
+                                </a>
+                              <% } %>
                             <a class="scroll-del-hover-1" href="#">X</a>
                             
-                            <a class="addimage-container-2" href="#"><img class="addimage-2" src="/images/uploadimage.png"></a>
+                            <!-- <a class="addimage-container-2" href="#"><img class="addimage-2" src="/images/uploadimage.png"></a> -->
+                            <% if (product.images && product.images[1]) { %>
+                                <a class="addimage-container-2" href="#">
+                                  <img class="addimage-2" src="https://drive.google.com/uc?export=view&id=<%= product.images[1] %>">
+                                </a>
+                              <% } else { %>
+                                <a class="addimage-container-2" href="#">
+                                  <img class="addimage-2" src="/images/uploadimage.png">
+                                </a>
+                              <% } %>
                             <a class="scroll-del-hover-2" href="#">X</a>
                             
-                            <a class="addimage-container-3" href="#"><img class="addimage-3" src="/images/uploadimage.png"></a>
+                            <!-- <a class="addimage-container-3" href="#"><img class="addimage-3" src="/images/uploadimage.png"></a> -->
+                            <% if (product.images && product.images[2]) { %>
+                                <a class="addimage-container-3" href="#">
+                                  <img class="addimage-3" src="https://drive.google.com/uc?export=view&id=<%= product.images[2] %>">
+                                </a>
+                              <% } else { %>
+                                <a class="addimage-container-3" href="#">
+                                  <img class="addimage-3" src="/images/uploadimage.png">
+                                </a>
+                              <% } %>
                             <a class="scroll-del-hover-3" href="#">X</a>
                         </div>
                         <div class="scroll-image-2">
@@ -73,10 +101,10 @@
                         <input class="input-product-stock" type="text" id="stock" placeholder="0" value="<%= product.quantity %>">
                         <a class="stock-available-text">Stock Available</a>
                         <div class="error-msg-container">
-                            <select class="list-dropdown" value=<%= product.status %>">
+                            <select class="list-dropdown">
                                 <option value="listed">--Select a List Status--</option>
-                                <option value="listed">Listed</option>
-                                <option value="unlisted">Unlisted</option>
+                                <option value="listed" <% if (product.status === 'listed') { %>selected<% } %>>Listed</option>
+                                <option value="unlisted" <% if (product.status === 'unlisted') { %>selected<% } %>>Unlisted</option>
                             </select>
                             <a class="error-msg-list">Please select this product's list status</a>
                         </div>
@@ -84,7 +112,7 @@
                     </div>
                     <div class="right-inner-shell-row-4"> <!--Product Description-->
                         <div class="error-msg-container">
-                            <input class="input-product-description" type="text" id="description" placeholder="Product description.." <%= product.description %>">
+                            <input class="input-product-description" type="text" id="description" placeholder="Product description.." value= "<%= product.description %>">
                             <a class="error-msg-description">Please enter the product description</a>
                         </div>
                     </div>
@@ -98,6 +126,7 @@
         </div>
 
         <script>
+
             document.getElementById("discard-btn").addEventListener("click", () => {
                 window.location.href = "/admin/products"
             })
@@ -106,8 +135,9 @@
                     const name = document.querySelector('.input-product-name').value
                     const brand = document.querySelector('.input-product-brand').value
                     const price = document.querySelector('.input-product-price').value
-                    const totalQuantity = document.querySelector('.input-product-stock').value
+                    const quantity = document.querySelector('.input-product-stock').value
                     const description = document.querySelector('.input-product-description').value
+                    const status = document.querySelector('.list-dropdown').value
 
                     const pathArray = window.location.pathname.split('/')
                     const productId = pathArray[pathArray.length - 1]
@@ -115,8 +145,9 @@
                         name,
                         brand,
                         price,
-                        totalQuantity,
+                        quantity,
                         description, 
+                        status,
                         productId
                     }
 
