@@ -100,11 +100,18 @@
                     </div>
                     <div class="right-inner-shell-row-5"> <!--Discard Changess & Save Buttons-->
                         <button class="save-button">Save Changes</button>
-                        <button class="discard-button">Discard Changes</button>
+                        <button id="discard-btn" class="discard-button">Discard Changes</button>
                         <button class="delete-button">Delete Product</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <script>
+            document.getElementById("discard-btn").addEventListener("click", () => {
+                window.location.href = "/admin/products"
+            })
+        </script>
+
     </body>
 </html>
