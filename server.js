@@ -39,30 +39,6 @@ app.get('/admin/sales', (req, res) => {
     res.render('adminViews/viewbodega')
 })
 
-app.get('/login', (req, res) => {
-    res.render('login')
-})
-
-app.get('/signup', (req, res) => {
-    res.render('signup')
-})
-
-app.get('/homepage_general', (req, res) => {
-    res.render('homepage_general')
-})
-
-app.get('/profile', (req, res) => {
-    res.render('profile_customer')
-})
-
-app.get('/profile_edit', (req, res) => {
-    res.render('profile_customer_edit')
-})
-
-app.get('/cart_user', (req, res) => {
-    res.render('cart_user')
-})
-
 app.use('/admin/products', adminProductRoutes) // routes related to products
 
 // connect to the mongoDB database
