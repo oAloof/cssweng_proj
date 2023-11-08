@@ -7,6 +7,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const multer = require('multer')
 const adminProductRoutes = require('./src/routes/adminProductRouter')
+const adminOrdersRoutes = require('./src/routes/adminOrdersRouter')
 const adminSalesRoutes = require('./src/routes/adminSalesRouter')
 const customerRoutes = require('./src/routes/customerRouter')
 
@@ -38,7 +39,9 @@ app.get('/admin', (req, res) => {
 
 app.use('/admin/products', adminProductRoutes) // routes related to products
 
-app.use('/admin/sales', adminSalesRoutes) // routes related to products
+app.use('/admin/orders', adminOrdersRoutes) // routes related to orders
+
+app.use('/admin/sales', adminSalesRoutes) // routes related to sales
 
 
 // connect to the mongoDB database
