@@ -36,8 +36,30 @@ const getOngoingBodegaSale = async (req, res) => {
     }
 }
 
+const getLogin = async (req, res) => {
+    try {
+        res.set('Cache-Control', 'public, max-age=86400')
+        res.render('login')
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    }
+}
+
+const getSignnUp = async (req, res) => {
+    try {
+        res.set('Cache-Control', 'public, max-age=86400')
+        res.render('signup')
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    }
+}
+
 module.exports = {
     getHomepage,
     getProductList, 
-    getOngoingBodegaSale
+    getOngoingBodegaSale, 
+    getLogin, 
+    getSignnUp
 }
