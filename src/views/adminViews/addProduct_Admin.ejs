@@ -32,9 +32,11 @@
                 <div class="outermost-shell"> <!--Contains all the input boxes and buttons-->
                         <div class="left-outer-shell"> <!--Contains input images & image scrollbar-->
                             
+                            <input type="file" id="image-upload" name="image" accept="image/*" form="registerForm" hidden multiple>
+
                             <div class="image-with-delete">
                                 <a class="img-container" href="#"><img class="image" src="/images/uploadimage.png"></a>
-                                <a class="del-hover" href="#">X</a>
+                                <!-- <a class="del-hover" href="#">X</a> -->
                             </div>
 
                             <div class="error-msg-container">
@@ -52,7 +54,7 @@
                                     <a class="addimage-container-3" href="#"><img class="addimage-3" src="/images/uploadimage.png"></a>
                                     <a class="scroll-del-hover-3" href="#">X</a>
                                 </div>
-                                <div class="scroll-image-2">
+                                <!-- <div class="scroll-image-2">
                                     <a class="addimage-container-1" href="#"><img class="addimage-1" src="/images/uploadimage.png"></a>
 
                                     <a class="scroll-del-hover-1" href="#">X</a>
@@ -61,7 +63,7 @@
                                     <a class="scroll-del-hover-2" href="#">X</a>
                                     <a class="addimage-container-3" href="#"><img class="addimage-3" src="/images/uploadimage.png"></a>
                                     <a class="scroll-del-hover-3" href="#">X</a>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
@@ -88,7 +90,7 @@
                                 <input class="input-product-stock" type="text" id="stock" name="quantity"  placeholder="0">
                                 <a class="stock-available-text">Stock Available</a>
                                 <div class="error-msg-container">
-                                    <select class="list-dropdown" name="status">
+                                    <select class="list-dropdown" id="status" name="status">
                                         <option value="listed">--Select a List Status--</option>
                                         <option value="listed">Listed</option>
                                         <option value="unlisted">Unlisted</option>
@@ -104,7 +106,7 @@
                                 </div>
                             </div>
                             <div class="right-inner-shell-row-5"> <!--Discard Changess & Save Buttons-->
-                                <button class="save-button" type="submit">Add Product</button>
+                                <button class="save-button" id="save-btn" type="submit">Add Product</button>
                                 <button class="discard-button" id="cancel-btn">Cancel</button>
                             </div>
                         </div>
@@ -113,8 +115,76 @@
         </div>
 
         <script>
-            document.getElementById("cancel-btn").addEventListener("click", () => {
-                window.location.href = "/admin/products"
+            document.addEventListener('DOMContentLoaded', function() {
+
+                document.getElementById("cancel-btn").addEventListener("click", () => {
+                    window.location.href = "/admin/products"
+                })
+
+                // Image uploading and previewing
+                var allImages = []
+                document.getElementsByClassName('image-with-delete')[0].addEventListener('click', () => {
+                    document.getElementById('image-upload').click()
+                })
+
+                document.getElementById('image-upload').addEventListener('change', (event) => {
+                    const files = event.target.files
+                    for (file of files) {
+                        allImages.push(file)
+                    }
+                    
+                    // Put files in the preview grid
+                    for (let i = 0; i < allImages.length; i++) {
+                        const image = allImages[i]
+                        const reader = new FileReader()
+                        // Put the 4th image and beyond in the second scroll grid
+                        
+                        // if (i > 2) {
+                        //     console.log("inside if");
+                        //     reader.onload = (e) => {
+                        //         const img = document.getElementsByClassName('addimage-' + (i - 2))[1]
+                        //         img.src = e.target.result
+                        //     }
+                        //     continue
+                        // }
+                        reader.onload = (e) => {
+                            const img = document.getElementsByClassName('addimage-' + (i + 1))[0]
+                            img.src = e.target.result
+                        }
+                        reader.readAsDataURL(image)
+                    }
+                })
+
+                document.getElementById("save-btn").addEventListener("click", () => {
+                    event.preventDefault()
+
+                    const formData = new FormData()
+                    
+                    // Append form fields to the body
+                    formData.append('name', document.getElementById('name').value)
+                    formData.append('brand', document.getElementById('brand').value)
+                    formData.append('description', document.getElementById('description').value)
+                    formData.append('quantity', document.getElementById('stock').value)
+                    formData.append('price', document.getElementById('price').value)
+                    formData.append('status', document.getElementById('status').value)
+
+                    // Append each file to the FormData object
+                    allImages.forEach((file, index) => {
+                        formData.append('files[]', file, file.name);
+                    });
+
+                    // Use fetch API to send the files
+                    fetch('/admin/products/add', { // Replace with your server endpoint
+                        method: 'POST',
+                        body: formData
+                    }).then((response) => {
+                        if (response.status == 200) {
+                            window.location.href = "/admin/products" + new Date().getTime() // This is to refresh the page
+                        }
+                    }).catch((error) => {
+                        console.error(error)
+                    })
+                })
             })
         </script>
 

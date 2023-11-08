@@ -32,13 +32,13 @@ const productSchema = new Schema({
     //                     if unlisted: product will not be added to the list of products for sale
     status: {
         type: String,
-        enum: ['Listed', 'Unlisted'],
-        default: 'Listed'
-    }, 
-    type: {
-        type: Number, 
-        required: true
+        enum: ['listed', 'unlisted'],
+        default: 'listed'
     }
+    // type: {
+    //     type: Number, 
+    //     required: true
+    // }
 })
 
 module.exports = mongoose.model('Product', productSchema)
