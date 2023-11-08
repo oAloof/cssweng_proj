@@ -10,14 +10,14 @@
     <div class="rightDiv">
 
          <div class="top-right">
-              <span class="bodegaDetails">Start date: 10/20/2023, End date: 10/23/2023</span>
+              <span class="bodegaDetails">Start date: <%= moment(sale.startDate).format('Do MMMM, YYYY') %> End date: <%= moment(sale.endDate).format('Do MMMM, YYYY') %></span>
                     
            </div>
 
            <div class="borderDivider"></div>
 
            <div class="bottom-right">
-            <span class="bodegaDetails">(Title) ManilaRush | Location : Metro Manila</span>
+            <span class="bodegaDetails"><%= sale.title %> | Location : <%= sale.location %></span>
                 <button class="viewBtn">View</button>
         </div>
     </div>

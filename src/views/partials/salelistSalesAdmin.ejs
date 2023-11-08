@@ -1,0 +1,22 @@
+<div class="listing-checkbox-split" db_id=<%= sale._id %>> <!--Contains a single product listing-->
+    <div class="product-listing">
+        <div class="left-inner-shell">
+            <img class="bodegaIcon" src="/images/bodega.png" />
+        </div>
+        <div class="center-inner-shell">
+            <a class="product-details">
+                Start date: <%= moment(sale.startDate).format('Do MMMM, YYYY') %> End date: <%= moment(sale.endDate).format('Do MMMM, YYYY') %>
+            </a>
+            <hr clas="hr-product">
+            <a class="price">
+                <%= sale.title %> | Location : <%= sale.location %>
+            </a>
+        </div>
+        <div class="right-inner-shell">
+            <div class="edit-button">
+                <a class="edit-text" href="#">Edit</a>
+            </div>
+        </div>
+    </div>
+    <input type="checkbox" class="checkbox" value="productname">
+</div>  

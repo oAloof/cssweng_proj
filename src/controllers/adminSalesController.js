@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
-
 const Sales = require('../models/saleModel')
+var moment = require('moment');
 
 // GET all sales view
 const allSalesView = async (req, res) => {
     try {
-        //const sales = await sales.find({}) // find all products
+        const sales = await Sales.find({}) // find all products
         res.set('Cache-Control', 'public, max-age=86400')
-        res.render('adminViews/viewBodega') //  { sales: sales }
+        res.render('adminViews/salelistAdmin', { sales: sales, moment: moment })  
     } catch (err) {
         console.log(err)
         res.status(500).send(err)
@@ -19,8 +19,8 @@ const addSaleView = (req, res) => {
 }
 
 const addNewSale = async (req, res) => {
-    const { title, location, startDate, startTime, endDate, endTime } = req.body
-    
+    var { title, location, startDate, startTime, endDate, endTime } = req.body
+
     saleList = []
 
     try {

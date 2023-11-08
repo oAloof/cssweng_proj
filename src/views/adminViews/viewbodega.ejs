@@ -19,7 +19,8 @@
    		<img class="searchIcon" src="/images/search.png" />
    	</div>	
 
-	   <%- include('../partials/bodega_admin')%>
-	   <%- include('../partials/bodega_admin')%>
+	    <% sales.forEach((sale)=> { %>
+			<%- include('../partials/bodega_Admin', {sale: sale}); %>
+		<% }) %>
 </body>
 </html>
