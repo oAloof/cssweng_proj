@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/css/addProduct_Admin.css">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Add Product (Admin)</title>
+        <!--This page is adding new products-->
+        <!--Admins only-->
+    </head>
+    <body>
+        <div class="page-container">
+            <div class="logo-container"> <!--Website Logo-->
+                <a href="#"><img class="logo" src="/images/BXlogo.png" alt="Logo"></a> <!--The logo link should send you to the homepage-->
+            </div>
+            <div class="navbar"> <!--Navbar (LINKS OF NAVBAR UNAVAILABLE FOR NOW)-->
+                <a class="home-button" href="#">Home</a>
+                <a class="navbar-divider">|</a>
+                <a class="bodega-sale-button" href="#">Bodega Sale!!!</a>
+                <a class="navbar-divider">|</a>
+                <a class="product-catalog-button" href="#">Product Catalog</a>
+                <a class="navbar-divider">|</a>
+                <a class="my-cart-button" href="#">My Cart</a>
+                <a class="navbar-divider">|</a>
+                <a class="my-profile-button" href="#">My Profile</a>
+            </div>
+            <div class="outermost-shell"> <!--Contains all the input boxes and buttons-->
+                <div class="left-outer-shell"> <!--Contains input images & image scrollbar-->
+                    <div class="image-with-delete">
+                        <a class="img-container" href="#"><img class="image" src="/images/uploadimage.png"></a>
+                        <a class="del-hover" href="#">X</a>
+                    </div>
+                    <div class="error-msg-container">
+                        <a class="error-msg-img">Upload at least (1) image</a>
+                    </div>
+                    <div class="img-grid">
+                        <div class="scroll-image-1">
+                            <a class="addimage-container-1" href="#"><img class="addimage-1" src="/images/uploadimage.png"></a>
+                            <a class="scroll-del-hover-1" href="#">X</a>
+                            
+                            <a class="addimage-container-2" href="#"><img class="addimage-2" src="/images/uploadimage.png"></a>
+                            <a class="scroll-del-hover-2" href="#">X</a>
+                            
+                            <a class="addimage-container-3" href="#"><img class="addimage-3" src="/images/uploadimage.png"></a>
+                            <a class="scroll-del-hover-3" href="#">X</a>
+                        </div>
+                        <div class="scroll-image-2">
+                            <a class="addimage-container-1" href="#"><img class="addimage-1" src="/images/uploadimage.png"></a>
+
+                            <a class="scroll-del-hover-1" href="#">X</a>
+                            <a class="addimage-container-2" href="#"><img class="addimage-2" src="/images/uploadimage.png"></a>
+                            
+                            <a class="scroll-del-hover-2" href="#">X</a>
+                            <a class="addimage-container-3" href="#"><img class="addimage-3" src="/images/uploadimage.png"></a>
+                            <a class="scroll-del-hover-3" href="#">X</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-outer shell"> <!--Contains text & drop down inputs-->
+                    <div class="right-inner-shell-row-1"> <!--Product Name & Price-->
+                        <div class="error-msg-container">
+                            <input class="input-product-name" type="email" id="name" placeholder="Product name..">
+                            <a class="error-msg-name-1">Please enter the product name</a>
+                            <a class="error-msg-name-2">That product name is already listed</a>
+                        </div>
+                        <a class="peso-symbol">₱</a>
+                        <div class="error-msg-container">
+                            <input class="input-product-price" type="text" id="price" placeholder="0">
+                            <a class="error-msg-price">Please enter the product price</a>
+                        </div>
+                    </div>
+                    <div class="right-inner-shell-row-2"> <!--Product Brand-->
+                        <div class="error-msg-container">
+                            <input class="input-product-brand" type="text" id="brand" placeholder="Product brand..">
+                            <a class="error-msg-brand">Please enter the product brand</a>
+                        </div>
+                    </div>
+                    <div class="right-inner-shell-row-3"> <!--Available Stock & Available Quantity-->
+                        <input class="input-product-stock" type="text" id="stock" placeholder="0">
+                        <a class="stock-available-text">Stock Available</a>
+                        <div class="error-msg-container">
+                            <select class="list-dropdown">
+                                <option value="listed">--Select a List Status--</option>
+                                <option value="listed">Listed</option>
+                                <option value="unlisted">Unlisted</option>
+                            </select>
+                            <a class="error-msg-list">Please select this product's list status</a>
+                        </div>
+                        <a class="list-status-text">List Status</a>
+                    </div>
+                    <div class="right-inner-shell-row-4"> <!--Product Description-->
+                        <div class="error-msg-container">
+                            <input class="input-product-description" type="text" id="description" placeholder="Product description..">
+                            <a class="error-msg-description">Please enter the product description</a>
+                        </div>
+                    </div>
+                    <div class="right-inner-shell-row-5"> <!--Discard Changess & Save Buttons-->
+                        <button class="save-button">Add Product</button>
+                        <button class="discard-button">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
