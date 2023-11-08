@@ -1,0 +1,25 @@
+<hr>
+
+<div class="bodegaContainer">
+
+    <div class="leftDiv">
+
+         <img class="bodegaIcon" src="/images/bodega.png" />
+     </div>
+
+    <div class="rightDiv">
+
+         <div class="top-right">
+              <span class="bodegaDetails">Start date: <%= moment(sale.startDate).format('Do MMMM, YYYY') %> End date: <%= moment(sale.endDate).format('Do MMMM, YYYY') %></span>
+                    
+           </div>
+
+           <div class="borderDivider"></div>
+
+           <div class="bottom-right">
+            <span class="bodegaDetails"><%= sale.title %> | Location : <%= sale.location %></span>
+                <button class="viewBtn">View</button>
+        </div>
+    </div>
+
+</div>

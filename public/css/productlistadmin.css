@@ -329,3 +329,9 @@ hr.bottom-line {
     font-size: 25px;
     text-decoration: none;
 }
+
+.bodegaIcon {
+    width: 140px;
+    height: 140px;
+    margin: 5px;
+}

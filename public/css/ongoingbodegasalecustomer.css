@@ -133,10 +133,10 @@ hr {
 }
 
 .productDetails{
+    font-size: 1.2rem;
     font-size: 1.1rem;
     margin-left: 10px;
 }
-
 .productDetails-price{
     font-size: 1.1rem;
     margin-left: 10px;
