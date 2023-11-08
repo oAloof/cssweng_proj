@@ -2,6 +2,9 @@
 <html lang="en">
     <!--Made by: Sandeon Gavan-->
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage (Admin)</title>
@@ -17,7 +20,11 @@
         <nav>
             <a class="home-button" href="#">Home</a>
             <a class="navbar-divider">|</a>   
-            <a class="product-catalog-button" href="#">Product Catalog</a>
+            <a class="product-catalog-button" href="#">Product List</a>
+            <a class="navbar-divider">|</a>
+            <a class="product-catalog-button" href="#">Bodega Sale List</a>
+            <a class="navbar-divider">|</a>
+            <a class="product-catalog-button" href="#">Orders List</a>
             <a class="navbar-divider">|</a>
             <a class="my-profile-button" href="admin_profile.html">My Profile</a>
         </nav>
@@ -29,52 +36,134 @@
                 <h1>Analytics</h1>
                 <div class="metrics_list">
                     <div class="metric_item">
-                        <p>0</p>
+                        <h2>0</h2>
                         <p>Total Orders</p>
                      </div>
                     <div class="metric_item">
-                        <p>0</p>
+                        <h2>0</h2>
                         <p>To-Process Shipment</p>
                     </div>
                     <div class="metric_item">
-                        <p>0</p>
+                        <h2>0</h2>
                         <p>Processed Shipment</p>
                     </div>
                     <div class="metric_item">
-                        <p>0</p>
+                        <h2>0</h2>
                         <p>Pending Cancellations</p>
                     </div>
                     <div class="metric_item">
-                        <p>0</p>
+                        <h2>0</h2>
                         <p>Sold Out Products</p>
                      </div>
                 </div>
         </div>
-        <div id="admin_control">
-            <h1>What would you like to do...</h1>
-            <div id="admin_buttons"> <!--buttons that redirect to mentioned page-->
-                <button class="redirect_button" onclick="redirectToAllProductsView()">Product List</button>
-                <button class="redirect_button" onclick="redirectToBodegaSaleView()">Bodega Sale List</button>
-                <button class="redirect_button" onclick="redirectToOrdersListView()">Orders List</button>
+
+        <!--CHANGE THIS TO PENDING ORDERS, NEW ORDERS-->
+        <div id="orders">
+            <div class="order_container"> 
+                <h1>New Orders</h1>
+
+                <div class="order_items">
+                    <img class="order_img" src="/images/aircon.png">
+                    
+                    <div class="order_details">
+                        <h2>Order #: 00000000</h2>
+                        <p>Price: 10000</p>
+                        <p>Address: 123 Fake St, Fake Brgy, Fake City</p>                    </div>
+                </div>
+
+                <div class="order_items">
+                    <img class="order_img" src="/images/aircon.png">
+
+                    <div class="order_details">
+                        <h2>Order #: 00000000</h2>
+                        <p>Price: 10000</p>
+                        <p>Address: 123 Fake St, Fake Brgy, Fake City</p>                    </div>
+                </div>
+
+                <div class="order_items">
+                    <img class="order_img" src="/images/aircon.png">
+                    
+                    <div class="order_details">
+                        <h2>Order #: 00000000</h2>
+                        <p>Price: 10000</p>
+                        <p>Address: 123 Fake St, Fake Brgy, Fake City</p>                    </div>
+                </div>
+
+                <div class="order_items">
+                    <img class="order_img" src="/images/aircon.png">
+                    
+                    <div class="order_details">
+                        <h2>Order #: 00000000</h2>
+                        <p>Price: 10000</p>
+                        <p>Address: 123 Fake St, Fake Brgy, Fake City</p>                    </div>
+                </div>
+
+
+                <div class="order_items">
+                    <img class="order_img" src="/images/aircon.png">
+                    
+                    <div class="order_details">
+                        <h2>Order #: 00000000</h2>
+                        <p>Price: 10000</p>
+                        <p>Address: 123 Fake St, Fake Brgy, Fake City</p>                    </div>
+                </div>
+
             </div>
+
+            <div class="order_container"> 
+                <h1>Pending Orders</h1>
+                
+                <div class="order_items">
+                    <img class="order_img" src="/images/aircon.png">
+                    
+                    <div class="order_details">
+                        <h2>Order #: 00000000</h2>
+                        <p>Price: 10000</p>
+                        <p>Address: 123 Fake St, Fake Brgy, Fake City</p>                    </div>
+                </div>
+
+                <div class="order_items">
+                    <img class="order_img" src="/images/aircon.png">
+                    
+                    <div class="order_details">
+                        <h2>Order #: 00000000</h2>
+                        <p>Price: 10000</p>
+                        <p>Address: 123 Fake St, Fake Brgy, Fake City</p>                    </div>
+                </div>
+
+                <div class="order_items">
+                    <img class="order_img" src="/images/aircon.png">
+                    
+                    <div class="order_details">
+                        <h2>Order #: 00000000</h2>
+                        <p>Price: 10000</p>
+                        <p>Address: 123 Fake St, Fake Brgy, Fake City</p>                    </div>
+                </div>
+
+                <div class="order_items">
+                    <img class="order_img" src="/images/aircon.png">
+                    
+                    <div class="order_details">
+                        <h2>Order #: 00000000</h2>
+                        <p>Price: 10000</p>
+                        <p>Address: 123 Fake St, Fake Brgy, Fake City</p>                    </div>
+                </div>
+
+                <div class="order_items">
+                    <img class="order_img" src="/images/aircon.png">
+
+                    <div class="order_details">
+                        <h2>Order #: 00000000</h2>
+                        <p>Price: 10000</p>
+                        <p>Address: 123 Fake St, Fake Brgy, Fake City</p>
+                    </div>
+                </div>
+            </div>
+           
         </div>
 
         </div>
     </div>
-
-    <script>
-        function redirectToAllProductsView() {    //src/views/adminViews/allProductsView.ejs
-            window.location.href = '/admin/products'; // redirects to productListAdmin.ejs
-        }
-
-        function redirectToBodegaSaleView() {
-            window.location.href = '/admin/sales'; //redirects to login.ejs
-        }
-
-        function redirectToOrdersListView() {
-            window.location.href = '/login'; //redirects to viewbodega.ejs
-        }
-        //for now, all buttons redirect to All Products View
-    </script>
 </body>
 </html>

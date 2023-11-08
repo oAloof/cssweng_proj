@@ -1,4 +1,8 @@
 /*Made by: Sandeon Gavan*/
+*{
+  font-family: 'Inter', sans-serif;
+}
+
 body{
     width: 100%;
 }
@@ -68,7 +72,7 @@ header {
   }
 
   #profile p{
-    font-size: medium;
+    font-size: small;
     color: white;
     margin-left: 10px;
     margin-right: 10px;

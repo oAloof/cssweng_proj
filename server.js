@@ -41,11 +41,11 @@ app.get('/admin/sales', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-    res.render('adminViews/login')
+    res.render('login')
 })
 
 app.get('/signup', (req, res) => {
-    res.render('adminViews/signup')
+    res.render('signup')
 })
 
 app.get('/homepage_general', (req, res) => {
@@ -60,6 +60,9 @@ app.get('/profile_edit', (req, res) => {
     res.render('profile_customer_edit')
 })
 
+app.get('/cart_user', (req, res) => {
+    res.render('cart_user')
+})
 
 app.use('/admin/products', adminProductRoutes) // routes related to products
 

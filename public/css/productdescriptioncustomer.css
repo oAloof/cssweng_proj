@@ -1,4 +1,7 @@
 /*Assigned to Ryan*/
+*{
+    font-family: 'Inter', sans-serif;
+}
 
 .logo {
     display: block;

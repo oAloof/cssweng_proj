@@ -5,6 +5,7 @@
     box-sizing: border-box; 
     align-items: center;
     text-align: center;
+    font-family: 'Inter', sans-serif
  }
  .container{
      border:2px solid black;
@@ -107,7 +108,7 @@
     margin-top:5px;
     margin-left: 10px;
     margin-right: 10px;
-    width:125px;
+    width:fit-content;
     background-color: #03418d; 
     color: #fff; 
     padding: 10px 20px;
@@ -115,8 +116,8 @@
     border: none; 
     cursor: pointer;
     display: inline-block;
-    font-size: large;
-    font-weight: 700;
+    font-size: medium;
+    font-weight: 500;
     border-radius: 20px;
  }
 

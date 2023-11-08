@@ -18,8 +18,10 @@
                 <a class="home-button" href="#">Home</a>
                 <a class="navbar-divider">|</a>   
                 <a class="product-catalog-button" href="#">Product Catalog</a>
+                <a class="navbar-divider">|</a>   
+                <a class="product-catalog-button" href="#">My Cart</a>
                 <a class="navbar-divider">|</a>
-                <a class="my-profile-button" href="admin_profile.html">My Profile</a>
+                <a class="my-profile-button" onclick="redirectToProfile()">My Profile</a>
             </nav>
         </header>
     <div class="container">
@@ -213,10 +215,15 @@
     </div>
 
     <script>
+
+        //redirects user to desired page. please check routing here.
         function redirectToEditProfile() {    //src/views/profile_customer_edit
                 window.location.href = '/profile_customer_edit'; //redirects to profile_customer_edit.ejs
                 //for some reason it won't redirect to it
             }
+        function redirectToProfile(){
+                //window.location.href = '#'
+        }
     </script>
 </body>
 </html>

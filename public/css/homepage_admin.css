@@ -1,4 +1,7 @@
 /*Made by: Sandeon Gavan*/
+*{
+  font-family: 'Inter', sans-serif;
+}
 body{
     width: 100%;
 }
@@ -49,7 +52,7 @@ header {
   }
 
   #controls_container{
-    margin-top: 30px;
+    margin-bottom: 30px;
     width: 80%;
     display: flex;
     flex-direction: column;
@@ -66,59 +69,78 @@ header {
   }
 
   #analytics h1{
-    margin-left: 15px;
-    margin-right: 15px;
+    margin-top: 0px;
+    color: white;
   }
 
+  #analytics p{
+    font-weight: 600;
+  }
 
  .metrics_list{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
-    margin-left: 10px;
-    margin-right: 10px;
+    justify-content: space-evenly;
+    margin: 5px;
  }
  .metric_item{
+    margin: 5px;
     text-align: center;
  }
-  #admin_control{
-    width: 80%;
-    padding: 15px;
-
-  }
-
-  #admin_control h1{
-    margin-left: 15px;
-    margin-right: 15px;
-    color: black;
-  }
-
-  #admin_buttons{
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-   
-  }
-  .redirect_button{
-    margin-top:0px;
-    margin-left: 10px;
-    margin-right: 10px;
-    width:225px;
+  
+#orders{
     background-color: #004aad; 
-    color: #fff; 
-    padding: 10px 20px;
-    text-decoration: none;
-    border: none; 
-    cursor: pointer;
-    display: inline-block;
-    font-size: large;
-    font-weight: 700;
+    width:80%;
+    margin-bottom: 20px;
+    padding:15px;
+    color: white;
     border-radius: 20px;
-  }
+}
 
-.redirect_button:hover{
-  background-color: #0057c1;
+.order_container{
+  justify-content: center;
+  width:100%;
+  height:fit-content;
+  margin-bottom: 30px;
+  display:flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.order_container h1{
+  margin-top: 0px;
+  color: white;
+}
+
+hr{
+  height: 5px;
+  background-color: white;
+  border-width: 0;
+}
+.order_items{
+  display: flex;
+  margin: 10px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  transition: box-shadow 0.3s ease;
+}
+
+.order_items:hover{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.order_img{
+  width: 18vh;
+  height: 18vh;
+  margin-left: 5px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.order_details{
+  display:flex;
+  flex-direction: column;
+  margin-left: 10px;
+  height: fit-content;
 }
