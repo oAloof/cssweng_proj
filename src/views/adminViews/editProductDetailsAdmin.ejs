@@ -119,7 +119,7 @@
                     <div class="right-inner-shell-row-5"> <!--Discard Changess & Save Buttons-->
                         <button class="save-button">Save Changes</button>
                         <button id="discard-btn" class="discard-button">Discard Changes</button>
-                        <button class="delete-button">Delete Product</button>
+                        <button id="delete-btn" class="delete-button">Delete Product</button>
                     </div>
                 </div>
             </div>
@@ -130,6 +130,28 @@
             document.getElementById("discard-btn").addEventListener("click", () => {
                 window.location.href = "/admin/products"
             })
+
+            document.getElementById("delete-btn").addEventListener('click', () => {
+                    const pathArray = window.location.pathname.split('/')
+                    const productId = pathArray[pathArray.length - 1]
+                    const data = {
+                        productId
+                    }
+
+                    fetch('/admin/products/delete/:id', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then( data => {
+                        window.location.href = '/admin/products?' + new Date().getTime() // This is to refresh the page
+                    })
+                    .catch( err => {
+                        console.log(err)
+                    })
+                })
 
             document.querySelector('.save-button').addEventListener('click', () => {
                     const name = document.querySelector('.input-product-name').value
