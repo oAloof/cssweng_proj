@@ -17,20 +17,23 @@ const productSchema = new Schema({
         required: true
     },
     images: {
-        type: [String], // Temporary
+        type: [String], 
         required: true
     },
-    totalQuantity: {
-        type: Number,
-        required: true
-    },
-    availableQuantity: {
+    quantity: {
         type: Number,
         required: true
     },
     price: {
         type: Number, 
         required: true
+    },
+    // Listed attribute -- if Listed: product will be added to the list of products for sale
+    //                     if unlisted: product will not be added to the list of products for sale
+    status: {
+        type: String,
+        enum: ['Listed', 'Unlisted'],
+        default: 'Listed'
     }
 })
 

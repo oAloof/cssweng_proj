@@ -252,6 +252,7 @@ hr.bottom-line {
 .center-inner-shell{
     margin-top: 40px;
     margin-left: 15px;
+    width: 70%;
 }
 
 .edit-button {

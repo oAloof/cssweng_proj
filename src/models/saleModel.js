@@ -17,9 +17,9 @@ const saleSchema = new Schema({
         type: Date,
         required: true
     }, 
-    saleList: {
+    saleList: { // blackList
         type: Map,
-        of: Number,
+        of: Number, 
         required: true
     }
 })

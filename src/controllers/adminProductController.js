@@ -17,14 +17,12 @@ const allProductsView = async (req, res) => {
 }
 
 const addProductView = (req, res) => {
-    res.render('adminViews/addProduct')
+    res.render('adminViews/addProduct_Admin')
 }
 
 const addNewProduct = async (req, res) => {
-    const { name, brand, price, quantity, description } = req.body
+    const { name, brand, price, quantity, description, status } = req.body
     const imageFiles = req.files
-    const totalQuantity = quantity
-    const availableQuantity = quantity
 
     try {
         // Check if the product with the same name and brand already exists
@@ -46,14 +44,15 @@ const addNewProduct = async (req, res) => {
             return
         }
         
+        // Save product into mongoDB
         const product = await Product.create({
             name,
             brand,
             description,
             images,
-            totalQuantity,
-            availableQuantity,
-            price
+            quantity,
+            price,
+            status
         })
         res.redirect('/admin/products')
     } catch (err) {
