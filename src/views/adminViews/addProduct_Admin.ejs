@@ -16,17 +16,8 @@
             <div class="logo-container"> <!--Website Logo-->
                 <a href="#"><img class="logo" src="/images/BXlogo.png" alt="Logo"></a> <!--The logo link should send you to the homepage-->
             </div>
-            <div class="navbar"> <!--Navbar (LINKS OF NAVBAR UNAVAILABLE FOR NOW)-->
-                <a class="home-button" href="#">Home</a>
-                <a class="navbar-divider">|</a>
-                <a class="bodega-sale-button" href="#">Bodega Sale!!!</a>
-                <a class="navbar-divider">|</a>
-                <a class="product-catalog-button" href="#">Product Catalog</a>
-                <a class="navbar-divider">|</a>
-                <a class="my-cart-button" href="#">My Cart</a>
-                <a class="navbar-divider">|</a>
-                <a class="my-profile-button" href="#">My Profile</a>
-            </div>
+
+            <%- include('../partials/admin_NavBar') %>
 
             <form id="registerForm" name="registerForm" action="/admin/products/add" method="post" enctype="multipart/form-data"></form>
                 <div class="outermost-shell"> <!--Contains all the input boxes and buttons-->
@@ -45,14 +36,18 @@
 
                             <div class="img-grid">
                                 <div class="scroll-image-1">
-                                    <a class="addimage-container-1" href="#"><img class="addimage-1" src="/images/uploadimage.png"></a>
-                                    <a class="scroll-del-hover-1" href="#">X</a>
                                     
-                                    <a class="addimage-container-2" href="#"><img class="addimage-2" src="/images/uploadimage.png"></a>
-                                    <a class="scroll-del-hover-2" href="#">X</a>
+                                        <a class="addimage-container-1" href="#"><img class="addimage-1" src="/images/uploadimage.png"></a>
+                                        <a class="scroll-del-hover-1" href="#">X</a>
                                     
-                                    <a class="addimage-container-3" href="#"><img class="addimage-3" src="/images/uploadimage.png"></a>
-                                    <a class="scroll-del-hover-3" href="#">X</a>
+                                    
+                                        <a class="addimage-container-2" href="#"><img class="addimage-2" src="/images/uploadimage.png"></a>
+                                        <a class="scroll-del-hover-2" href="#">X</a>
+                                    
+                                    
+                                        <a class="addimage-container-3" href="#"><img class="addimage-3" src="/images/uploadimage.png"></a>
+                                        <a class="scroll-del-hover-3" href="#">X</a>
+                                    
                                 </div>
                                 <!-- <div class="scroll-image-2">
                                     <a class="addimage-container-1" href="#"><img class="addimage-1" src="/images/uploadimage.png"></a>
@@ -149,6 +144,16 @@
                         // }
                         reader.onload = (e) => {
                             const img = document.getElementsByClassName('addimage-' + (i + 1))[0]
+                            const img_x_btn = document.getElementsByClassName('scroll-del-hover-' + (i + 1))[0]
+
+                            img_x_btn.setAttribute('data_index', allImages.indexOf(image))
+                            img_x_btn.addEventListener('click', (event) => {
+                                const index = parseInt(event.target.getAttribute('data_index'))
+                                allImages.splice(index, 1)
+                                // get list of children of parent node
+                                console.log(this)
+                                
+                            })
                             img.src = e.target.result
                         }
                         reader.readAsDataURL(image)
@@ -179,7 +184,7 @@
                         body: formData
                     }).then((response) => {
                         if (response.status == 200) {
-                            window.location.href = "/admin/products" + new Date().getTime() // This is to refresh the page
+                            window.location.href = "/admin/products?" + new Date().getTime() // This is to refresh the page
                         }
                     }).catch((error) => {
                         console.error(error)

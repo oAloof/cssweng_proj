@@ -95,7 +95,7 @@ const deleteProduct = async (req, res) => {
 }
 
 const singleProductView = async (req, res) => {
-
+        
 }
 
 const updateProductView = async (req, res) => {
@@ -111,15 +111,6 @@ const updateProduct = async (req, res) => {
         res.status(400).send('Invalid product id')
         return
     }
-
-    // * Implement when available quantity field is implemented on frontend
-    // Check if total quantity is valid
-    // // Total quantity cannot be less than its difference with the available quantity
-    // if (totalQuantity < (totalQuantity - availableQuantity)) {
-    //     res.status(400).send('Invalid total quantity')
-    //     return
-    // }
-    // availableQuantity = availableQuantity - (totalQuantity - availableQuantity)
 
     // update the product
     try {
