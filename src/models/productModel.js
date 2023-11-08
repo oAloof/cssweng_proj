@@ -34,6 +34,10 @@ const productSchema = new Schema({
         type: String,
         enum: ['Listed', 'Unlisted'],
         default: 'Listed'
+    }, 
+    type: {
+        type: Number, 
+        required: true
     }
 })
 
