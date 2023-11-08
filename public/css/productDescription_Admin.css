@@ -1,7 +1,4 @@
 /*Assigned to Ryan*/
-*{
-    font-family: 'Inter', sans-serif;
-}
 
 .logo {
     display: block;
@@ -341,34 +338,6 @@
     bottom: 22.5px;
 }
 
-.add-to-cart-button {
-    background-color: #004aad;
-    border-radius: 10px;
-    margin-left: 35px;
-    padding: 10px;
-    text-align: center;
-    width: 80px;
-}
-
-.add-to-cart-text {
-    color: white;
-    text-decoration: none;
-}
-
-.buy-now-button {
-    background-color: #004aad;
-    border-radius: 10px;
-    margin-left: 15px;
-    padding: 10px;
-    text-align: center;
-    width: 80px;
-}
-
-.buy-now-text {
-    color: white;
-    text-decoration: none;
-}
-
 .line-divider {
     margin-left: 45px;
     width: 800px;
@@ -386,4 +355,52 @@
     flex-direction: row;
     margin-left: 45px;
     margin-top: 10px;
+}
+
+.list-status-text {
+    font-size: 17.5px;
+    margin-top: 8px;
+    margin-left: 35px;
+    color: blue;
+    width: 60px;
+    height: 20px;
+    text-align: center;
+    border-style: dotted solid;
+    display: none;
+}
+
+.unlisted-status-text {
+    font-size: 17.5px;
+    margin-top: 8px;
+    margin-left: 35px;
+    color: gray;
+    width: 65px;
+    height: 20px;
+    text-align: center;
+    border-style: dotted solid;
+    /* display: none;  */
+}
+
+.right-inner-shell-row-7 {
+    display: flex;
+    flex-direction: row;
+    margin-left: 45px;
+    margin-top: 10px;
+}
+
+.edit-button {
+    background-color: blue;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-left: 570px;
+    padding: 10px;
+    text-align: center;
+    width: 150px;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: white;
+    border-color: blue;
+    color: blue;
 }

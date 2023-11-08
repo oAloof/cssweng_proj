@@ -2,13 +2,12 @@
 <html>
     <head>
         <!--Assigned to Ryan-->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="/css/productdescriptioncustomer.css">
+        <link rel="stylesheet" href="/css/productDescription_Admin.css">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Product Description (Customer)</title>
+        <title>Product Description (Admin)</title>
+        <!--Description page for a single product-->
+        <!--Shows product attributes that are only visible to Admins-->
     </head>
     <body>
         <div class="page-container">
@@ -52,12 +51,9 @@
                         </div>
                         <a href="#"><img class="plus" src="/images/plus.png"></a>
                         <a class="stock-available-text">10 Stock Available</a>
-                        <div class="add-to-cart-button">
-                            <a class="add-to-cart-text" href="#">Add to Cart</a>
-                        </div>
-                        <div class="buy-now-button">
-                            <a class="buy-now-text" href="#">Buy Now</a>
-                        </div>
+                        <!--Listed & Unlisted Field-->
+                        <a class="list-status-text">Listed</a>
+                        <a class="unlisted-status-text">Unlisted</a>
                     </div>
                     <hr class="line-divider">
                     <div class="right-inner-shell-row-4"> <!---->
@@ -77,6 +73,9 @@
                         </a>
                     </div>
                     <hr class="line-divider">
+                    <div class="right-inner-shell-row-7"> <!--Discard Changess & Save Buttons-->
+                        <button class="edit-button">Edit Product Details</button>
+                    </div>
                 </div>
             </div>
         </div>
