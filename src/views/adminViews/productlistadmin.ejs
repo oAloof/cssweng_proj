@@ -118,6 +118,34 @@
                         window.location.href = '/admin/products/edit/' + product_id
                     })
                 })
+
+               
+                var products = document.getElementsByClassName('product-details')
+                Array.from(products).forEach( (product) => {
+                    product.addEventListener('click', () => {
+                        product_id = product.parentNode.parentNode.parentNode.getAttribute('db_id')
+                        
+                        window.location.href = '/admin/products/' + product_id + '?id=' + product_id
+                        // fetch('admin/products/:id', {
+                        //     method: 'GET',
+                        //     headers: {
+                        //         'Content-Type': 'application/json'
+                        //     },
+                        //     body: JSON.stringify({
+                        //         product_id: product_id
+                        //     })
+                        // }).then( (data) => {
+                        //     console.log(data)
+                        //     window.location.href = '/admin/products/' + product_id
+                        // }).catch( (error) => {
+                        //     console.log(error)
+                        // })
+                    })
+                    
+                } )
+
+                    
+               
             })
         </script>
 

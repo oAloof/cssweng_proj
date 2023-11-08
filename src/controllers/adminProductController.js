@@ -95,7 +95,8 @@ const deleteProduct = async (req, res) => {
 }
 
 const singleProductView = async (req, res) => {
-
+    const product = await Product.findById(req.params.id)
+    res.render('adminViews/productDescription_Admin', { product: product })
 }
 
 const updateProductView = async (req, res) => {

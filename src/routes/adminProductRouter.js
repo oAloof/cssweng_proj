@@ -18,7 +18,7 @@ router.post('/add', upload.uploadImage.any(), productController.addNewProduct)
 router.delete('/delete/:id', productController.deleteProduct)
 
 // GET a single product
-// router.get('/:id', productController.singleProductView)
+router.get('/:id', productController.singleProductView)
 
 // GET the update product page
 router.get('/edit/:id', productController.updateProductView)
