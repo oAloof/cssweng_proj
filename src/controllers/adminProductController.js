@@ -54,7 +54,7 @@ const addNewProduct = async (req, res) => {
             price,
             status
         })
-        res.redirect('/admin/products')
+        res.status(200).send("Product Added")
     } catch (err) {
         console.log(err)
         res.send(err)

@@ -412,4 +412,6 @@ body{
 .img-grid {
     display: flex;
     flex-direction: row;
+    min-width: 290px;
+    margin-left: 40px;
 }
