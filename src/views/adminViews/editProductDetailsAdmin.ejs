@@ -20,10 +20,13 @@
             <%- include('../partials/admin_NavBar') %>
             <div class="outermost-shell"> <!--Contains all the input boxes and buttons-->
                 <div class="left-outer-shell"> <!--Contains input images & image scrollbar-->
+
+                    <input type="file" id="image-upload" name="image" accept="image/*" form="registerForm" hidden multiple>
                     <div class="image-with-delete">
                         <a class="img-container" href="#"><img class="image" src="/images/uploadimage.png"></a>
-                        <a class="del-hover" href="#">X</a>
+                        <!-- <a class="del-hover" href="#">X</a> -->
                     </div>
+
                     <div class="error-msg-container">
                         <a class="error-msg-img">Upload at least (1) image</a>
                     </div>
@@ -129,6 +132,12 @@
 
             document.getElementById("discard-btn").addEventListener("click", () => {
                 window.location.href = "/admin/products"
+            })
+
+            // Image uploading and previewing
+            var allImages = []
+            document.getElementsByClassName('image-with-delete')[0].addEventListener('click', () => {
+                document.getElementById('image-upload').click()
             })
 
             document.getElementById("delete-btn").addEventListener('click', () => {
