@@ -71,10 +71,17 @@
                     </div>
                     <hr class="line-divider">
                     <div class="right-inner-shell-row-7"> <!--Discard Changess & Save Buttons-->
-                        <button class="edit-button">Edit Product Details</button>
+                        <button id="edit-btn" class="edit-button" productId="<%= product._id %>">Edit Product Details</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <script>
+            document.getElementById('edit-btn').addEventListener('click', () =>{
+                window.location.href = '/admin/products/edit/' + event.target.getAttribute('productId');
+            })
+        </script>
+
     </body>
 </html>
