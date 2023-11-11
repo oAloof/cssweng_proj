@@ -1,0 +1,13 @@
+/* styles here will apply globally */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600&display=swap');
+
+:root {
+    --brand-color: #373db5; /* dark blue */
+    --brand-color-light: #6B71EE; /* light blue */
+    --secondary-color: #E14664; /* pink, also used for colors representing errors */
+    --text-color: #221E1F; /* black */
+    --success-color: #66C770; /* green */
+    --warning-color: #E76F51; /* orange */
+
+    --main-font: 'Nunito'; /* font-family */
+}
