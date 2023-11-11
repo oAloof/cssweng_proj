@@ -1,18 +1,16 @@
-import { useState } from 'react'
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import '../styles/global.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <h1>Hello, World!</h1>
-      <p>
-        <button onClick={() => setCount(count + 1)}>Click me</button>
-        {' '}
-        <b>{count}</b>
-      </p>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<h1>Home</h1>} />
+        <Route path="/login" element={<h1>Login</h1>} />
+        <Route path="/signup" element={<h1>Signup</h1>} />
+      </Routes>
+    </Router>
   )
 }
 
