@@ -1,0 +1,35 @@
+.btnText {
+    position: relative;
+    font-size: var(--font-size-sm);
+    line-height: 150%;
+    font-family: var(--font-proxima-nova);
+    color: var(--white);
+    text-align: center;
+  }
+  .blue {
+    cursor: pointer;
+    border: 0;
+    padding: var(--padding-7xs) var(--padding-3xs);
+    background-color: var(--light-blue);
+    width: 100%;
+    border-radius: var(--br-10xl);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  
+  .red {
+    cursor: pointer;
+    border: 0;
+    padding: var(--padding-7xs) var(--padding-3xs);
+    background-color: var(--coral);
+    width: 100%;
+    border-radius: var(--br-10xl);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }

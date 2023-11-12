@@ -1,13 +1,57 @@
-/* styles here will apply globally */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500;700&display=swap");
+@font-face {
+  font-family: "Proxima Nova";
+  src: url("/public/Proxima Nova Semibold.otf");
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Proxima Nova";
+  src: url("/public/Proxima Nova Bold.otf");
+  font-weight: 700;
+}
 
+body {
+  margin: 0;
+  line-height: normal;
+}
 :root {
-    --brand-color: #373db5; /* dark blue */
-    --brand-color-light: #6B71EE; /* light blue */
-    --secondary-color: #E14664; /* pink, also used for colors representing errors */
-    --text-color: #221E1F; /* black */
-    --success-color: #66C770; /* green */
-    --warning-color: #E76F51; /* orange */
+  /* fonts */
+  --font-nunito: Nunito;
+  --font-proxima-nova: "Proxima Nova";
 
-    --main-font: 'Nunito'; /* font-family */
+  /* font sizes */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-2xs: 11px;
+  --font-size-11xl: 30px;
+
+  /* Colors */
+  --white: #fff;
+  --light-blue: #6b71ee;
+  --brand-color: #373db5;
+  --color-black: #000;
+  --gray-2: #595657;
+  --gray-4: #d8d8d8;
+  --gray-5: #858585;
+  --black: #221e1f;
+  --coral: #ff5d7c;
+
+  /* Gaps */
+  --gap-20xl: 39px;
+  --gap-8xl: 27px;
+  --gap-smi: 13px;
+  --gap-6xs: 7px;
+  --gap-8xs: 5px;
+
+  /* Paddings */
+  --padding-96xl: 115px;
+  --padding-35xl: 54px;
+  --padding-7xs: 6px;
+  --padding-3xs: 10px;
+  --padding-4xs: 9px;
+  --padding-xs: 12px;
+
+  /* Border radiuses */
+  --br-10xl: 29px;
+  --br-3xs: 10px;
 }
