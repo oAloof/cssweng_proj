@@ -6,7 +6,7 @@ body {
     margin: 0;            
   }
 
-.mainLoginCont {
+.mainLoginCont { 
     display: flex;
     width: 430px;
     min-height: 100vh;
