@@ -37,7 +37,7 @@ const Login = () => {
   }, [email, password]);
 
   const onRegisterClick = useCallback(() => {
-    navigate("/");
+    navigate("/register/1");
   }, [navigate]);
 
   const onForgotPasswordClick = useCallback(() => {

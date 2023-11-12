@@ -1,0 +1,189 @@
+.bxAppliancesLogo {
+    position: relative;
+    width: 153px;
+    height: 44px;
+    object-fit: cover;
+}
+.createAnAccount,
+.register {
+    margin: 0;
+    position: relative;
+    line-height: 150%;
+    font-family: inherit;
+}
+.register {
+    font-size: inherit;
+    font-weight: 700;
+}
+.createAnAccount {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--black);
+}
+.header {
+    align-self: stretch;
+    height: 66px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    text-align: left;
+    font-size: var(--font-size-11xl);
+    color: var(--brand-color);
+    font-family: var(--font-proxima-nova);
+}
+.password,
+.yourPasswordMust {
+    align-self: stretch;
+    font-weight: 500;
+}
+.password {
+    border: 1px solid var(--gray-4);
+    font-family: var(--font-nunito);
+    font-size: var(--font-size-2xs);
+    background-color: transparent;
+    border-radius: var(--br-3xs);
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: var(--padding-4xs) var(--padding-xs);
+}
+.yourPasswordMust {
+    position: relative;
+    line-height: 150%;
+}
+.checkIcon {
+    position: relative;
+    width: 14.8px;
+    height: 14.8px;
+}
+.containAtLeast {
+    position: relative;
+    line-height: 150%;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    width: 297px;
+    flex-shrink: 0;
+}
+.validationField,
+.validationField1,
+.validationField2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 324px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--gap-8xs);
+}
+.validationField1,
+.validationField2 {
+    top: 20px;
+}
+.validationField2 {
+    top: 40px;
+}
+.validationChecks {
+    align-self: stretch;
+    position: relative;
+    height: 57px;
+}
+.passwordValidation {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--gap-6xs);
+}
+.alreadyHaveAn,
+.signIn {
+    position: relative;
+    line-height: 150%;
+}
+.alreadyHaveAn {
+    font-weight: 500;
+}
+.signIn {
+    color: var(--light-blue);
+    cursor: pointer;
+}
+.signIn:hover {
+    color: var(--brand-color);
+}
+.promptContainer {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap-6xs);
+    font-size: var(--font-size-xs);
+    color: var(--color-black);
+}
+.registrationFields {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--gap-smi);
+}
+.mainContent,
+.registerPage1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.mainContent {
+    width: 321px;
+    gap: var(--gap-8xl);
+    text-align: left;
+    font-size: var(--font-size-2xs);
+    color: var(--gray-2);
+    font-family: var(--font-nunito);
+}
+.registerPage1 {
+    position: relative;
+    background-color: var(--white);
+    width: 100%;
+    height: 932px;
+    overflow: hidden;
+    padding: var(--padding-96xl) var(--padding-35xl);
+    box-sizing: border-box;
+    gap: var(--gap-20xl);
+}
+@media screen and (max-width: 1200px) {
+    .mainContent {
+        width: 40%;
+        height: auto;
+        align-items: center;
+        justify-content: center;
+    }
+    }
+    @media screen and (max-width: 960px) {
+    .mainContent {
+        width: 40%;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    }
+    @media screen and (max-width: 420px) {
+    .header,
+    .mainContent,
+    .registrationFields {
+        align-self: stretch;
+        width: auto;
+    }
+    .signIn:hover {
+        color: var(--brand-color);
+    }
+    .mainContent {
+        flex-direction: column;
+    }
+}
