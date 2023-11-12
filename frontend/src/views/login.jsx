@@ -18,8 +18,22 @@ const Login = () => {
   });
 
   const onLogInClick = useCallback(() => {
-    console.log("Email:", email);
-    console.log("Password:", password);
+    // Use backend to determine if email and password are valid
+    fetch ("http://localhost:4000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    }).then((res) => {
+      if (res.status === 200) {
+        navigate("/home");
+      } else {
+        alert("Invalid email or password");
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
   }, [email, password]);
 
   const onRegisterClick = useCallback(() => {

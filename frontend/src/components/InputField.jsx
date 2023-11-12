@@ -1,6 +1,4 @@
 import styles from "../styles/inputField.module.css";
-import React, { useState } from "react";
-
 
 const InputField = ({ placeholder, id, category, onChange, value }) => {
 
