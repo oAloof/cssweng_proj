@@ -13,10 +13,22 @@ import {
 const Login = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
-
+  
   const onSubmit = (data) => {
-    console.log(data);
-    //methods.reset();
+    // Send data to backend
+    fetch("http://localhost:4000/api/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).then((response) => {
+      if (response.status === 200) {
+        navigate("/dashboard");
+      } else {
+        alert("Invalid credentials");
+      }
+    })
   };
 
   const onRegisterClick = useCallback(() => {

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const validator = require('validator')
 const jwt = require('jsonwebtoken')
 
 const User = require('../models/userModel')
@@ -10,12 +9,47 @@ const createToken = (_id) => {
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body
-    // Check if email is valid
-    if (!validator.isEmail(email)) {
-        return res.status(400).send('Invalid email')
+    // Check if user with email in the database exists
+    try {
+        const user = await User.findOne({email})
+        if (!user) {
+            return res.status(400).send({message: 'Invalid email or password'})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({message: 'Server error'})
     }
     
     res.send()
 }
 
-module.exports = { loginUser }
+const registerUser = async (req, res) => {
+    // Check which step of the registration process the user is on
+    const { registrationStep } = req.body
+    switch (registrationStep) {
+        case 1:
+            // Check if user with email in the database exists
+            const { step1Username, step1Email } = req.body
+            const user = await User.findOne({step1Username, step1Email})
+            if (user) {
+                res.status(400).send({message: 'User with email already exists'})
+                return
+            }
+            res.status(200).send({message: 'User may be created'})
+            break;
+        case 2:
+            // Create the user 
+            
+            let { username, email, password, city, cellNumber, billingAdd, zip } = req.body
+            city = city.value
+            const userType = 'Customer'
+            const newUser = await User.create({username, email, password, userType, city, cellNumber, billingAdd, zip})
+            res.status(200).send({message: 'User created'})
+            return
+    }
+}
+
+module.exports = { 
+    loginUser,
+    registerUser
+}

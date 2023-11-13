@@ -6,7 +6,12 @@ const Schema = mongoose.Schema
 const userSchema = new Schema({
     username: {
         type: String,
-        required: true,
+        required: true, 
+        unique: true
+    },
+    email: {
+        type: String,
+        required: false,
         unique: true
     },
     password: {
@@ -20,15 +25,10 @@ const userSchema = new Schema({
     },
     city: {
         type: String,
-        enum: ['Metro Manila', 'Batangas', 'Laguna', 'Cavite'],
-        required: false
-    },
-    email: {
-        type: String,
         required: false
     },
     cellNumber: {
-        type: [Number], 
+        type: Number, 
         required: false
     },
     billingAdd: {

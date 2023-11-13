@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
@@ -7,27 +7,58 @@ import Check from "../components/Check";
 import Logo from "../components/DefaultLogo";
 import { useForm, FormProvider } from "react-hook-form";
 import {
+  username_validation,
   email_validation,
   password_validation,
   confirmPassword_validation,
   firstname_validation,
   lastname_validation,
 } from "../utils/inputValidations";
+import { RegistrationContext } from "../contexts/RegistrationContext";
 
 const RegisterPage1 = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
-  //const { watch } = methods;
+  const { registrationData, isPageOneComplete, setRegistrationData, setIsPageOneComplete } = useContext(RegistrationContext);
 
+  useEffect(() => {
+    if (isPageOneComplete) {
+      // fill up input fields with data from context
+      methods.setValue("username", registrationData.username);
+      methods.setValue("firstName", registrationData.firstName);
+      methods.setValue("lastName", registrationData.lastName);
+      methods.setValue("email", registrationData.email);
+      methods.setValue("password", registrationData.password);
+      methods.setValue("confirmPassword", registrationData.confirmPassword);
+    }
+  }, [isPageOneComplete]);
   const onSubmit = (data) => {
-    console.log(data);
-    navigate("/register-page-2");
-    //methods.reset();
+    setRegistrationData(data);
+    // Send data to backend to check if email already exists
+    const requestData = {
+      ...data,
+      registrationStep: 1
+    };
+
+    fetch("http://localhost:4000/api/register", {
+      method: "POST",
+      body: JSON.stringify(requestData),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).then((response) => {
+      if (response.status === 200) {
+        setIsPageOneComplete(true);
+        navigate("/register/2");
+      } else {
+        alert("Email already exists");
+      }
+    });
   };
 
   const onSignInTextClick = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
+    navigate("/login");
+  }, [navigate]); 
 
   /* const password = watch("password");
   const confirmedPassword = watch("confirmedPassword"); */
@@ -54,6 +85,7 @@ const RegisterPage1 = () => {
             autoComplete="off"
             className={styles.inputFields}
           >
+            <InputField {...username_validation} />
             <InputField {...firstname_validation} />
             <InputField {...lastname_validation} />
             <InputField {...email_validation} />

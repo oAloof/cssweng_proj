@@ -38,6 +38,7 @@ app.use((req, res, next) => {
 
 // admin api
 app.post('/api/login', userController.loginUser)
+app.post('/api/register', userController.registerUser)
 
 // app.use('/admin/products', adminProductRoutes) // routes related to products
 // app.use('/admin/orders', adminOrdersRoutes) // routes related to orders
