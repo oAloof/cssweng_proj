@@ -13,7 +13,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<h1>Home</h1>} />
-
+        
         <Route path="/login" element={ <Login /> } />
         
         <Route path="/register" element={ <RegistrationProvider /> }>
