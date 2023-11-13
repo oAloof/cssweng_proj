@@ -33,6 +33,7 @@ const RegisterPage1 = () => {
     }
   }, [isPageOneComplete]);
   const onSubmit = (data) => {
+    console.log(data);
     setRegistrationData(data);
     // Send data to backend to check if email already exists
     const requestData = {
