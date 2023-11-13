@@ -51,8 +51,10 @@ const RegisterPage1 = () => {
         setIsPageOneComplete(true);
         navigate("/register/2");
       } else {
-        alert("Email already exists");
+        return response.json();
       }
+    }).then((data) => {
+      console.log(data.message); // The message to be displayed to the user
     });
   };
 

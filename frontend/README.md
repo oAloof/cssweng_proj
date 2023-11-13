@@ -6,7 +6,7 @@
 2. Naming Conventions 
     - **Files**
       - Components: PascalCase (e.g., `UserProfile.jsx`).
-      - CSS: kebab-case (e.g., `main-style.css`, `user-profile.css`).
+      - CSS Module: camel-case (e.g., `mainStyle.module.css`, `userProfile.module.css`).
       - Other files: camelCase (e.g., `apiUtils.js`, `userServices.js`).
     - **Variables**
       - Use camelCase for variable names.

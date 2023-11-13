@@ -13,14 +13,15 @@ const loginUser = async (req, res) => {
     try {
         const user = await User.findOne({email})
         if (!user) {
-            return res.status(400).send({message: 'Invalid email or password'})
+            res.status(400).send({message: 'Invalid email or password'})
+            return
         }
+        res.status(200).send({message: 'User found'})
     } catch (error) {
         console.log(error)
         res.status(500).send({message: 'Server error'})
     }
     
-    res.send()
 }
 
 const registerUser = async (req, res) => {
@@ -28,15 +29,20 @@ const registerUser = async (req, res) => {
     const { registrationStep } = req.body
     switch (registrationStep) {
         case 1:
-            // Check if user with email in the database exists
+            // Check if user with username or email in the database exists
             const { step1Username, step1Email } = req.body
-            const user = await User.findOne({step1Username, step1Email})
+            let user = await User.findOne({step1Username})
             if (user) {
-                res.status(400).send({message: 'User with email already exists'})
+                res.status(400).send({message: 'Username already exists'})
+                return
+            }
+            user = await User.findOne({step1Email})
+            if (user) {
+                res.status(400).send({message: 'Email already exists'})
                 return
             }
             res.status(200).send({message: 'User may be created'})
-            break;
+            return
         case 2:
             // Create the user 
             
