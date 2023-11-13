@@ -1,0 +1,9 @@
+.mobile {
+  align-self: stretch;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: left;
+  font-size: var(--font-size-11xl);
+  color: var(--brand-color);
+  font-family: var(--font-proxima-nova);
+}

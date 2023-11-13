@@ -1,25 +1,13 @@
-.default {
-  border: 1px solid var(--gray-4);
-  font-weight: 500;
-  font-family: var(--font-nunito);
-  font-size: var(--font-size-2xs);
-  background-color: transparent;
-  border-radius: var(--br-3xs);
-  box-sizing: border-box;
-  width: 321px;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: var(--padding-4xs) var(--padding-xs);
-}
-
 .container {
   display: flex;
   flex-direction: column;
+  width: 100%;
   align-items: left;
   justify-content: space-between;
+}
+
+.react-select__control {
+  width: 100%;
 }
 
 .labelAndError {

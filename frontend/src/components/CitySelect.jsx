@@ -1,12 +1,19 @@
-import styles from "../styles/inputField.module.css";
+import Select from "react-select";
+import "bootstrap/dist/css/bootstrap.min.css";
+import styles from "../styles/citySelect.module.css";
 import { findInputError, isFormInvalid } from "../utils";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdError } from "react-icons/md";
 
-const InputField = ({ label, placeholder, id, type, validation, name }) => {
+const Cities = [
+  { label: "Manila", value: "Manila" },
+  { label: "Laguna", value: "Laguna" },
+  { label: "Quezon City", value: "Quezon City" },
+];
+
+const Dropdown = ({ control, name, validation }) => {
   const {
-    register,
     formState: { errors },
   } = useFormContext();
 
@@ -16,7 +23,7 @@ const InputField = ({ label, placeholder, id, type, validation, name }) => {
   return (
     <div className={styles.container}>
       <div className={styles.labelAndError}>
-        <h6 htmlFor={id}>{label}</h6>
+        <h6>City</h6>
         <AnimatePresence mode="wait" initial={false}>
           {isInvalid && (
             <InputError
@@ -26,12 +33,20 @@ const InputField = ({ label, placeholder, id, type, validation, name }) => {
           )}
         </AnimatePresence>
       </div>
-      <input
-        id={id}
-        type={type}
-        className={styles.default}
-        placeholder={placeholder}
-        {...register(name, validation)}
+      <Controller
+        control={control}
+        name={name}
+        rules={validation}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={Cities}
+            onChange={(val) => field.onChange(val)}
+            classNamePrefix="react-select"
+            placeholder="Choose a City"
+            styles={{ container: (base) => ({ ...base, flex: 1 }) }}
+          />
+        )}
       />
     </div>
   );
@@ -53,4 +68,4 @@ const framer_error = {
   transition: { duration: 0.2 },
 };
 
-export default InputField;
+export default Dropdown;

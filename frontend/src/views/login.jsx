@@ -2,42 +2,25 @@ import { useCallback, useState } from "react";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/login.module.css";
+import styles from "../styles/loginRegister.module.css";
+import Logo from "../components/DefaultLogo";
+import { useForm, FormProvider } from "react-hook-form";
+import {
+  email_validation,
+  password_validation,
+} from "../utils/inputValidations";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const methods = useForm({ mode: "onSubmit" });
 
-  const onEmailChange = useCallback((e) => {
-    setEmail(e.target.value);
-  });
-
-  const onPasswordChange = useCallback((e) => {
-    setPassword(e.target.value);
-  });
-
-  const onLogInClick = useCallback(() => {
-    // Use backend to determine if email and password are valid
-    fetch ("http://localhost:4000/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    }).then((res) => {
-      if (res.status === 200) {
-        navigate("/home");
-      } else {
-        alert("Invalid email or password");
-      }
-    }).catch((err) => {
-      console.log(err);
-    });
-  }, [email, password]);
+  const onSubmit = (data) => {
+    console.log(data);
+    //methods.reset();
+  };
 
   const onRegisterClick = useCallback(() => {
-    navigate("/register/1");
+    navigate("/register");
   }, [navigate]);
 
   const onForgotPasswordClick = useCallback(() => {
@@ -45,49 +28,40 @@ const Login = () => {
   }, [navigate]);
 
   return (
-    <div className={styles.loginPage}>
-      <img
-        className={styles.logoDefault}
-        alt="BX Appliance Logo"
-        src="/logos/bx-appliances-logo1@2x.png"
-      />
-      <section className={styles.mainContent} id="Page Content">
+    <div className={styles.page}>
+      <Logo></Logo>
+      <section className={styles.pageContent} id="Page Content">
         <header className={styles.header}>
-          <h1 className={styles.heading}>Log In</h1>
-          <h3 className={styles.subheading}>Welcome back!</h3>
+          <h1>Log In</h1>
+          <h3>Welcome back!</h3>
         </header>
-        <div className={styles.inputFields}>
-          <InputField 
-            placeholder="Email" 
-            id="emailField" 
-            category="email"
-            onChange={onEmailChange}
-            value={email}
+
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(onSubmit)}
+            noValidate
+            autoComplete="off"
+            className={styles.inputFields}
+          >
+            <InputField {...email_validation} />
+            <InputField {...password_validation} />
+            <Button
+              buttonText="Log In"
+              logInTextAlign="center"
+              logInFlex="1"
+              buttonClass="blue"
+              type="submit"
             />
-          <InputField
-            placeholder="Password"
-            id="passwordField"
-            category="password"
-            onChange={onPasswordChange}
-            value={password}
-          />
-          <Button
-            buttonText="Log In"
-            logInTextAlign="center"
-            logInFlex="1"
-            buttonClass="blue"
-            onBtnClick={onLogInClick}
-            type="submit"
-          />
-        </div>
+          </form>
+        </FormProvider>
         <div className={styles.prompts}>
-          <div className={styles.accountExists}>
-            <h6 className={styles.dontHaveAn}>Don’t have an account yet?</h6>
-            <h6 className={styles.register} onClick={onRegisterClick}>
+          <div className={styles.registerTextContainer}>
+            <h6>Don’t have an account yet?</h6>
+            <h6 className={styles.blueh6} onClick={onRegisterClick}>
               Register
             </h6>
           </div>
-          <h6 className={styles.forgotPassword} onClick={onForgotPasswordClick}>
+          <h6 className={styles.grayh6} onClick={onForgotPasswordClick}>
             Forgot password?
           </h6>
         </div>
