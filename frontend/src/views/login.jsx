@@ -13,7 +13,7 @@ import {
 const Login = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
-  
+
   const onSubmit = (data) => {
     // Send data to backend
     fetch("http://localhost:4000/api/login", {
@@ -24,11 +24,13 @@ const Login = () => {
       },
     }).then((response) => {
       if (response.status === 200) {
-        navigate("/dashboard");
+        navigate("/");
       } else {
-        alert("Invalid credentials");
+        return response.json();
       }
-    })
+    }).then((data) => {
+      console.log(data.message); // The message to be displayed to the user
+    });
   };
 
   const onRegisterClick = useCallback(() => {
