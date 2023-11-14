@@ -1,4 +1,4 @@
-import styles from "../styles/button.module.css";
+import styles from "../styles/Button.module.css";
 
 const Button = ({ buttonText, buttonClass, onBtnClick }) => {
   const stateDefaultStyle = {

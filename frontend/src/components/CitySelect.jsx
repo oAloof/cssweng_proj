@@ -1,6 +1,6 @@
 import Select from "react-select";
 import "bootstrap/dist/css/bootstrap.min.css";
-import styles from "../styles/citySelect.module.css";
+import styles from "../styles/CitySelect.module.css";
 import { findInputError, isFormInvalid } from "../utils";
 import { useFormContext, Controller } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";

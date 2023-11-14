@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useContext } from "react";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
-import styles from "../styles/loginRegister.module.css";
-import Logo from "../components/DefaultLogo";
+import styles from "../styles/Page.module.css";
+import Logo from "../components/Logo";
 import Dropdown from "../components/CitySelect";
 import { useForm, FormProvider } from "react-hook-form";
 
@@ -14,39 +14,14 @@ import {
   city_validation,
 } from "../utils/inputValidations";
 
-import { RegistrationContext } from "../contexts/RegistrationContext";
-
 const RegisterPage2 = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
-  const { registrationData, isPageOneComplete } = useContext(RegistrationContext);
-
-  useEffect(() => {
-    if (!isPageOneComplete) {
-      navigate("/register");
-    }
-  }, [isPageOneComplete, navigate]);
 
   const onSubmit = (data) => {
-    const requestData = {
-      ...registrationData,
-      ...data,
-      registrationStep: 2
-    };
-
-    fetch("http://localhost:4000/api/register", {
-      method: "POST",
-      body: JSON.stringify(requestData),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    }).then((response) => {
-      if (response.status === 200) {
-        navigate("/login");
-      } else {
-        alert("Error");
-      }
-    });
+    console.log(data);
+    navigate("/register");
+    //methods.reset();
   };
 
   const onSignInTextClick = useCallback(() => {
@@ -55,7 +30,7 @@ const RegisterPage2 = () => {
 
   return (
     <div className={styles.page}>
-      <Logo></Logo>
+      <Logo name="default"></Logo>
       <main className={styles.pageContent} id="Page Content">
         <header className={styles.header}>
           <h1>Register</h1>
