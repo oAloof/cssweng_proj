@@ -3,12 +3,12 @@ import styles from "../styles/Logo.module.css";
 
 const logos = {
   default: {
-    src: "../public/logos/BXAppliancesLogo.png",
+    src: "/logos/BXAppliancesLogo.png",
     style: styles.default,
   },
 
   topbar: {
-    src: "../public/logos/BlueLogo.png",
+    src: "/logos/BlueLogo.png",
     style: styles.topbar,
   },
 };

@@ -5,9 +5,13 @@ import MenuButton from "./MenuButton";
 import SearchBar from "./SearchBar";
 
 const TopBar = () => {
+  const [isMenuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => setMenuOpen(!isMenuOpen);
+
   return (
     <>
-      <div name="topbar">
+      <div className={styles.topBar}>
         <div className={styles.menu} onClick={toggleMenu}>
           <MenuButton />
         </div>

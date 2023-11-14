@@ -1,10 +1,10 @@
-import ProductItem from "./ProductItem";
-import styles from "../styles/Section.module.css";
+import ProductItem from "./ProductItem.jsx";
+import styles from "../../styles/customer/Section.module.css";
 
-const Section = ({ promotionText, propWidth, propWidth1 }) => {
+const Section = ({ category }) => {
   return (
     <div className={styles.container}>
-      <b className={styles.title}>{promotionText}</b>
+      <b className={styles.title}>{category}</b>
       <div className={styles.results}>
         {/* dummy data */}
         <ProductItem />

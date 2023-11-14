@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import AddToCartButton from "./AddToCartButton";
-import styles from "../styles/ProductItem.module.css";
+import AddToCartButton from "./AddToCartButton.jsx";
+import styles from "../../styles/customer/ProductItem.module.css";
 
 const ProductItem = () => {
   const onProductItemClick = useCallback(() => {

@@ -3,6 +3,8 @@ import { Navigate } from "react-router-dom";
 import Login from "../views/login";
 import Register1 from "../views/registerPage1";
 import Register2 from "../views/registerPage2";
+import ForgotPassword from "../views/forgotPasswordPage";
+import styles from "../styles/global.modules.css";
 
 import { RegistrationProvider } from "../contexts/RegistrationContext";
 import LandingPage from "../views/customer/LandingPage";
@@ -12,6 +14,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route path="/login" element={<Login />} />
 

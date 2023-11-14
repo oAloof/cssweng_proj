@@ -5,10 +5,10 @@ import Button from "./NavbarBtn.jsx";
 const NavBar = ({}) => {
   return (
     <div className={styles.navbar}>
-      <Button label="Home" iconSrc={"/Home.svg"} />
-      <Button label="All Products" iconSrc={"/List.svg"} />
-      <Button label="Cart" iconSrc={"/Cart.svg"} />
-      <Button label="Account" iconSrc={"/User.svg"} />
+      <Button label="Home" iconSrc={"/icons/Home.svg"} />
+      <Button label="All Products" iconSrc={"/icons/List.svg"} />
+      <Button label="Cart" iconSrc={"/icons/Cart.svg"} />
+      <Button label="Account" iconSrc={"/icons/User.svg"} />
     </div>
   );
 };

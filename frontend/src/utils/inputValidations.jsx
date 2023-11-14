@@ -82,7 +82,7 @@ export const contactNumber_validation = {
   id: "contactNumber",
   placeholder: "Contact Number",
   validation: {
-    required: "Contact number is required",
+    required: "Required",
     pattern: {
       value: /^09\d{9}$/,
       message: "Invalid contact number",
@@ -107,7 +107,7 @@ export const email_validation = {
   validation: {
     required: {
       value: true,
-      message: "required",
+      message: "Required",
     },
     pattern: {
       value:
@@ -124,7 +124,7 @@ export const zip_validation = {
   id: "zip",
   placeholder: "Zip Code",
   validation: {
-    required: "Zip code is required",
+    required: "Required",
     pattern: {
       value: /^[0-9]{4}$/,
       message: "Invalid zip code",

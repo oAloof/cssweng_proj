@@ -1,4 +1,4 @@
-import styles from "../styles/AddToCartButton.module.css";
+import styles from "../../styles/customer/AddToCartButton.module.css";
 
 const AddToCartButton = () => {
   return (
