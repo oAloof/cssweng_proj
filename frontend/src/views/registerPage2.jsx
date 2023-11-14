@@ -28,6 +28,8 @@ const RegisterPage2 = () => {
     navigate("/");
   }, [navigate]);
 
+  // ADD BACK BUTTON
+
   return (
     <div className={styles.page}>
       <Logo name="default"></Logo>

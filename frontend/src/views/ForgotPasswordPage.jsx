@@ -38,8 +38,6 @@ const ForgotPasswordPage = () => {
             <InputField {...email_validation} />
             <Button
               buttonText="Send Password Reset Email"
-              logInTextAlign="center"
-              logInFlex="1"
               buttonClass="blue"
               type="submit"
             />
