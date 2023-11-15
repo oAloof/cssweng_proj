@@ -1,0 +1,24 @@
+.button {
+  cursor: pointer;
+  border: none;
+  padding: var(--padding-7xs) var(--padding-smi);
+  background-color: transparent;
+  border-radius: var(--br-8xs);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.title {
+  font-size: var(--font-size-mini);
+  line-height: 160%;
+  font-family: var(--mobile-heading);
+  color: var(--white);
+  text-align: left;
+}
+
+@media screen and (max-width: 420px) {
+  .categoryButton {
+    align-items: center;
+  }
+}

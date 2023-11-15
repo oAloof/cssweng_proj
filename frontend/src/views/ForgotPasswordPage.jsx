@@ -4,39 +4,29 @@ import InputField from "../components/InputField";
 import Button from "../components/Button";
 import styles from "../styles/Page.module.css";
 import Logo from "../components/Logo";
-import Dropdown from "../components/CitySelect";
+import { email_validation } from "../utils/inputValidations";
 import { useForm, FormProvider } from "react-hook-form";
 
-import {
-  contactNumber_validation,
-  zip_validation,
-  streetAddress_validation,
-  city_validation,
-} from "../utils/inputValidations";
-
-const RegisterPage2 = () => {
+const ForgotPasswordPage = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
 
   const onSubmit = (data) => {
     console.log(data);
-    navigate("/register");
+    navigate("/register-page-2");
     //methods.reset();
   };
 
-  const onSignInTextClick = useCallback(() => {
-    navigate("/");
+  const onLoginTextClick = useCallback(() => {
+    navigate("/login");
   }, [navigate]);
-
-  // ADD BACK BUTTON
 
   return (
     <div className={styles.page}>
       <Logo name="default"></Logo>
       <main className={styles.pageContent} id="Page Content">
         <header className={styles.header}>
-          <h1>Register</h1>
-          <h3>Shipping Address</h3>
+          <h1>Forgot Password</h1>
         </header>
         <FormProvider {...methods}>
           <form
@@ -45,25 +35,16 @@ const RegisterPage2 = () => {
             autoComplete="off"
             className={styles.inputFields}
           >
-            <InputField {...contactNumber_validation} />
-            <InputField {...streetAddress_validation} />
-            <Dropdown
-              control={methods.control}
-              name="city"
-              {...city_validation}
-            />
-            <InputField {...zip_validation} />
+            <InputField {...email_validation} />
             <Button
-              buttonText="Register"
-              logInTextAlign="center"
-              logInFlex="1"
-              buttonClass="red"
+              buttonText="Send Password Reset Email"
+              buttonClass="blue"
               type="submit"
             />
             <div className={styles.prompts}>
               <div className={styles.registerTextContainer}>
                 <h6>Already have an account?</h6>
-                <h6 className={styles.blueh6} onClick={onSignInTextClick}>
+                <h6 className={styles.blueh6} onClick={onLoginTextClick}>
                   Sign In
                 </h6>
               </div>
@@ -75,4 +56,4 @@ const RegisterPage2 = () => {
   );
 };
 
-export default RegisterPage2;
+export default ForgotPasswordPage;

@@ -1,9 +1,8 @@
 .checkContainer {
-    border-radius: var(--br-8xs);
-    border: 1px dashed var(--color-blueviolet);
-    box-sizing: border-box;
-    width: fit-content;
-    height: fit-content;
-    overflow: hidden;
-  }
-  
+  border-radius: var(--br-8xs);
+  border: 1px dashed var(--color-blueviolet);
+  box-sizing: border-box;
+  width: fit-content;
+  height: fit-content;
+  overflow: hidden;
+}

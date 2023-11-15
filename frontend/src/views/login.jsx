@@ -2,8 +2,8 @@ import { useCallback, useEffect } from "react";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/loginRegister.module.css";
-import Logo from "../components/DefaultLogo";
+import styles from "../styles/Page.module.css";
+import Logo from "../components/Logo";
 import { useForm, FormProvider } from "react-hook-form";
 import {
   username_validation,
@@ -55,7 +55,7 @@ const Login = () => {
 
   return (
     <div className={styles.page}>
-      <Logo></Logo>
+      <Logo name="default"></Logo>
       <section className={styles.pageContent} id="Page Content">
         <header className={styles.header}>
           <h1>Log In</h1>
