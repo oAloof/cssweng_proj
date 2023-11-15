@@ -1,32 +1,38 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import AddToCartButton from "./AddToCartButton.jsx";
 import styles from "../../styles/customer/ProductItem.module.css";
 
-const ProductItem = () => {
-  const onProductItemClick = useCallback(() => {
-    // goes to a product's respective page
-  }, []);
+const ProductItem = ({ product }) => {
+  const onProductItemClick = useCallback(() => {}, []);
+
+  const discountedPrice = product.originalPrice * (1 - product.discount / 100);
 
   return (
     <div className={styles.container} onClick={onProductItemClick}>
       <div className={styles.productImageContainer}>
         <img
           className={styles.productImageIcon}
-          alt=""
-          src="/Product Photo Placeholder.png"
+          alt={product.name}
+          src={product.photoUrl || "/Product Photo Placeholder.png"}
         />
-        <div className={styles.discount}>
-          <b className={styles.discountText}>40% OFF!</b>
-        </div>
+        {product.discount && (
+          <div className={styles.discount}>
+            <b className={styles.discountText}>{product.discount}% OFF!</b>
+          </div>
+        )}
       </div>
       <div className={styles.productDetails}>
-        <div className={styles.productBrand}>Union</div>
-        <b className={styles.productName}>Union Aircon</b>
+        <div className={styles.productBrand}>{product.brand}</div>
+        <b className={styles.productName}>{product.name}</b>
       </div>
       <div className={styles.productSubdetails}>
         <div className={styles.prices}>
-          <div className={styles.price}>$99,999.99</div>
-          <div className={styles.originalPrice}>from $111,111.11</div>
+          <div className={styles.price}>₱{discountedPrice.toFixed(2)}</div>
+          {product.discount && (
+            <div className={styles.originalPrice}>
+              from ₱{product.originalPrice.toFixed(2)}
+            </div>
+          )}
         </div>
         <AddToCartButton />
       </div>

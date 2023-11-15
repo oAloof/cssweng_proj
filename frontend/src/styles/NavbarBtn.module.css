@@ -13,9 +13,19 @@
   margin-bottom: 10px;
 }
 
+.icon.active,
+.label.active {
+  color: var(--brand-color);
+}
+
 .label {
   position: relative;
   line-height: 150%;
   font-weight: 500;
   font-size: 0.85rem;
+}
+
+.iconInactive,
+.labelInactive {
+  color: var(--gray-5);
 }

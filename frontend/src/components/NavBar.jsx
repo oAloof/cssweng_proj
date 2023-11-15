@@ -1,14 +1,35 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
+import { useLocation } from "react-router-dom";
 import styles from "../styles/NavBar.module.css";
-import Button from "./NavbarBtn.jsx";
+import NavBarBtn from "./NavbarBtn.jsx";
+import {
+  faHome,
+  faList,
+  faShoppingCart,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
-const NavBar = ({}) => {
+const NavBar = () => {
+  const location = useLocation();
+
+  const navItems = [
+    { label: "Home", path: "/", icon: faHome },
+    { label: "All Products", path: "/products", icon: faList },
+    { label: "Cart", path: "/cart", icon: faShoppingCart },
+    { label: "Account", path: "/account", icon: faUser },
+  ];
+
   return (
     <div className={styles.navbar}>
-      <Button label="Home" iconSrc={"/icons/Home.svg"} />
-      <Button label="All Products" iconSrc={"/icons/List.svg"} />
-      <Button label="Cart" iconSrc={"/icons/Cart.svg"} />
-      <Button label="Account" iconSrc={"/icons/User.svg"} />
+      {navItems.map((item) => (
+        <NavBarBtn
+          key={item.label}
+          label={item.label}
+          active={location.pathname === item.path}
+          path={item.path}
+          icon={item.icon}
+        />
+      ))}
     </div>
   );
 };

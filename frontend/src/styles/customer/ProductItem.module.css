@@ -30,7 +30,6 @@
   background-color: var(--red);
   flex-direction: row;
   padding: 3px 5px;
-  z-index: 1;
 }
 .productImageContainer {
   align-self: stretch;
@@ -45,7 +44,7 @@
 }
 .productBrand {
   font-weight: 600;
-  font-size: var(--font-size-cardtext);
+  font-size: 0.9em;
   color: var(--gray-5);
 }
 .productName {
@@ -64,8 +63,15 @@
 .price {
   position: relative;
   line-height: 150%;
-  font-weight: 800;
+  font-weight: 700;
+  font-size: 1.3em;
 }
+
+.price {
+  font-family: var(--font-proxima-nova);
+  font-weight: 700;
+}
+
 .originalPrice {
   font-size: 0.7rem;
   font-weight: 500;

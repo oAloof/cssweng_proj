@@ -11,6 +11,11 @@ const logos = {
     src: "/logos/BlueLogo.png",
     style: styles.topbar,
   },
+
+  white: {
+    src: "/logos/White Logo.png",
+    style: styles.topbar,
+  },
 };
 
 const Logo = ({ name, ...props }) => {

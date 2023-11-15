@@ -5,9 +5,19 @@ import Register1 from "../views/registerPage1";
 import Register2 from "../views/registerPage2";
 import ForgotPassword from "../views/forgotPasswordPage";
 import styles from "../styles/global.modules.css";
-
+import TestCustomerView from "../views/customer/testCustomerView.jsx";
 import { RegistrationProvider } from "../contexts/RegistrationContext";
 import LandingPage from "../views/customer/LandingPage";
+import ReactDOM from "react-dom";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faHome,
+  faList,
+  faShoppingCart,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+
+library.add(faHome, faList, faShoppingCart, faUser);
 
 function App() {
   return (
@@ -15,7 +25,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-
+        <Route path="/test" element={<TestCustomerView />} />
         <Route path="/login" element={<Login />} />
 
         <Route path="/register" element={<RegistrationProvider />}>
