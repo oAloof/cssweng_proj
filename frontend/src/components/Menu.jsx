@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "../styles/customer/Menu.module.css";
 import Logo from "./Logo.jsx";
@@ -6,6 +7,7 @@ import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 const categories = [
   // TEMPORARY VALUES
@@ -18,6 +20,14 @@ const categories = [
   { title: "Aircons", href: "/" },
 ];
 const Menu = () => {
+  {
+    /* TODO: Implement logout logic */
+  }
+  const navigate = useNavigate();
+  const OnLogoutClick = useCallback(() => {
+    navigate("/login");
+  }, [navigate]);
+
   const [open, setOpen] = useState(false);
   const toggleMenu = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -96,11 +106,18 @@ const Menu = () => {
                 exit="initial"
                 className={`${styles.linkContainer}`}
               >
-                {categories.map((link, index) => (
-                  <div key={index} className={`${styles.mobileNavLink}`}>
-                    <MobileNavLink title={link.title} href={link.href} />
-                  </div>
-                ))}
+                <div className={styles.categoriesWrapper}>
+                  {categories.map((link, index) => (
+                    <div key={index} className={`${styles.mobileNavLink}`}>
+                      <MobileNavLink title={link.title} href={link.href} />
+                    </div>
+                  ))}
+                </div>
+
+                {/* TODO: Implement logout logic */}
+                <div className={styles.mobileNavLink} onClick={toggleMenu}>
+                  <BottomButton title="Logout" href="/login" />
+                </div>
               </motion.div>
             </div>
           </motion.div>
@@ -130,6 +147,19 @@ const mobileLinkVars = {
 const MobileNavLink = ({ title, href }) => {
   return (
     <motion.div variants={mobileLinkVars}>
+      <a href={href}>{title}</a>
+    </motion.div>
+  );
+};
+
+const BottomButton = ({ title, href }) => {
+  return (
+    <motion.div variants={mobileLinkVars} className={styles.bottomButtons}>
+      <FontAwesomeIcon
+        icon={faRightFromBracket}
+        className={styles.icon}
+        style={{ color: "#ffff" }}
+      />
       <a href={href}>{title}</a>
     </motion.div>
   );

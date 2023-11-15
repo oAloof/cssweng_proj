@@ -1,0 +1,21 @@
+.pageContent {
+  flex-grow: 1;
+  width: 95%;
+  margin: 0 auto;
+  overflow-y: auto;
+  padding: 100px 10px 85px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  text-align: left;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  background-color: var(--backgroundcolor);
+  width: 100%;
+  overflow: hidden;
+}

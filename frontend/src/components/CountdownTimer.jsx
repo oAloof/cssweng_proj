@@ -1,34 +1,74 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/CountdownTimer.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faTruckFast } from "@fortawesome/free-solid-svg-icons";
 
-const CountdownTimer = ({ endDate, location }) => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-  });
+const CountdownTimer = ({ saleData }) => {
+  const initializeTimeLeft = () => {
+    if (!saleData || !saleData.endDate) {
+      return { days: 0, hours: 0, minutes: 0 };
+    }
+    const endDate = new Date(saleData.endDate).getTime();
+    const now = new Date().getTime();
+    const distance = endDate - now;
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date();
-      const distance = endDate - now;
-
+    if (distance < 0) {
+      return { days: 0, hours: 0, minutes: 0 };
+    } else {
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      return { days, hours, minutes };
+    }
+  };
 
-      setTimeLeft({ days, hours, minutes });
+  const [timeLeft, setTimeLeft] = useState(initializeTimeLeft());
+  const [OngoingSale, setOngoingSale] = useState(
+    saleData && saleData.endDate ? true : false
+  );
+
+  useEffect(() => {
+    if (!OngoingSale) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      const endDate = new Date(saleData.endDate).getTime();
+      const now = new Date().getTime();
+      const distance = endDate - now;
 
       if (distance < 0) {
         clearInterval(timer);
+        setOngoingSale(false);
         setTimeLeft({ days: 0, hours: 0, minutes: 0 });
+      } else {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        setTimeLeft({ days, hours, minutes });
       }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [endDate]);
+  }, [saleData]);
+
+  if (!OngoingSale) {
+    return (
+      <div className={styles.countdown}>
+        <div className={styles.container}>
+          <div className={styles.header}>No Sales Yet!</div>
+          <span>
+            There is no ongoing sale at the moment. Follow us on our socials to
+            be notified about future sales!
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.countdown}>
@@ -56,7 +96,7 @@ const CountdownTimer = ({ endDate, location }) => {
           </div>
         </div>
         <div className={styles.footer}>
-          <img src="icons/Location.svg" />
+          <FontAwesomeIcon icon={faTruckFast} style={{ color: "#ffffff" }} />
           Exclusive to customers in {location}!
         </div>
       </div>

@@ -1,18 +1,18 @@
 import Countdown from "../../components/CountdownTimer.jsx";
 import NavBar from "../../components/NavBar.jsx";
 import Menu from "../../components/Menu.jsx";
-import styles from "../../styles/customer/LandingPage.module.css";
+import styles from "../../styles/customer/customerPage.module.css";
 import Section from "../../components/customer/Section.jsx";
 
 const LandingPage = () => {
-  const endDate = new Date("2024-01-01T00:00:00").getTime();
-
   return (
-    <div className={styles.landingPage}>
+    <div className={styles.page}>
       <section className={styles.pageContent}>
-        <Countdown endDate={endDate} location="Manila" />
+        <Countdown />
         <Section category="Big Discounts!" />
         <Section category="Selling Out Fast" />
+        <Section category="Test" />
+        <Section category="Test" />
         <Section category="Test" />
       </section>
       <NavBar />

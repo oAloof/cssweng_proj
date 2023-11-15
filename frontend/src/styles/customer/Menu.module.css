@@ -74,13 +74,14 @@
 .linkContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 16px;
   font-family: var(--font-proxima-nova);
   font-weight: 500;
   margin-top: 8em;
   color: white;
+  height: 100%;
+  justify-content: space-evenly;
 }
 
 .mobileNavLink,
@@ -114,4 +115,15 @@ a {
   justify-content: flex-end;
   padding: 10px;
   box-sizing: border-box;
+}
+
+.menuContent {
+  height: 100%;
+}
+
+.bottomButtons {
+  display: flex;
+  width: auto;
+  flex-direction: row;
+  gap: 10px;
 }
