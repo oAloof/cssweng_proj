@@ -1,19 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/NavbarBtn.module.css";
-import {
-  faHome,
-  faList,
-  faShoppingCart,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
-
-const iconMapping = {
-  Home: faHome,
-  "All Products": faList,
-  Cart: faShoppingCart,
-  Account: faUser,
-};
 
 const NavBarBtn = ({ label, active, path, icon }) => {
   const navigate = useNavigate();

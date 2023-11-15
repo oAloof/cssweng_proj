@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "../styles/customer/Menu.module.css";
 import Logo from "./Logo.jsx";
-import MenuButton from "./MenuButton.jsx";
 import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const categories = [
   // TEMPORARY VALUES
@@ -60,8 +60,12 @@ const Menu = () => {
 
   return (
     <header className={styles.header}>
-      <div className={`${styles.menuButton} lg:hidden`} onClick={toggleMenu}>
-        <MenuButton />
+      <div className={`${styles.background} lg:hidden`} onClick={toggleMenu}>
+        <FontAwesomeIcon
+          icon={faBars}
+          className={styles.icon}
+          style={{ color: "#ffffff" }}
+        />
       </div>
       <Logo name="topbar" />
       <SearchBar />

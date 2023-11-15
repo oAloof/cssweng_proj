@@ -20,8 +20,18 @@
   font-size: 2em;
   border-radius: 10px;
   font-family: var(--font-proxima-nova);
-  padding: 10px;
+  padding: 10px 0px 0px 0px;
   text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.subheading {
+  font-family: var(--font-nunito);
+  font-weight: 500;
+  font-size: 1.3em;
+  margin-top: 0;
 }
 
 .timer {
@@ -29,6 +39,7 @@
   justify-content: space-around;
   align-items: center;
   width: auto;
+  margin-top: 10px;
 }
 
 .timeSection {

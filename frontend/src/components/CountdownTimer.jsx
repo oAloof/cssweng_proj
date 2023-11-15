@@ -34,6 +34,7 @@ const CountdownTimer = ({ endDate, location }) => {
     <div className={styles.countdown}>
       <div className={styles.container}>
         <div className={styles.header}>{location} BODEGA SALE</div>
+        <span className={styles.subheading}>ENDS IN</span>
         <div className={styles.timer}>
           <div className={styles.timeSection}>
             <span className={styles.time}>
@@ -56,7 +57,7 @@ const CountdownTimer = ({ endDate, location }) => {
         </div>
         <div className={styles.footer}>
           <img src="icons/Location.svg" />
-          Exclusive to customers in Manila!
+          Exclusive to customers in {location}!
         </div>
       </div>
     </div>

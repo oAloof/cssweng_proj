@@ -1,7 +1,6 @@
-import { useState, useCallback } from "react";
 import Countdown from "../../components/CountdownTimer.jsx";
 import NavBar from "../../components/NavBar.jsx";
-import TopMenuBar from "../../components/Menu.jsx";
+import Menu from "../../components/Menu.jsx";
 import styles from "../../styles/customer/LandingPage.module.css";
 import Section from "../../components/customer/Section.jsx";
 
@@ -17,7 +16,7 @@ const LandingPage = () => {
         <Section category="Test" />
       </section>
       <NavBar />
-      <TopMenuBar />
+      <Menu />
     </div>
   );
 };
