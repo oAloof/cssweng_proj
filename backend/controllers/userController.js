@@ -1,14 +1,15 @@
-const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const User = require('../models/userModel')
 
-const createToken = (_id) => {
-    return jwt.sign({_id}, process.env.JWTSECRET, {expiresIn: '1h'})
-}
-
 const loginUser = async (req, res) => {
+    // Check if user is already logged in
+    if (req.user) {
+        res.status(200).send({message: 'User is already logged in'})
+        return
+    }
+
     const { username, password } = req.body
     // Check if user with email in the database exists
     try {
@@ -22,12 +23,14 @@ const loginUser = async (req, res) => {
             res.status(400).send({message: 'Invalid login credentials'})
             return
         }
+
+        const token = jwt.sign({_id: user._id}, process.env.JWTSECRET, {expiresIn: '3h'})
+        res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 3600000 });
         res.status(200).send({message: 'User found'})
     } catch (error) {
         console.log(error)
         res.status(500).send({message: 'Server error'})
     }
-    
 }
 
 const registerUser = async (req, res) => {
@@ -53,7 +56,6 @@ const registerUser = async (req, res) => {
             return
         case 2:
             // Create the user 
-            
             const { username, firstName, lastName, email, password, city, contactNumber, streetAddress, zip } = req.body
             // Hash the password
             const salt = await bcrypt.genSalt(10)
@@ -73,6 +75,10 @@ const registerUser = async (req, res) => {
             res.status(200).send({message: 'User created'})
             return
     }
+}
+
+const logoutUser = (req, res) => { 
+
 }
 
 module.exports = { 

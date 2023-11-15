@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import styles from "../styles/loginRegister.module.css";
-import Check from "../components/Check";
 import Logo from "../components/DefaultLogo";
 import { useForm, FormProvider } from "react-hook-form";
 import {
@@ -20,7 +19,6 @@ const RegisterPage1 = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
   const { registrationData, isPageOneComplete, setRegistrationData, setIsPageOneComplete } = useContext(RegistrationContext);
-
   useEffect(() => {
     if (isPageOneComplete) {
       // fill up input fields with data from context

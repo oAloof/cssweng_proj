@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect } from "react";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
@@ -10,26 +10,38 @@ import {
   password_validation,
 } from "../utils/inputValidations";
 
+
 const Login = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
 
+  useEffect(() => {
+    if (localStorage.getItem("isAuthenticated") === "true") {
+      navigate("/register/1"); // ! edit later
+    }
+  }, []);
+  
   const onSubmit = (data) => {
     // Send data to backend
     fetch("http://localhost:4000/api/login", {
       method: "POST",
+      credentials: "include",
       body: JSON.stringify(data),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
     }).then((response) => {
       if (response.status === 200) {
-        navigate("/");
+        localStorage.setItem("isAuthenticated", true);
+        navigate("/register/1"); // ! edit later
+        return response.json();
       } else {
         return response.json();
       }
     }).then((data) => {
       console.log(data.message); // The message to be displayed to the user
+    }).catch((error) => {
+      console.log(error); // If the server is down
     });
   };
 
