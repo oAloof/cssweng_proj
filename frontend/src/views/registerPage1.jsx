@@ -5,6 +5,10 @@ import Button from "../components/Button";
 import styles from "../styles/Page.module.css";
 import Check from "../components/Check";
 import Logo from "../components/Logo";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+
 import { useForm, FormProvider } from "react-hook-form";
 import {
   email_validation,
@@ -21,7 +25,7 @@ const RegisterPage1 = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    navigate("/register-page-2");
+    navigate("/register/2");
     //methods.reset();
   };
 
