@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useContext } from "react";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ const Login = () => {
 
   useEffect(() => {
     if (localStorage.getItem("isAuthenticated") === "true") {
-      navigate("/register/1"); // ! edit later
+      navigate("/"); 
     }
   }, []);
   
@@ -33,7 +33,7 @@ const Login = () => {
     }).then((response) => {
       if (response.status === 200) {
         localStorage.setItem("isAuthenticated", true);
-        navigate("/register/1"); // ! edit later
+        navigate("/"); 
         return response.json();
       } else {
         return response.json();

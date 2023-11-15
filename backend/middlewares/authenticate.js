@@ -7,9 +7,8 @@ const authenticate = (req, res, next) => {
         req.user = decoded
         next()
     } catch (err) {
-        res.status(401).send({message: 'Unauthorized'})
-        // req.user = null
-        // next()
+        req.user = null
+        next()
     }
 }
 

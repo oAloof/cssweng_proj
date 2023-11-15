@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "../styles/customer/Menu.module.css";
@@ -7,7 +7,7 @@ import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 
 const categories = [
   // TEMPORARY VALUES
@@ -24,7 +24,13 @@ const Menu = () => {
     /* TODO: Implement logout logic */
   }
   const navigate = useNavigate();
-  const OnLogoutClick = useCallback(() => {
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === 'true';
+
+  useEffect(() => {
+    console.log(isAuthenticated);
+  }, [isAuthenticated]);
+
+  const handleLoginLogout = useCallback(() => {
     navigate("/login");
   }, [navigate]);
 
@@ -116,8 +122,13 @@ const Menu = () => {
 
                 {/* TODO: Implement logout logic */}
                 <div className={styles.mobileNavLink} onClick={toggleMenu}>
-                  <BottomButton title="Logout" href="/login" />
+                  <BottomButton 
+                    title={isAuthenticated ? "Logout" : "Login"}
+                    onClick={handleLoginLogout} 
+                    icon={isAuthenticated ? faRightFromBracket : faRightToBracket }
+                    />
                 </div>
+
               </motion.div>
             </div>
           </motion.div>
@@ -152,15 +163,15 @@ const MobileNavLink = ({ title, href }) => {
   );
 };
 
-const BottomButton = ({ title, href }) => {
+const BottomButton = ({ title, onClick, icon }) => {
   return (
-    <motion.div variants={mobileLinkVars} className={styles.bottomButtons}>
+    <motion.div variants={mobileLinkVars} className={styles.bottomButtons} onClick={onClick}>
       <FontAwesomeIcon
-        icon={faRightFromBracket}
+        icon={icon}
         className={styles.icon}
         style={{ color: "#ffff" }}
       />
-      <a href={href}>{title}</a>
+      <span>{title}</span>
     </motion.div>
   );
 };

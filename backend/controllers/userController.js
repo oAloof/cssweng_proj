@@ -36,7 +36,6 @@ const loginUser = async (req, res) => {
 const registerUser = async (req, res) => {
     // Check which step of the registration process the user is on
     const { registrationStep } = req.body
-    console.log(req.body);
     switch (registrationStep) {
         case 1:
             // Check if user with username or email in the database exists
