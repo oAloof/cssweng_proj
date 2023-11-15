@@ -41,7 +41,8 @@ app.use((req, res, next) => {
 // ROUTES 
 // login and Register API
 app.post('/api/login', authenticate, userController.loginUser)
-app.post('/api/register', userController.registerUser)
+app.post('/api/register', authenticate, userController.registerUser)
+app.post('/api/logout', authenticate, userController.logoutUser)
 
 // admin api
 

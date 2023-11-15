@@ -34,6 +34,12 @@ const loginUser = async (req, res) => {
 }
 
 const registerUser = async (req, res) => {
+    // Check if user is already logged in
+    if (req.user) {
+        res.status(200).send({message: 'User is already logged in'})
+        return
+    }
+
     // Check which step of the registration process the user is on
     const { registrationStep } = req.body
     switch (registrationStep) {
@@ -77,10 +83,18 @@ const registerUser = async (req, res) => {
 }
 
 const logoutUser = (req, res) => { 
+    // Check if user is already logged in
+    if (!req.user) {
+        res.status(200).send({message: 'User is not logged in'})
+        return
+    }
 
+    res.clearCookie('token', { httpOnly: true, secure: true, sameSite: 'strict' })
+    res.status(200).send({message: 'User logged out'})
 }
 
 module.exports = { 
     loginUser,
-    registerUser
+    registerUser,
+    logoutUser
 }
