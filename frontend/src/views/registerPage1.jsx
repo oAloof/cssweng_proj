@@ -1,39 +1,25 @@
-import { useCallback, useEffect, useContext } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
-import styles from "../styles/loginRegister.module.css";
+import styles from "../styles/Page.module.css";
 import Check from "../components/Check";
-import Logo from "../components/DefaultLogo";
+import Logo from "../components/Logo";
 import { useForm, FormProvider } from "react-hook-form";
 import {
-  username_validation,
   email_validation,
   password_validation,
   confirmPassword_validation,
   firstname_validation,
   lastname_validation,
 } from "../utils/inputValidations";
-import { RegistrationContext } from "../contexts/RegistrationContext";
 
 const RegisterPage1 = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
-  const { registrationData, isPageOneComplete, setRegistrationData, setIsPageOneComplete } = useContext(RegistrationContext);
+  //const { watch } = methods;
 
-  useEffect(() => {
-    if (isPageOneComplete) {
-      // fill up input fields with data from context
-      methods.setValue("username", registrationData.username);
-      methods.setValue("firstName", registrationData.firstName);
-      methods.setValue("lastName", registrationData.lastName);
-      methods.setValue("email", registrationData.email);
-      methods.setValue("password", registrationData.password);
-      methods.setValue("confirmPassword", registrationData.confirmPassword);
-    }
-  }, [isPageOneComplete]);
   const onSubmit = (data) => {
-    console.log(data);
     setRegistrationData(data);
     // Send data to backend to check if email already exists
     const requestData = {
@@ -61,7 +47,7 @@ const RegisterPage1 = () => {
 
   const onSignInTextClick = useCallback(() => {
     navigate("/login");
-  }, [navigate]); 
+  }, [navigate]);
 
   /* const password = watch("password");
   const confirmedPassword = watch("confirmedPassword"); */
@@ -75,7 +61,7 @@ const RegisterPage1 = () => {
 
   return (
     <div className={styles.page}>
-      <Logo></Logo>
+      <Logo name="default"></Logo>
       <main className={styles.pageContent} id="Page Content">
         <header className={styles.header}>
           <h1>Register</h1>
@@ -88,7 +74,6 @@ const RegisterPage1 = () => {
             autoComplete="off"
             className={styles.inputFields}
           >
-            <InputField {...username_validation} />
             <InputField {...firstname_validation} />
             <InputField {...lastname_validation} />
             <InputField {...email_validation} />

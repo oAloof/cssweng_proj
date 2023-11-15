@@ -1,9 +1,9 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/loginRegister.module.css";
-import Logo from "../components/DefaultLogo";
+import styles from "../styles/Page.module.css";
+import Logo from "../components/Logo";
 import { useForm, FormProvider } from "react-hook-form";
 import {
   username_validation,
@@ -15,22 +15,8 @@ const Login = () => {
   const methods = useForm({ mode: "onSubmit" });
 
   const onSubmit = (data) => {
-    // Send data to backend
-    fetch("http://localhost:4000/api/login", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    }).then((response) => {
-      if (response.status === 200) {
-        navigate("/");
-      } else {
-        return response.json();
-      }
-    }).then((data) => {
-      console.log(data.message); // The message to be displayed to the user
-    });
+    console.log(data);
+    //methods.reset();
   };
 
   const onRegisterClick = useCallback(() => {
@@ -43,7 +29,7 @@ const Login = () => {
 
   return (
     <div className={styles.page}>
-      <Logo></Logo>
+      <Logo name="default"></Logo>
       <section className={styles.pageContent} id="Page Content">
         <header className={styles.header}>
           <h1>Log In</h1>

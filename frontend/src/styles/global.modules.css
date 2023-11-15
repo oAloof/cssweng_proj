@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500;700&display=swap");
 @font-face {
   font-family: "Proxima Nova";
-  src: url("/public/Proxima Nova Semibold.otf");
+  src: url("../../public/fonts/Proxima Nova Semibold.otf");
   font-weight: 600;
 }
 @font-face {
   font-family: "Proxima Nova";
-  src: url("/public/Proxima Nova Bold.otf");
+  src: url("../../public/fonts/Proxima Nova Bold.otf");
   font-weight: 700;
 }
 
@@ -24,6 +24,8 @@ body {
   --font-size-sm: 14px;
   --font-size-2xs: 11px;
   --font-size-11xl: 30px;
+  --font-size-large: 30px;
+  --font-size-cardtext: 0.8rem;
 
   /* Colors */
   --white: #fff;
@@ -36,6 +38,7 @@ body {
   --black: #221e1f;
   --coral: #ff5d7c;
   --red: #e14664;
+  --backgroundcolor: #f9f9f9;
 
   /* Gaps */
   --gap-20xl: 39px;
@@ -55,6 +58,11 @@ body {
   /* Border radiuses */
   --br-10xl: 29px;
   --br-3xs: 10px;
+  --br-small: 7px;
+  --br-lgi: 19px;
+
+  /* Effects */
+  --drop-shadow-mobile: 2px 4px 8.8px rgba(0.2, 0.2, 0.2, 0.137);
 }
 
 /* Customer */

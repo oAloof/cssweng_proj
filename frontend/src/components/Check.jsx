@@ -1,4 +1,4 @@
-import styles from "../styles/check.module.css";
+import styles from "../styles/Check.module.css";
 
 import React from "react";
 
