@@ -75,6 +75,7 @@ const CountdownTimer = ({ saleData }) => {
             onClick={() =>
               onSocialsClick("https://www.facebook.com/bxappliances/")
             }
+            style={{ cursor: "pointer" }}
           >
             <FontAwesomeIcon icon={faFacebook} style={{ color: "#ffffff" }} />
             Facebook Page
