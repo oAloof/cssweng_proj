@@ -23,6 +23,7 @@ import TestCustomerView from "../views/customer/testCustomerView.jsx";
 import ProductsPage from "../views/customer/productsPage";
 import LandingPage from "../views/customer/LandingPage";
 import CartPage from "../views/customer/cartPage";
+import ViewAllProducts from "../views/admin/ViewAllProducts";
 
 library.add(faHome, faList, faShoppingCart, faUser);
 
@@ -30,6 +31,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* USER */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/products" element={<ProductsPage />} />
@@ -42,6 +44,8 @@ function App() {
           <Route path="1" element={<Register1 />} />
           <Route path="2" element={<Register2 />} />
         </Route>
+        {/* ADMIN */}
+        <Route path="/admin/products" element={<ViewAllProducts />} />
       </Routes>
     </Router>
   );

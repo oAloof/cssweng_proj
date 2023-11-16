@@ -1,0 +1,234 @@
+.newSaleeditSale {
+  align-self: stretch;
+  position: relative;
+  line-height: 150%;
+  display: inline-block;
+  width: 317px;
+  flex-shrink: 0;
+}
+.icon {
+  position: absolute;
+  height: 47.81%;
+  width: 47.81%;
+  top: 25.94%;
+  right: 26.25%;
+  bottom: 26.25%;
+  left: 25.94%;
+  max-width: 100%;
+  max-height: 100%;
+}
+.icon,
+.icons,
+.x {
+  overflow: hidden;
+}
+.x {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.icons {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.newSaleeditSaleParent {
+  align-self: stretch;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.emailAddress {
+  border: 0;
+  font-weight: 500;
+  font-family: var(--desktop-body);
+  font-size: 13.28px;
+  background-color: transparent;
+  flex: 1;
+  position: relative;
+  line-height: 150%;
+  color: var(--gray-2);
+  text-align: left;
+}
+.emailField,
+.productNameField {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.emailField {
+  flex: 1;
+  border-radius: 12.07px;
+  border: 1.2px solid var(--gray-4);
+  padding: 10.867219924926758px 14.489625930786133px;
+}
+.productNameField {
+  align-self: stretch;
+  height: 46.7px;
+}
+.emailField1 {
+  flex: 1;
+  border-radius: 12.07px;
+  border: 1.2px solid var(--gray-4);
+  padding: 10.867219924926758px 14.489625930786133px;
+}
+.emailField1,
+.pricePerUnit {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.manila {
+  position: relative;
+  line-height: 150%;
+  font-weight: 500;
+}
+.option,
+.option1 {
+  background-color: var(--color-gray-100);
+  width: 361.2px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 4.501457691192627px 11.253643989562988px;
+  box-sizing: border-box;
+}
+.option {
+  display: none;
+}
+.option1 {
+  display: flex;
+}
+.dropdown {
+  position: absolute;
+  top: -37.1px;
+  left: 0;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.location1 {
+  align-self: stretch;
+  flex: 1;
+  position: relative;
+  line-height: 150%;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+.dropdownArrowChild {
+  position: absolute;
+  height: 151.11%;
+  width: 125.56%;
+  top: -24.44%;
+  right: -13.33%;
+  bottom: -26.67%;
+  left: -12.22%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.dropdownArrow {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  position: relative;
+  width: 9px;
+  height: 4.5px;
+}
+.city {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 11.25px;
+  background-color: var(--white);
+  border: 1.1px solid var(--gray-4);
+  box-sizing: border-box;
+  width: 361.2px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10.128279685974121px 22.507287979125977px 10.128279685974121px
+    13.504373550415039px;
+  gap: 11.25px;
+  font-size: 12.38px;
+  color: var(--gray-2);
+}
+.location {
+  align-self: stretch;
+  position: relative;
+  height: 37.2px;
+}
+.addProduct1 {
+  position: relative;
+  font-size: var(--font-size-sm);
+  line-height: 150%;
+  font-family: var(--font-alice);
+  color: var(--white);
+  text-align: left;
+}
+.addProduct {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-6xs) var(--padding-3xs);
+  background-color: var(--light-blue);
+  align-self: stretch;
+  border-radius: var(--br-10xl);
+  box-shadow: var(--drop-shadow-mobile);
+  height: 37.2px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.addeditASale,
+.inputFields {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.inputFields {
+  align-self: stretch;
+  padding: 0 var(--padding-xl);
+  gap: var(--gap-xs);
+  font-size: 10.13px;
+}
+.addeditASale {
+  position: relative;
+  border-radius: var(--br-9xl);
+  background-color: var(--white);
+  box-shadow: var(--drop-shadow-desktop);
+  border: 1px solid var(--gray-5);
+  box-sizing: border-box;
+  width: 649px;
+  height: 317px;
+  overflow: hidden;
+  padding: var(--padding-8xl) var(--padding-10xl);
+  gap: var(--gap-8xl);
+  max-width: 100%;
+  max-height: 100%;
+  text-align: left;
+  font-size: var(--desktop-subheading-size);
+  color: var(--black);
+  font-family: var(--desktop-body);
+}
