@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser')
 // const adminProductRoutes = require('./src/routes/adminProductRouter')
 // const adminOrdersRoutes = require('./src/routes/adminOrdersRouter')
 // const adminSalesRoutes = require('./src/routes/adminSalesRouter')
-// const customerRoutes = require('./src/routes/customerRouter')
+const customerSalesRoutes = require('./routes/customerSalesRouter')
 const userController = require('./controllers/userController')
 const authenticate = require('./middlewares/authenticate')
 // express app
@@ -38,22 +38,19 @@ app.use((req, res, next) => {
     next()
 })
 
-// ROUTES 
-// login and Register API
+// API ROUTES 
+// Login and Register API
 app.post('/api/login', authenticate, userController.loginUser)
 app.post('/api/register', authenticate, userController.registerUser)
 app.post('/api/logout', authenticate, userController.logoutUser)
 
-// admin api
-
-
-// sales api
-
-
-
+// Customer API
+app.use('/api/sales', customerSalesRoutes) 
+// Admin api
+// app.use('/admin/sales', adminSalesRoutes) // routes related to sales
 // app.use('/admin/products', adminProductRoutes) // routes related to products
 // app.use('/admin/orders', adminOrdersRoutes) // routes related to orders
-// app.use('/admin/sales', adminSalesRoutes) // routes related to sales
+
 
 // connect to the mongoDB database
 mongoose.connect(process.env.MONGODB_URI, {
