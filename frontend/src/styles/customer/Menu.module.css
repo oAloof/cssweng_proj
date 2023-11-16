@@ -67,6 +67,7 @@
   transform-origin: top;
   background-color: var(--brand-color);
   color: #000;
+  z-index: 1500;
 }
 
 .linkContainer {
