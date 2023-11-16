@@ -175,3 +175,29 @@ export const city_validation = {
     required: "Required",
   },
 };
+
+export const quantity_validation = {
+  name: "quantity",
+  label: "Quantity",
+  type: "number",
+  id: "quantity",
+  placeholder: "Enter quantity",
+  validation: {
+    required: {
+      value: true,
+      message: "Quantity is required",
+    },
+    min: {
+      value: 1,
+      message: "Quantity must be at least 1",
+    },
+    max: {
+      value: 100,
+      message: "Quantity must not exceed 100",
+    },
+    pattern: {
+      value: /^\d+$/,
+      message: "Quantity must be a positive integer",
+    },
+  },
+};

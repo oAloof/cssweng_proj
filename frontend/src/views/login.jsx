@@ -45,13 +45,7 @@ const Login = () => {
           >
             <InputField {...email_validation} />
             <InputField {...password_validation} />
-            <Button
-              buttonText="Log In"
-              logInTextAlign="center"
-              logInFlex="1"
-              buttonClass="blue"
-              type="submit"
-            />
+            <Button buttonText="Log In" buttonClass="blue" type="submit" />
           </form>
         </FormProvider>
         <div className={styles.prompts}>

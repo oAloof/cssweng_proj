@@ -33,3 +33,8 @@
   justify-content: center;
   box-sizing: border-box;
 }
+
+.blue,
+.red {
+  align-self: "stretch";
+}
