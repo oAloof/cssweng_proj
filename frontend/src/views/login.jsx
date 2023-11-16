@@ -52,7 +52,7 @@ const Login = () => {
       }
     }).then((data) => {
       setErrorMessage(data.message) // The message to be displayed to the user
-    }).catch((error) => {
+    }).catch(() => {
       setErrorMessage("Unable to connect to the server. Please ensure you're connected to the internet and try again.") // If the server is down
     });
   };

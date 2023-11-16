@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useContext } from "react";
+import { useCallback, useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import styles from "../styles/Page.module.css";
 import Logo from "../components/Logo";
 import Dropdown from "../components/CitySelect";
+import ErrorMessage from "../components/ErrorMessage";
 import { useForm, FormProvider } from "react-hook-form";
 
 import {
@@ -19,12 +20,23 @@ const RegisterPage2 = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
   const { registrationData, isPageOneComplete } = useContext(RegistrationContext);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (!isPageOneComplete) {
       navigate("/register/1");
     }
-  }, [isPageOneComplete]);
+
+    // Set a timer to clear the error message after 5 seconds
+    let timer;
+    if (errorMessage) {
+      timer = setTimeout(() => {
+        setErrorMessage('');
+      }, 5000);
+    }
+
+    return () => clearTimeout(timer);
+  }, [isPageOneComplete, errorMessage]);
 
   const onSubmit = (data) => {
     // Send data to backend
@@ -46,7 +58,9 @@ const RegisterPage2 = () => {
         return response.json();
       }
     }).then((data) => {
-      console.log(data.message); // The message to be displayed to the user
+      setErrorMessage(data.message) // The message to be displayed to the user
+    }).catch(() => {
+      setErrorMessage("Unable to connect to the server. Please ensure you're connected to the internet and try again.") // If the server is down
     });
   };
 
@@ -58,6 +72,13 @@ const RegisterPage2 = () => {
 
   return (
     <div className={styles.page}>
+      {errorMessage && 
+        <ErrorMessage
+          message={errorMessage}
+          onClose={() => setErrorMessage("")}
+        />
+      }
+
       <Logo name="default"></Logo>
       <main className={styles.pageContent} id="Page Content">
         <header className={styles.header}>
