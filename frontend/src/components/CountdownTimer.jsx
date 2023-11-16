@@ -72,6 +72,7 @@ const CountdownTimer = ({ saleData }) => {
           </span>
           <div
             className={styles.footer}
+            style={{ cursor: "pointer" }}
             onClick={() =>
               onSocialsClick("https://www.facebook.com/bxappliances/")
             }

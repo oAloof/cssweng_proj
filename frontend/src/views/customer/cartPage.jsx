@@ -11,9 +11,14 @@ const CartPage = () => {
   return (
     <div className={styles.page}>
       <Menu />
-      <main className={styles.pageContent}>
+      <main className={styles.cart}>
         <Header title="Cart" />
         <div className={styles.cartItems}>
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
           <CartItem />
           <CartItem />
           <CartItem />
