@@ -1,9 +1,23 @@
 export const firstname_validation = {
   name: "firstName",
   label: "First Name",
-  type: "firstName",
+  type: "text",
   id: "firstName",
   placeholder: "First Name",
+  validation: {
+    required: {
+      value: true,
+      message: "Required",
+    },
+  },
+};
+
+export const username_validation = {
+  name: "username",
+  label: "Username",
+  type: "text",
+  id: "username",
+  placeholder: "Username",
   validation: {
     required: {
       value: true,
@@ -15,7 +29,7 @@ export const firstname_validation = {
 export const lastname_validation = {
   name: "lastName",
   label: "Last Name",
-  type: "lastName",
+  type: "text",
   id: "lastName",
   placeholder: "Last Name",
   validation: {
@@ -159,5 +173,31 @@ export const city_validation = {
   name: "city",
   validation: {
     required: "Required",
+  },
+};
+
+export const quantity_validation = {
+  name: "quantity",
+  label: "Quantity",
+  type: "number",
+  id: "quantity",
+  placeholder: "Enter quantity",
+  validation: {
+    required: {
+      value: true,
+      message: "Quantity is required",
+    },
+    min: {
+      value: 1,
+      message: "Quantity must be at least 1",
+    },
+    max: {
+      value: 100,
+      message: "Quantity must not exceed 100",
+    },
+    pattern: {
+      value: /^\d+$/,
+      message: "Quantity must be a positive integer",
+    },
   },
 };
