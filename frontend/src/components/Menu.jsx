@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import ImprovedMenu from "./improvedMenu.jsx";
 
 const categories = [
   // TEMPORARY VALUES
@@ -70,7 +71,7 @@ const Menu = () => {
 
   return (
     <header className={styles.header}>
-      <div className={`${styles.background} lg:hidden`} onClick={toggleMenu}>
+      <div className={`${styles.menuButton} lg:hidden`} onClick={toggleMenu}>
         <FontAwesomeIcon
           icon={faBars}
           className={styles.icon}

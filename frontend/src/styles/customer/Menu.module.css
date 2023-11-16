@@ -55,9 +55,6 @@
   font-size: 1rem;
   height: 2.5rem;
   color: #000;
-}
-
-.closeButton {
   cursor: pointer;
 }
 
@@ -104,7 +101,7 @@ a {
   height: 26px;
 }
 
-.background {
+.menuButton {
   border-radius: 23.88px;
   background-color: var(--brand-color);
   box-shadow: 1.7px 3.4px 7.51px rgba(0, 0, 0, 0.03);

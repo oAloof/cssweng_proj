@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../styles/Logo.module.css";
+import { useNavigate } from "react-router-dom";
 
 const logos = {
   default: {
@@ -19,6 +20,11 @@ const logos = {
 };
 
 const Logo = ({ name, ...props }) => {
+  const navigate = useNavigate();
+  const onLogoClick = () => {
+    navigate("/");
+  };
+
   const logo = logos[name];
   if (!logo) {
     console.error(`Logo not found: ${name}`);
@@ -31,6 +37,7 @@ const Logo = ({ name, ...props }) => {
       alt={`${name} logo`}
       className={logo.style}
       {...props}
+      onClick={onLogoClick}
     />
   );
 };

@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "../styles/CountdownTimer.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTruckFast } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 
 const CountdownTimer = ({ saleData }) => {
+  const onSocialsClick = (url) => {
+    window.open(url, "_blank");
+  };
+
   const initializeTimeLeft = () => {
     if (!saleData || !saleData.endDate) {
       return { days: 0, hours: 0, minutes: 0 };
@@ -66,7 +70,15 @@ const CountdownTimer = ({ saleData }) => {
             There is no ongoing sale at the moment. Follow us on our socials to
             be notified about future sales!
           </span>
-          <FontAwesomeIcon icon={faFacebook} style={{ color: "#ffffff" }} />
+          <div
+            className={styles.footer}
+            onClick={() =>
+              onSocialsClick("https://www.facebook.com/bxappliances/")
+            }
+          >
+            <FontAwesomeIcon icon={faFacebook} style={{ color: "#ffffff" }} />
+            Facebook Page
+          </div>
         </div>
       </div>
     );
