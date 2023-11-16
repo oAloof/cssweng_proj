@@ -14,7 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 // PAGES
-import Login from "../views/Login";
+import Login from "../views/login";
 import Register1 from "../views/registerPage1";
 import Register2 from "../views/registerPage2";
 import AccountPage from "../views/customer/accountPage.jsx";

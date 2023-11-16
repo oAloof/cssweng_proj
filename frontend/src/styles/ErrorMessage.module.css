@@ -1,0 +1,24 @@
+.errorMessage {
+    background-color: var(--red);
+    color: white;
+    padding: 15px;
+    position: fixed; 
+    top: 15px; 
+    left: 43%; 
+    transform: translateX(-50%); 
+    border-radius: 5px;
+    z-index: 1000; 
+    min-width: 100px;
+    max-width: 90%; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    display: inline-block;
+    text-align: center;
+  }
+  
+  .closeButton {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
