@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { RegistrationProvider } from "../contexts/RegistrationContext";
+import "../index.css";
 
 // STYLES
 import styles from "../styles/global.modules.css";
