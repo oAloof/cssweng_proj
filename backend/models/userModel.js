@@ -9,6 +9,14 @@ const userSchema = new Schema({
         required: true, 
         unique: true
     },
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: false,
@@ -27,11 +35,11 @@ const userSchema = new Schema({
         type: String,
         required: false
     },
-    cellNumber: {
+    contactNumber: {
         type: Number, 
         required: false
     },
-    billingAdd: {
+    streetAddress: {
         type: String,
         required: false
     },

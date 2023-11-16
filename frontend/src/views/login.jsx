@@ -6,7 +6,7 @@ import styles from "../styles/Page.module.css";
 import Logo from "../components/Logo";
 import { useForm, FormProvider } from "react-hook-form";
 import {
-  email_validation,
+  username_validation,
   password_validation,
 } from "../utils/inputValidations";
 
@@ -43,7 +43,7 @@ const Login = () => {
             autoComplete="off"
             className={styles.inputFields}
           >
-            <InputField {...email_validation} />
+            <InputField {...username_validation} />
             <InputField {...password_validation} />
             <Button
               buttonText="Log In"

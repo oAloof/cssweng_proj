@@ -24,9 +24,31 @@ const RegisterPage1 = () => {
   //const { watch } = methods;
 
   const onSubmit = (data) => {
-    console.log(data);
-    navigate("/register/2");
-    //methods.reset();
+    setRegistrationData(data);
+    // Send data to backend to check if email already exists
+    const requestData = {
+      ...data,
+      registrationStep: 1,
+    };
+
+    fetch("http://localhost:4000/api/register", {
+      method: "POST",
+      body: JSON.stringify(requestData),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          setIsPageOneComplete(true);
+          navigate("/register/2");
+        } else {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        console.log(data.message); // The message to be displayed to the user
+      });
   };
 
   const onSignInTextClick = useCallback(() => {
