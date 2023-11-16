@@ -27,7 +27,7 @@ const CountdownTimer = ({ saleData }) => {
   const [timeLeft, setTimeLeft] = useState(initializeTimeLeft());
   // const [OngoingSale, setOngoingSale] = useState(
   //   saleData && saleData.endDate ? true : false
-  // );
+  // ); // ! i want every1 to know i spent 2 hours debugging and it was bc of this line FUCCC
 
   useEffect(() => {
     if (!saleData) {
