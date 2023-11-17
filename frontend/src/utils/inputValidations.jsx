@@ -9,6 +9,10 @@ export const firstname_validation = {
       value: true,
       message: "Required",
     },
+    pattern: {
+      value: /^[A-Za-z.]+$/,
+      message: "Only letters allowed",
+    },
   },
 };
 
@@ -23,6 +27,10 @@ export const username_validation = {
       value: true,
       message: "Required",
     },
+    pattern: {
+      value: /^[A-Za-z0-9]+$/,
+      message: "No special characters allowed",
+    },
   },
 };
 
@@ -36,6 +44,10 @@ export const lastname_validation = {
     required: {
       value: true,
       message: "Required",
+      pattern: {
+        value: /^[A-Za-z.]+$/,
+        message: "Only letters allowed",
+      },
     },
   },
 };
@@ -45,7 +57,7 @@ export const desc_validation = {
   label: "Description",
   multiline: true,
   id: "description",
-  placeholder: "write description ...",
+  placeholder: "Product description ...",
   validation: {
     required: {
       value: true,
@@ -54,6 +66,104 @@ export const desc_validation = {
     maxLength: {
       value: 200,
       message: "200 characters max",
+    },
+  },
+};
+
+export const productName_validation = {
+  name: "productName",
+  label: "Product Name",
+  type: "text",
+  id: "productName",
+  placeholder: "Product Name",
+  validation: {
+    required: {
+      value: true,
+      message: "Required",
+    },
+  },
+};
+
+export const saleName_validation = {
+  name: "saleName",
+  label: "Sale Name",
+  type: "text",
+  id: "saleName",
+  placeholder: "Sale Name",
+  validation: {
+    required: {
+      value: true,
+      message: "Required",
+    },
+  },
+};
+
+export const productOriginalPrice_validation = {
+  name: "originalPrice",
+  label: "Original Price",
+  type: "number",
+  id: "originalPrice",
+  placeholder: "Original Price",
+  validation: {
+    required: {
+      value: true,
+      message: "Required",
+    },
+    min: {
+      value: 0,
+      message: "Price cannot be less than 0",
+    },
+    pattern: {
+      value: /^\d+(\.\d{1,2})?$/,
+      message: "Invalid price format",
+    },
+  },
+};
+
+export const discountPercentage_validation = {
+  name: "discountPercentage",
+  label: "Discount %",
+  type: "number",
+  id: "discountPercentage",
+  placeholder: "Discount %",
+  validation: {
+    required: {
+      value: true,
+      message: "Required",
+    },
+    min: {
+      value: 0,
+      message: "Discount cannot be less than 0",
+    },
+    max: {
+      value: 100,
+      message: "Discount cannot exceed 100",
+    },
+    pattern: {
+      value: /^\d+(\.\d{1,2})?$/,
+      message: "Invalid percentage",
+    },
+  },
+};
+
+export const availableQuantity_validation = {
+  name: "availableQuantity",
+  label: "Available Quantity",
+  type: "number",
+  id: "availableQuantity",
+  placeholder: "Available Quantity",
+  validation: {
+    required: {
+      value: true,
+      message: "Required",
+    },
+    min: {
+      value: 0,
+      message: "Must not be less than 0",
+    },
+    pattern: {
+      value: /^\d+$/,
+      message: "Invalid quantity format",
     },
   },
 };

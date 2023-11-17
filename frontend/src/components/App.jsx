@@ -23,7 +23,18 @@ import TestCustomerView from "../views/customer/testCustomerView.jsx";
 import ProductsPage from "../views/customer/productsPage";
 import LandingPage from "../views/customer/LandingPage";
 import CartPage from "../views/customer/cartPage";
+<<<<<<< Updated upstream
 import ViewAllProducts from "../views/admin/ViewAllProducts";
+=======
+
+// ADMIN PAGES
+import AdminDashboard from "../views/admin/adminHomepage";
+import AdminProductPage from "../views/admin/productsPage.jsx";
+import AdminSalesPage from "../views/admin/adminSalesPage.jsx";
+import AdminOrdersPage from "../views/admin/adminOrdersPage.jsx";
+
+// TESTING
+>>>>>>> Stashed changes
 
 library.add(faHome, faList, faShoppingCart, faUser);
 
@@ -44,8 +55,19 @@ function App() {
           <Route path="1" element={<Register1 />} />
           <Route path="2" element={<Register2 />} />
         </Route>
+<<<<<<< Updated upstream
         {/* ADMIN */}
         <Route path="/admin/products" element={<ViewAllProducts />} />
+=======
+
+        {/* ADMIN PAGES */}
+        <Route path="/admin">
+          <Route path="home" element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProductPage />} />
+          <Route path="sales" element={<AdminSalesPage />} />
+          <Route path="orders" element={<AdminOrdersPage />} />
+        </Route>
+>>>>>>> Stashed changes
       </Routes>
     </Router>
   );
