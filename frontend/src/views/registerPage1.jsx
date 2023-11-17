@@ -5,6 +5,10 @@ import Button from "../components/Button";
 import styles from "../styles/Page.module.css";
 import ErrorMessage from "../components/ErrorMessage";
 import Logo from "../components/Logo";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+
 import { useForm, FormProvider } from "react-hook-form";
 import {
   username_validation,
@@ -52,7 +56,7 @@ const RegisterPage1 = () => {
     // Send data to backend to check if email already exists
     const requestData = {
       ...data,
-      registrationStep: 1
+      registrationStep: 1,
     };
 
     fetch("http://localhost:4000/api/register", {

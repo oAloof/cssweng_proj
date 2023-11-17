@@ -7,6 +7,7 @@ import Logo from "../components/Logo";
 import Dropdown from "../components/CitySelect";
 import ErrorMessage from "../components/ErrorMessage";
 import { useForm, FormProvider } from "react-hook-form";
+import BackButton from "../components/BackButton.jsx";
 
 import {
   contactNumber_validation,
@@ -68,8 +69,6 @@ const RegisterPage2 = () => {
     navigate("/login");
   }, [navigate]);
 
-  // ADD BACK BUTTON
-
   return (
     <div className={styles.page}>
       {errorMessage && 
@@ -81,6 +80,7 @@ const RegisterPage2 = () => {
 
       <Logo name="default"></Logo>
       <main className={styles.pageContent} id="Page Content">
+        <BackButton title="Back" />
         <header className={styles.header}>
           <h1>Register</h1>
           <h3>Shipping Address</h3>
