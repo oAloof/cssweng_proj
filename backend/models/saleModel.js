@@ -9,8 +9,7 @@ const saleSchema = new Schema({
         required: true
     },
     location: {
-        type: String,
-        enum: ['Metro Manila', 'Batangas', 'Laguna', 'Cavite'],
+        type: String, 
         required: true
     },
     startDate: {

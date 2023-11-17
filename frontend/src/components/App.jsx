@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 // PAGES
-import Login from "../views/Login";
+import Login from "../views/login";
 import Register1 from "../views/registerPage1";
 import Register2 from "../views/registerPage2";
 import AccountPage from "../views/customer/accountPage.jsx";
@@ -30,6 +30,7 @@ library.add(faHome, faList, faShoppingCart, faUser);
 function App() {
   return (
     <Router>
+      
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -44,6 +45,7 @@ function App() {
           <Route path="2" element={<Register2 />} />
         </Route>
       </Routes>
+    
     </Router>
   );
 }
