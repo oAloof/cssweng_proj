@@ -23,7 +23,7 @@ import { RegistrationContext } from "../contexts/RegistrationContext";
 const RegisterPage1 = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
-  const { registrationData, isPageOneComplete, setRegistrationData, setIsPageOneComplete } = useContext(RegistrationContext);
+  const { registrationData1, isPageOneComplete, setRegistrationData1, setIsPageOneComplete } = useContext(RegistrationContext);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -33,12 +33,12 @@ const RegisterPage1 = () => {
 
     if (isPageOneComplete) {
       // fill up input fields with data from context
-      methods.setValue("username", registrationData.username);
-      methods.setValue("firstName", registrationData.firstName);
-      methods.setValue("lastName", registrationData.lastName);
-      methods.setValue("email", registrationData.email);
-      methods.setValue("password", registrationData.password);
-      methods.setValue("confirmPassword", registrationData.confirmPassword);
+      methods.setValue("username", registrationData1.username);
+      methods.setValue("firstName", registrationData1.firstName);
+      methods.setValue("lastName", registrationData1.lastName);
+      methods.setValue("email", registrationData1.email);
+      methods.setValue("password", registrationData1.password);
+      methods.setValue("confirmPassword", registrationData1.confirmPassword);
     }
 
     // Set a timer to clear the error message after 5 seconds
@@ -51,8 +51,9 @@ const RegisterPage1 = () => {
 
     return () => clearTimeout(timer);
   }, [isPageOneComplete, errorMessage]);
+
   const onSubmit = (data) => {
-    setRegistrationData(data);
+    setRegistrationData1(data);
     // Send data to backend to check if email already exists
     const requestData = {
       ...data,

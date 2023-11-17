@@ -26,20 +26,6 @@ export const firstname_validation = {
   },
 };
 
-export const username_validation = {
-  name: "username",
-  label: "Username",
-  type: "text",
-  id: "username",
-  placeholder: "Username",
-  validation: {
-    required: {
-      value: true,
-      message: "Required",
-    },
-  },
-};
-
 export const lastname_validation = {
   name: "lastName",
   label: "Last Name",

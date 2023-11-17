@@ -20,12 +20,20 @@ import { RegistrationContext } from "../contexts/RegistrationContext";
 const RegisterPage2 = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
-  const { registrationData, isPageOneComplete } = useContext(RegistrationContext);
+  const { registrationData2, setRegistrationData2, isPageOneComplete } = useContext(RegistrationContext);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (!isPageOneComplete) {
       navigate("/register/1");
+    }
+
+    if (registrationData2) {
+      // fill up input fields with data from context
+      methods.setValue("contactNumber", registrationData2.contactNumber);
+      methods.setValue("streetAddress", registrationData2.streetAddress);
+      methods.setValue("city", registrationData2.city);
+      methods.setValue("zip", registrationData2.zip);
     }
 
     // Set a timer to clear the error message after 5 seconds
@@ -69,6 +77,14 @@ const RegisterPage2 = () => {
     navigate("/login");
   }, [navigate]);
 
+  const onBackClick = useCallback(() => {
+    // Add the data from the input fields to the registration context
+    const data = methods.getValues();
+    setRegistrationData2(data);
+
+    navigate("/register/1");
+  }, [navigate]);
+
   return (
     <div className={styles.page}>
       {errorMessage && 
@@ -80,7 +96,7 @@ const RegisterPage2 = () => {
 
       <Logo name="default"></Logo>
       <main className={styles.pageContent} id="Page Content">
-        <BackButton title="Back" />
+        <BackButton title="Back" onClick={onBackClick} />
         <header className={styles.header}>
           <h1>Register</h1>
           <h3>Shipping Address</h3>
