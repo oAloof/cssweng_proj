@@ -5,16 +5,25 @@ const logos = {
   default: {
     src: "/logos/BXAppliancesLogo.png",
     style: styles.default,
+    link: "/",
   },
 
   topbar: {
     src: "/logos/BlueLogo.png",
     style: styles.topbar,
+    link: "/",
   },
 
   white: {
     src: "/logos/White Logo.png",
     style: styles.topbar,
+    link: "/",
+  },
+
+  admin: {
+    src: "/logos/BlueLogo.png",
+    style: styles.default,
+    link: "/admin/home",
   },
 };
 
@@ -26,12 +35,15 @@ const Logo = ({ name, ...props }) => {
   }
 
   return (
-    <img
-      src={logo.src}
-      alt={`${name} logo`}
-      className={logo.style}
-      {...props}
-    />
+    <a href={logo.link}>
+      <img
+        src={logo.src}
+        alt={`${name} logo`}
+        className={logo.style}
+        style={{ objectFit: "contain" }}
+        {...props}
+      />
+    </a>
   );
 };
 
