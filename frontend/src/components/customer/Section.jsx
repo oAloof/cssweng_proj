@@ -71,7 +71,7 @@ const Card = ({
         height: CARD_HEIGHT,
         ...style,
       }}
-      onClick={handleClick}
+      //onClick={handleClick}
     >
       <div className="relative">
         <img
@@ -170,15 +170,18 @@ const Button = ({ type }) => {
     setIsClicked(true);
     setTimeout(() => {
       setIsClicked(false);
-    }, 500);
+    }, 4000);
+    console.log("isClicked", isClicked);
   };
+
+  const clickedClass = isClicked ? "bg-green-500" : "bg-indigo-500";
 
   if (type === "cart") {
     return (
       <button
         className={`
           relative z-0 flex items-center justify-center gap-2 overflow-hidden rounded-lg border-[1px] 
-          border-indigo-300 px-4 py-2 font-semibold uppercase bg-indigo-500 text-indigo-100 transition-all duration-500 flex-grow w-full
+          border-indigo-300 px-4 py-2 font-semibold uppercase  text-indigo-100 transition-all duration-500 flex-grow w-full
           before:absolute before:inset-0
           before:-z-10 before:translate-x-[150%]
           before:translate-y-[150%] before:scale-[2.5]
@@ -189,7 +192,7 @@ const Button = ({ type }) => {
           hover:before:translate-x-[0%]
           hover:before:translate-y-[0%]
           active:scale-95
-          ${isClicked ? "bg-green-500" : ""}
+          ${clickedClass}
         `}
         onClick={handleClick}
       >
