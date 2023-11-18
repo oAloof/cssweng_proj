@@ -33,7 +33,7 @@ const CountdownTimer = ({ saleData }) => {
     if (!saleData) {
       return;
     }
-
+    
     const timer = setInterval(() => {
       const endDate = new Date(saleData.endDate).getTime();
       const now = new Date().getTime();

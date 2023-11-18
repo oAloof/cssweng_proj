@@ -56,7 +56,7 @@ const Login = () => {
       setErrorMessage("Unable to connect to the server. Please ensure you're connected to the internet and try again.") // If the server is down
     });
   };
-
+  
   const onRegisterClick = useCallback(() => {
     navigate("/register");
   }, [navigate]);
