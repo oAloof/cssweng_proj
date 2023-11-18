@@ -1,9 +1,9 @@
-export const firstname_validation = {
-  name: "firstName",
-  label: "First Name",
-  type: "text",
-  id: "firstName",
-  placeholder: "First Name",
+export const username_validation = {
+  name: "username",
+  label: "Username",
+  type: "username",
+  id: "username",
+  placeholder: "Username",
   validation: {
     required: {
       value: true,
@@ -16,12 +16,12 @@ export const firstname_validation = {
   },
 };
 
-export const username_validation = {
-  name: "username",
-  label: "Username",
+export const firstname_validation = {
+  name: "firstName",
+  label: "First Name",
   type: "text",
-  id: "username",
-  placeholder: "Username",
+  id: "firstName",
+  placeholder: "First Name",
   validation: {
     required: {
       value: true,

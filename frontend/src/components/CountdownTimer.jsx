@@ -30,12 +30,12 @@ const CountdownTimer = ({ saleData }) => {
   };
 
   const [timeLeft, setTimeLeft] = useState(initializeTimeLeft());
-  const [OngoingSale, setOngoingSale] = useState(
-    saleData && saleData.endDate ? true : false
-  );
+  // const [OngoingSale, setOngoingSale] = useState(
+  //   saleData && saleData.endDate ? true : false
+  // ); // ! i want every1 to know i spent 2 hours debugging and it was bc of this line FUCCC
 
   useEffect(() => {
-    if (!OngoingSale) {
+    if (!saleData) {
       return;
     }
 
@@ -61,7 +61,7 @@ const CountdownTimer = ({ saleData }) => {
     return () => clearInterval(timer);
   }, [saleData]);
 
-  if (!OngoingSale) {
+  if (!saleData) {
     return (
       <div className={styles.countdown}>
         <div className={styles.container}>
@@ -88,7 +88,7 @@ const CountdownTimer = ({ saleData }) => {
   return (
     <div className={styles.countdown}>
       <div className={styles.container}>
-        <div className={styles.header}>{location} BODEGA SALE</div>
+        <div className={styles.header}>{saleData.location} BODEGA SALE</div>
         <span className={styles.subheading}>ENDS IN</span>
         <div className={styles.timer}>
           <div className={styles.timeSection}>
@@ -112,7 +112,7 @@ const CountdownTimer = ({ saleData }) => {
         </div>
         <div className={styles.footer}>
           <FontAwesomeIcon icon={faTruckFast} style={{ color: "#ffffff" }} />
-          Exclusive to customers in {location}!
+          Exclusive to customers in {saleData.location}!
         </div>
       </div>
     </div>

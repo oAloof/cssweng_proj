@@ -4,14 +4,14 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import styles from "../styles/BackButton.module.css";
 import { useNavigate } from "react-router-dom";
 
-const BackButton = ({ title }) => {
-  const navigate = useNavigate();
-  const handleBackClick = () => {
-    navigate(-1);
-  };
+const BackButton = ({ title, onClick }) => {
+  // const navigate = useNavigate();
+  // const handleBackClick = () => {
+  //   navigate(-1);
+  // };
 
   return (
-    <div className={styles.back} onClick={handleBackClick}>
+    <div className={styles.back} onClick={onClick}>
       <FontAwesomeIcon icon={faArrowLeft} className={styles.backBtn} />
       <span className={styles.title}>{title}</span>
     </div>
