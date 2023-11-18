@@ -7,7 +7,7 @@ import SearchBar from "./SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 
 const categories = [
   // TEMPORARY VALUES
@@ -24,8 +24,34 @@ const Menu = () => {
     /* TODO: Implement logout logic */
   }
   const navigate = useNavigate();
-  const OnLogoutClick = useCallback(() => {
-    navigate("/login");
+
+  const handleLoginLogout = useCallback(() => {
+    if (!(localStorage.getItem("isAuthenticated") === 'true')) {
+      navigate("/login");
+      return;
+    }
+
+    // Logout
+    localStorage.setItem("isAuthenticated", false);
+    fetch("http://localhost:4000/api/logout", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).then((response) => {
+      if (response.status === 200) {
+        navigate("/");
+        return response.json();
+      } else {
+        return response.json();
+      }
+    }).then((data) => {
+      console.log(data.message); // The message to be displayed to the user
+    }).catch((error) => {
+      console.log(error); // If the server is down
+    });
+
   }, [navigate]);
 
   const [open, setOpen] = useState(false);
@@ -116,8 +142,13 @@ const Menu = () => {
 
                 {/* TODO: Implement logout logic */}
                 <div className={styles.mobileNavLink} onClick={toggleMenu}>
-                  <BottomButton title="Logout" href="/login" />
+                  <BottomButton 
+                    title={localStorage.getItem("isAuthenticated") === 'true' ? "Logout" : "Login"}
+                    onClick={handleLoginLogout} 
+                    icon={localStorage.getItem("isAuthenticated") === 'true' ? faRightFromBracket : faRightToBracket }
+                    />
                 </div>
+
               </motion.div>
             </div>
           </motion.div>
@@ -152,15 +183,15 @@ const MobileNavLink = ({ title, href }) => {
   );
 };
 
-const BottomButton = ({ title, href }) => {
+const BottomButton = ({ title, onClick, icon }) => {
   return (
-    <motion.div variants={mobileLinkVars} className={styles.bottomButtons}>
+    <motion.div variants={mobileLinkVars} className={styles.bottomButtons} onClick={onClick}>
       <FontAwesomeIcon
-        icon={faRightFromBracket}
+        icon={icon}
         className={styles.icon}
         style={{ color: "#ffff" }}
       />
-      <a href={href}>{title}</a>
+      <span>{title}</span>
     </motion.div>
   );
 };

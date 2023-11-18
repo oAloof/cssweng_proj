@@ -1,0 +1,30 @@
+const express = require('express')
+const router = express.Router()
+
+const salesController = require('../controllers/customerSalesController')
+const Sale = require('../models/saleModel')
+
+
+// GET sale data of the current ongoing sale
+router.get('/ongoing', salesController.getOngoingSale)
+
+// ! DELETE LATER
+router.get('/create', async (req, res) => {
+    // insert a new sale into the database
+    let today = new Date();
+    let tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
+    const sale = await Sale.create(
+        {
+            title: 'test sale',
+            location: 'test location',
+            startDate: today,
+            startTime: 'test start time',
+            endDate: tomorrow,
+            endTime: 'test end time'
+        })
+    console.log(sale);
+})
+
+module.exports = router

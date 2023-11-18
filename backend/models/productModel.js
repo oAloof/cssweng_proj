@@ -24,8 +24,16 @@ const productSchema = new Schema({
         type: Number,
         required: true
     },
-    price: {
+    originalPrice: {
         type: Number, 
+        required: true
+    },
+    salePercentage: {
+        type: Number,
+        required: true
+    },
+    salePrice: {
+        type: Number,
         required: true
     },
     // Listed attribute -- if Listed: product will be added to the list of products for sale

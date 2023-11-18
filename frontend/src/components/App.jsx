@@ -35,6 +35,7 @@ library.add(faHome, faList, faShoppingCart, faUser);
 function App() {
   return (
     <Router>
+      
       <Routes>
         {/* CUSTOMER PAGES */}
         <Route path="/" element={<LandingPage />} />
@@ -55,6 +56,7 @@ function App() {
           <Route path="products" element={<AdminProductPage />} />
         </Route>
       </Routes>
+    
     </Router>
   );
 }
