@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
-
 import Countdown from "../../components/CountdownTimer.jsx";
 import NavBar from "../../components/NavBar.jsx";
 import Menu from "../../components/Menu.jsx";
-import styles from "../../styles/customer/customerPage.module.css";
 import Section from "../../components/customer/Section.jsx";
 
 const LandingPage = () => {
@@ -14,8 +12,8 @@ const LandingPage = () => {
       try {
         const data = await getSaleData();
         setSaleData(data.sale);
-      }catch (error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
     };
     fetchData();
@@ -27,25 +25,25 @@ const LandingPage = () => {
       if (!response.ok) {
         console.log("Error fetching data");
       }
-      return await response.json(); 
+      return await response.json();
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
-  }
-
+  };
 
   return (
-    <div className={styles.page}>
-      <section className={styles.pageContent}>
-        <Countdown saleData={saleData} />
-        <Section category="Big Discounts!" />
-        <Section category="Selling Out Fast" />
-        <Section category="Test" />
-        <Section category="Test" />
-        <Section category="Test" />
-      </section>
+    <div>
+      <div className="mt-[5vh] pb-[5vh]">
+        <Menu />
+        <section className="overflow-auto ">
+          <Countdown saleData={saleData} />
+          <Section category="Big Discounts!" />
+          <Section category="Big Discounts!" />
+          <Section category="Big Discounts!" />
+          <Section category="Big Discounts!" />
+        </section>
+      </div>
       <NavBar />
-      <Menu />
     </div>
   );
 };

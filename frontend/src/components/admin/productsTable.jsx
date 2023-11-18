@@ -12,7 +12,7 @@ const Table = () => {
 
   return (
     <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible mx-auto overflow-x-auto">
-      <table className="w-full">
+      <table className="w-full ">
         <thead>
           <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase">
             <th className="text-start p-4 font-medium">Product</th>
@@ -38,7 +38,7 @@ const TableRows = ({ product }) => {
   return (
     <motion.tr
       layoutId={`row-${product.id}`}
-      className={`text-sm ${product.id % 2 ? "bg-slate-100" : "bg-white"}`}
+      className={`text-sm ${product.id % 2 ? "bg-slate-100" : "bg-white "}`}
     >
       <td className="p-4 flex items-center gap-3 overflow-hidden">
         <img

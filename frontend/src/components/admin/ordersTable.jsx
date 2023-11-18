@@ -9,11 +9,11 @@ const Table = () => {
   const [orders, setorders] = useState(orderData);
 
   return (
-    <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible mx-auto mt-8 overflow-x-auto">
+    <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible mx-auto overflow-x-auto font-Nunito">
       <table className="w-full">
         <thead>
           <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase">
-            <th className="text-start p-4 font-medium">Order Number</th>
+            <th className="text-start p-4">Order Number</th>
             <th className="text-start p-4 font-medium">Total</th>
             <th className="text-start p-4 font-medium">Location</th>
             <th className="text-start p-4 font-medium">Order Date</th>
@@ -89,7 +89,7 @@ const TableRows = ({ order }) => {
       <td className="p-4">
         <Dropdown
           options={dropdownOptions}
-          placeholder="Select Status"
+          placeholder="Status"
           initialValue={{ text: selectedValue }}
         />
       </td>

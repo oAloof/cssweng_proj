@@ -11,6 +11,7 @@
   top: 0;
   left: 0;
   right: 0;
+  z-index: 1000;
 }
 
 .headerOpen {
@@ -54,9 +55,6 @@
   font-size: 1rem;
   height: 2.5rem;
   color: #000;
-}
-
-.closeButton {
   cursor: pointer;
 }
 
@@ -69,6 +67,7 @@
   transform-origin: top;
   background-color: var(--brand-color);
   color: #000;
+  z-index: 1500;
 }
 
 .linkContainer {
@@ -103,7 +102,7 @@ a {
   height: 26px;
 }
 
-.background {
+.menuButton {
   border-radius: 23.88px;
   background-color: var(--brand-color);
   box-shadow: 1.7px 3.4px 7.51px rgba(0, 0, 0, 0.03);

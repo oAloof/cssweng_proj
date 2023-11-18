@@ -1,197 +1,85 @@
-import React, { useState, useCallback } from "react";
+import { motion } from "framer-motion";
+import { useState, useCallback } from "react";
+import { FiMenu } from "react-icons/fi";
+import Logo from "./Logo";
 import { useNavigate } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
-import styles from "../styles/customer/Menu.module.css";
-import Logo from "./Logo.jsx";
-import SearchBar from "./SearchBar";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { faRightFromBracket, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import MenuButton from "./customer/MenuBtn";
 
-const categories = [
-  // TEMPORARY VALUES
-  { title: "Appliances", href: "/" },
-  { title: "Accessories", href: "/" },
-  { title: "Aircons", href: "/" },
-  { title: "Electronics", href: "/" },
-  { title: "Sound Systems", href: "/" },
-  { title: "Accessories", href: "/" },
-  { title: "Aircons", href: "/" },
-];
-const Menu = () => {
-  {
-    /* TODO: Implement logout logic */
-  }
+const TopNav = () => {
+  return (
+    <nav className="bg-white p-4 border-b-[1px] border-gray-200 flex items-center justify-between fixed w-full top-0 right-0 -left-0 z-50 h-[5vh]">
+      <NavLeft />
+      <div className="flex justify-center">
+        <Logo name="topbar" />
+      </div>
+      <NavRight />
+    </nav>
+  );
+};
+
+const NavLeft = () => {
+  return (
+    <div className="flex items-center justify-start relative w-1/3">
+      <MenuButton />
+    </div>
+  );
+};
+
+{
+  /* TODO: Implement logout logic */
+}
+
+const NavRight = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  const handleLoginLogout = useCallback(() => {
-    if (!(localStorage.getItem("isAuthenticated") === 'true')) {
-      navigate("/login");
-      return;
-    }
-
-    // Logout
-    localStorage.setItem("isAuthenticated", false);
-    fetch("http://localhost:4000/api/logout", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    }).then((response) => {
-      if (response.status === 200) {
-        navigate("/");
-        return response.json();
-      } else {
-        return response.json();
-      }
-    }).then((data) => {
-      console.log(data.message); // The message to be displayed to the user
-    }).catch((error) => {
-      console.log(error); // If the server is down
-    });
-
+  const OnLoginClick = useCallback(() => {
+    navigate("/login");
   }, [navigate]);
 
-  const [open, setOpen] = useState(false);
-  const toggleMenu = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-  const menuVars = {
-    initial: {
-      scaleY: 0,
-    },
-    animate: {
-      scaleY: 1,
-      transition: {
-        duration: 0.5,
-        ease: [0.12, 0, 0.39, 0],
-      },
-    },
-    exit: {
-      scaleY: 0,
-      transition: {
-        delay: 0.5,
-        duration: 0.5,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    },
-  };
-  const containerVars = {
-    initial: {
-      transition: {
-        staggerChildren: 0.09,
-        staggerDirection: -1,
-      },
-    },
-    open: {
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.09,
-        staggerDirection: 1,
-      },
-    },
-  };
+  const OnSignUpClick = useCallback(() => {
+    navigate("/register/1");
+  }, [navigate]);
 
-  return (
-    <header className={styles.header}>
-      <div className={`${styles.background} lg:hidden`} onClick={toggleMenu}>
-        <FontAwesomeIcon
-          icon={faBars}
-          className={styles.icon}
-          style={{ color: "#ffffff" }}
-        />
+  const OnLogoutClick = useCallback(() => {
+    setLoggedIn(false);
+  }, []);
+
+  if (loggedIn == true) {
+    return (
+      <div className="flex items-center justify-end gap-4 w-1/3 text-sm">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="px-4 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium rounded-md whitespace-nowrap"
+          onClick={OnLogoutClick}
+        >
+          Log Out
+        </motion.button>
       </div>
-      <Logo name="topbar" />
-      <SearchBar />
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            variants={menuVars}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            className={`${styles.fullScreenMenu}`}
-          >
-            <div className={`${styles.menuContent}`}>
-              <div className={`${styles.headerOpen}`}>
-                <div className={styles.closeButton} onClick={toggleMenu}>
-                  <FontAwesomeIcon
-                    icon={faXmark}
-                    className={styles.closeButton}
-                    style={{ color: "#ffff" }}
-                  />
-                </div>
-                <Logo name="white" />
-              </div>
-              <motion.div
-                variants={containerVars}
-                initial="initial"
-                animate="open"
-                exit="initial"
-                className={`${styles.linkContainer}`}
-              >
-                <div className={styles.categoriesWrapper}>
-                  {categories.map((link, index) => (
-                    <div key={index} className={`${styles.mobileNavLink}`}>
-                      <MobileNavLink title={link.title} href={link.href} />
-                    </div>
-                  ))}
-                </div>
+    );
+  }
 
-                {/* TODO: Implement logout logic */}
-                <div className={styles.mobileNavLink} onClick={toggleMenu}>
-                  <BottomButton 
-                    title={localStorage.getItem("isAuthenticated") === 'true' ? "Logout" : "Login"}
-                    onClick={handleLoginLogout} 
-                    icon={localStorage.getItem("isAuthenticated") === 'true' ? faRightFromBracket : faRightToBracket }
-                    />
-                </div>
-
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
-  );
-};
-
-export default Menu;
-const mobileLinkVars = {
-  initial: {
-    y: "30vh",
-    transition: {
-      duration: 0.5,
-      ease: [0.37, 0, 0.63, 1],
-    },
-  },
-  open: {
-    y: 0,
-    transition: {
-      ease: [0, 0.55, 0.45, 1],
-      duration: 0.7,
-    },
-  },
-};
-const MobileNavLink = ({ title, href }) => {
   return (
-    <motion.div variants={mobileLinkVars}>
-      <a href={href}>{title}</a>
-    </motion.div>
+    <div className="flex items-center justify-end gap-0 w-1/3 text-sm">
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="px-4 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent font-medium rounded-md whitespace-nowrap"
+        onClick={OnLoginClick}
+      >
+        Sign in
+      </motion.button>
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="px-3 py-1 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium rounded-md whitespace-nowrap"
+        onClick={OnSignUpClick}
+      >
+        Sign up
+      </motion.button>
+    </div>
   );
 };
 
-const BottomButton = ({ title, onClick, icon }) => {
-  return (
-    <motion.div variants={mobileLinkVars} className={styles.bottomButtons} onClick={onClick}>
-      <FontAwesomeIcon
-        icon={icon}
-        className={styles.icon}
-        style={{ color: "#ffff" }}
-      />
-      <span>{title}</span>
-    </motion.div>
-  );
-};
+export default TopNav;

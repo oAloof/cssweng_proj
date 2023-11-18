@@ -27,6 +27,8 @@ import CartPage from "../views/customer/cartPage";
 // ADMIN PAGES
 import AdminDashboard from "../views/admin/adminHomepage";
 import AdminProductPage from "../views/admin/productsPage.jsx";
+import AdminSalesPage from "../views/admin/adminSalesPage.jsx";
+import AdminOrdersPage from "../views/admin/adminOrdersPage.jsx";
 
 // TESTING
 
@@ -35,9 +37,8 @@ library.add(faHome, faList, faShoppingCart, faUser);
 function App() {
   return (
     <Router>
-      
       <Routes>
-        {/* CUSTOMER PAGES */}
+        {/* USER */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/products" element={<ProductsPage />} />
@@ -54,9 +55,10 @@ function App() {
         <Route path="/admin">
           <Route path="home" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProductPage />} />
+          <Route path="sales" element={<AdminSalesPage />} />
+          <Route path="orders" element={<AdminOrdersPage />} />
         </Route>
       </Routes>
-    
     </Router>
   );
 }

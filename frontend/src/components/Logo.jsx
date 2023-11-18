@@ -1,33 +1,34 @@
 import React from "react";
-import styles from "../styles/Logo.module.css";
+import { useNavigate } from "react-router-dom";
 
 const logos = {
   default: {
     src: "/logos/BXAppliancesLogo.png",
-    style: styles.default,
-    link: "/",
+    className: "relative w-[153px] h-[44px] object-cover",
   },
 
   topbar: {
     src: "/logos/BlueLogo.png",
-    style: styles.topbar,
-    link: "/",
+    className: "relative w-auto h-[38px] object-cover",
   },
 
   white: {
     src: "/logos/White Logo.png",
-    style: styles.topbar,
-    link: "/",
+    className: "relative w-auto h-[38px] object-cover",
   },
 
   admin: {
     src: "/logos/BlueLogo.png",
-    style: styles.default,
-    link: "/admin/home",
+    className: "relative w-auto h-[38px] object-cover",
   },
 };
 
 const Logo = ({ name, ...props }) => {
+  const navigate = useNavigate();
+  const onLogoClick = () => {
+    navigate("/");
+  };
+
   const logo = logos[name];
   if (!logo) {
     console.error(`Logo not found: ${name}`);
@@ -35,15 +36,14 @@ const Logo = ({ name, ...props }) => {
   }
 
   return (
-    <a href={logo.link}>
-      <img
-        src={logo.src}
-        alt={`${name} logo`}
-        className={logo.style}
-        style={{ objectFit: "contain" }}
-        {...props}
-      />
-    </a>
+    <img
+      src={logo.src}
+      alt={`${name} logo`}
+      className={logo.className}
+      {...props}
+      onClick={onLogoClick}
+      style={{ cursor: "pointer" }}
+    />
   );
 };
 
