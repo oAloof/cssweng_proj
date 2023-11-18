@@ -1,120 +1,136 @@
-import React, { useState, useEffect, useCallback } from "react";
-import styles from "../styles/CountdownTimer.module.css";
+import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTruckFast } from "@fortawesome/free-solid-svg-icons";
+import { faTruckFast, faBullhorn } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
+
+import { AnimatePresence, motion } from "framer-motion";
+
+const COUNTDOWN_FROM = "12/31/2023";
+
+const SECOND = 1000;
+const MINUTE = SECOND * 60;
+const HOUR = MINUTE * 60;
+const DAY = HOUR * 24;
 
 const CountdownTimer = ({ saleData }) => {
   const onSocialsClick = (url) => {
     window.open(url, "_blank");
   };
 
-  const initializeTimeLeft = () => {
-    if (!saleData || !saleData.endDate) {
-      return { days: 0, hours: 0, minutes: 0 };
-    }
-    const endDate = new Date(saleData.endDate).getTime();
-    const now = new Date().getTime();
-    const distance = endDate - now;
+  const intervalRef = useRef(null);
 
-    if (distance < 0) {
-      return { days: 0, hours: 0, minutes: 0 };
-    } else {
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      return { days, hours, minutes };
-    }
+  const [remaining, setRemaining] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+  });
+
+  useEffect(() => {
+    intervalRef.current = setInterval(handleCountdown, 1000);
+
+    return () => clearInterval(intervalRef.current || undefined);
+  }, []);
+
+  const handleCountdown = () => {
+    const end = new Date(COUNTDOWN_FROM);
+
+    const now = new Date();
+
+    const distance = +end - +now;
+
+    const days = Math.floor(distance / DAY);
+    const hours = Math.floor((distance % DAY) / HOUR);
+    const minutes = Math.floor((distance % HOUR) / MINUTE);
+
+    setRemaining({
+      days,
+      hours,
+      minutes,
+    });
   };
 
-  const [timeLeft, setTimeLeft] = useState(initializeTimeLeft());
+  //const [timeLeft, setTimeLeft] = useState(initializeTimeLeft());
   // const [OngoingSale, setOngoingSale] = useState(
   //   saleData && saleData.endDate ? true : false
   // ); // ! i want every1 to know i spent 2 hours debugging and it was bc of this line FUCCC
 
-  useEffect(() => {
-    if (!saleData) {
-      return;
-    }
-
-    const timer = setInterval(() => {
-      const endDate = new Date(saleData.endDate).getTime();
-      const now = new Date().getTime();
-      const distance = endDate - now;
-
-      if (distance < 0) {
-        clearInterval(timer);
-        setOngoingSale(false);
-        setTimeLeft({ days: 0, hours: 0, minutes: 0 });
-      } else {
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        setTimeLeft({ days, hours, minutes });
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [saleData]);
-
   if (!saleData) {
     return (
-      <div className={styles.countdown}>
-        <div className={styles.container}>
-          <div className={styles.header}>No Sales Yet!</div>
-          <span>
-            There is no ongoing sale at the moment. Follow us on our socials to
-            be notified about future sales!
-          </span>
-          <div
-            className={styles.footer}
-            style={{ cursor: "pointer" }}
-            onClick={() =>
-              onSocialsClick("https://www.facebook.com/bxappliances/")
-            }
+      <div className="bg-gradient-to-br from-violet-600 to-indigo-600 text-white p-6 shadow-xl cursor-default relative rounded-xl m-4">
+        <div className="bg-white w-16 h-16 mb-2 rounded-full text-3xl text-indigo-600 grid place-items-center mx-auto">
+          <FontAwesomeIcon
+            icon={faBullhorn}
+            className="text-indigo-600 rotate-12 "
+          />
+        </div>
+        <h3 className="text-3xl font-bold text-center mb-2">
+          No ongoing sales!
+        </h3>
+        <p className="text-center mb-6">
+          Don't miss the next deals! Follow our socials to stay up to date and
+          be notified about future sales!
+        </p>
+        <div className="flex gap-2 justify-center">
+          <button
+            onClick={() => {
+              onSocialsClick("https://www.facebook.com/bxappliances/");
+            }}
+            className="bg-white hover:opacity-90 transition-opacity text-indigo-600 font-semibold w-1/2 py-2 rounded"
           >
-            <FontAwesomeIcon icon={faFacebook} style={{ color: "#ffffff" }} />
+            <FontAwesomeIcon icon={faFacebook} className="mr-2" />
             Facebook Page
-          </div>
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={styles.countdown}>
-      <div className={styles.container}>
-        <div className={styles.header}>{saleData.location} BODEGA SALE</div>
-        <span className={styles.subheading}>ENDS IN</span>
-        <div className={styles.timer}>
-          <div className={styles.timeSection}>
-            <span className={styles.time}>
-              {String(timeLeft.days).padStart(2, "0")}
-            </span>
-            <span className={styles.label}>DAYS</span>
-          </div>
-          <div className={styles.timeSection}>
-            <span className={styles.time}>
-              {String(timeLeft.hours).padStart(2, "0")}
-            </span>
-            <span className={styles.label}>HOURS</span>
-          </div>
-          <div className={styles.timeSection}>
-            <span className={styles.time}>
-              {String(timeLeft.minutes).padStart(2, "0")}
-            </span>
-            <span className={styles.label}>MINS</span>
-          </div>
-        </div>
-        <div className={styles.footer}>
-          <FontAwesomeIcon icon={faTruckFast} style={{ color: "#ffffff" }} />
-          Exclusive to customers in {saleData.location}!
-        </div>
+    <div className="p-4 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-xl m-4">
+      <h1 className="text-3xl font-bold text-center text-white font-Proxima mb-0">
+        {saleData.location} BODEGA SALE
+      </h1>
+      <h6 className="text-xl font-semibold text-center text-white font-Nunito ">
+        ENDS IN
+      </h6>
+      <div className="w-full max-w-5xl mx-auto flex items-center bg-white">
+        <CountdownItem num={remaining.days} text="DAYS" />
+        <CountdownItem num={remaining.hours} text="HOURS" />
+        <CountdownItem num={remaining.minutes} text="MINUTES" />
       </div>
+      <div className="w-auto max-w-5xl mx-auto flex items-center justify-center space-x-3 mt-3 mb-0">
+        <FontAwesomeIcon
+          icon={faTruckFast}
+          style={{ color: "#ffffff", height: "20px" }}
+        />
+        <h6 className="text-xl font-semibold text-white font-Nunito mr-0 ml-4 my-0">
+          Exclusive to customers in {saleData.location}!
+        </h6>
+      </div>
+    </div>
+  );
+};
+
+const CountdownItem = ({ num, text }) => {
+  return (
+    <div className="font-Proxima font-bold w-1/3 h-24 md:h-36 flex flex-col gap-1 md:gap-2 items-center justify-center border-r-[1px] border-slate-200">
+      <div className="w-full text-center relative overflow-hidden">
+        <AnimatePresence mode="popLayout">
+          <motion.span
+            key={num}
+            initial={{ y: "100%" }}
+            animate={{ y: "0%" }}
+            exit={{ y: "-100%" }}
+            transition={{ ease: "backIn", duration: 0.75 }}
+            className="block text-2xl md:text-4xl lg:text-6xl xl:text-7xl text-black font-medium"
+          >
+            {num}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+      <span className="text-sm md:text-sm lg:text-base font-light text-slate-500">
+        {text}
+      </span>
     </div>
   );
 };

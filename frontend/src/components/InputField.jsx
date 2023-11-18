@@ -3,7 +3,15 @@ import { useFormContext } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdError } from "react-icons/md";
 
-const InputField = ({ label, placeholder, id, type, validation, name }) => {
+const InputField = ({
+  label,
+  placeholder,
+  id,
+  type,
+  validation,
+  name,
+  onChange,
+}) => {
   const {
     register,
     formState: { errors },
@@ -11,6 +19,11 @@ const InputField = ({ label, placeholder, id, type, validation, name }) => {
 
   const inputErrors = findInputError(errors, name);
   const isInvalid = isFormInvalid(inputErrors);
+
+  const handleChange = (e) => {
+    if (onChange) onChange(e);
+    register(name).onChange(e);
+  };
 
   return (
     <div className="flex flex-col items-start justify-between">
@@ -31,6 +44,7 @@ const InputField = ({ label, placeholder, id, type, validation, name }) => {
         className="border-2 border-violet-300 font-semibold font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black"
         placeholder={placeholder}
         {...register(name, validation)}
+        onChange={handleChange}
       />
     </div>
   );
