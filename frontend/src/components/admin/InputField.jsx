@@ -13,7 +13,7 @@ const InputField = ({ label, placeholder, id, type, validation, name }) => {
   const isInvalid = isFormInvalid(inputErrors);
 
   return (
-    <div className="flex flex-col items-start justify-between">
+    <div className="flex flex-col items-start justify-between w-full">
       <div className="flex justify-between items-end pb-[0.1rem] w-full">
         <h6 htmlFor={id}>{label}</h6>
         <AnimatePresence mode="wait" initial={false}>
@@ -28,7 +28,7 @@ const InputField = ({ label, placeholder, id, type, validation, name }) => {
       <input
         id={id}
         type={type}
-        className="border-2 border-violet-300 font-semibold font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black"
+        className="border-2 border-violet-300 font-semibold font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black w-full"
         placeholder={placeholder}
         {...register(name, validation)}
       />

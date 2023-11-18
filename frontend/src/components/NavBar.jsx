@@ -1,40 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
-//import styles from "../styles/NavBar.module.css";
-import NavBarBtn from "./NavbarBtn.jsx";
-import {
-  faHome,
-  faList,
-  faShoppingCart,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
-
-/* const NavBar = () => {
-  const location = useLocation();
-
-  const navItems = [
-    { label: "Home", path: "/", icon: faHome },
-    { label: "All Products", path: "/products", icon: faList },
-    { label: "Cart", path: "/cart", icon: faShoppingCart },
-    { label: "Account", path: "/account", icon: faUser },
-  ];
-
-  return (
-    <div className={styles.navbar}>
-      {navItems.map((item) => (
-        <NavBarBtn
-          key={item.label}
-          label={item.label}
-          active={location.pathname === item.path}
-          path={item.path}
-          icon={item.icon}
-        />
-      ))}
-    </div>
-  );
-};
-
-export default NavBar; */
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
@@ -42,6 +7,7 @@ import { FiShoppingCart, FiSearch, FiHome, FiUser } from "react-icons/fi";
 
 const NavBar = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navItems = [
     { text: "Home", Icon: FiHome, path: "/" },
@@ -63,6 +29,7 @@ const NavBar = () => {
             text={item.text}
             Icon={item.Icon}
             path={item.path}
+            navigate={navigate}
           />
         ))}
       </div>
@@ -70,16 +37,20 @@ const NavBar = () => {
   );
 };
 
-const Link = ({ text, Icon, path }) => {
+const Link = ({ text, Icon, path, navigate }) => {
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate(path);
+  };
+
   return (
-    <a
-      href={path}
-      rel="nofollow"
+    <button
+      onClick={handleClick}
       className="text-m w-12 hover:text-indigo-500 transition-colors flex flex-col gap-1 items-center text-black"
     >
       <Icon />
       <span className="text-sm">{text}</span>
-    </a>
+    </button>
   );
 };
 

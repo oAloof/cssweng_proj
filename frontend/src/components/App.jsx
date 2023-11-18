@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { RegistrationProvider } from "../contexts/RegistrationContext";
+import "../index.css";
 
 // STYLES
 import styles from "../styles/global.modules.css";
@@ -23,9 +24,6 @@ import TestCustomerView from "../views/customer/testCustomerView.jsx";
 import ProductsPage from "../views/customer/productsPage";
 import LandingPage from "../views/customer/LandingPage";
 import CartPage from "../views/customer/cartPage";
-<<<<<<< Updated upstream
-import ViewAllProducts from "../views/admin/ViewAllProducts";
-=======
 
 // ADMIN PAGES
 import AdminDashboard from "../views/admin/adminHomepage";
@@ -34,7 +32,6 @@ import AdminSalesPage from "../views/admin/adminSalesPage.jsx";
 import AdminOrdersPage from "../views/admin/adminOrdersPage.jsx";
 
 // TESTING
->>>>>>> Stashed changes
 
 library.add(faHome, faList, faShoppingCart, faUser);
 
@@ -55,10 +52,6 @@ function App() {
           <Route path="1" element={<Register1 />} />
           <Route path="2" element={<Register2 />} />
         </Route>
-<<<<<<< Updated upstream
-        {/* ADMIN */}
-        <Route path="/admin/products" element={<ViewAllProducts />} />
-=======
 
         {/* ADMIN PAGES */}
         <Route path="/admin">
@@ -67,7 +60,6 @@ function App() {
           <Route path="sales" element={<AdminSalesPage />} />
           <Route path="orders" element={<AdminOrdersPage />} />
         </Route>
->>>>>>> Stashed changes
       </Routes>
     </Router>
   );

@@ -1,21 +1,25 @@
 import React from "react";
-import styles from "../styles/Logo.module.css";
 import { useNavigate } from "react-router-dom";
 
 const logos = {
   default: {
     src: "/logos/BXAppliancesLogo.png",
-    style: styles.default,
+    className: "relative w-[153px] h-[44px] object-cover",
   },
 
   topbar: {
     src: "/logos/BlueLogo.png",
-    style: styles.topbar,
+    className: "relative w-auto h-[38px] object-cover",
   },
 
   white: {
     src: "/logos/White Logo.png",
-    style: styles.topbar,
+    className: "relative w-auto h-[38px] object-cover",
+  },
+
+  admin: {
+    src: "/logos/BlueLogo.png",
+    className: "relative w-auto h-[38px] object-cover",
   },
 };
 
@@ -35,9 +39,10 @@ const Logo = ({ name, ...props }) => {
     <img
       src={logo.src}
       alt={`${name} logo`}
-      className={logo.style}
+      className={logo.className}
       {...props}
       onClick={onLogoClick}
+      style={{ cursor: "pointer" }}
     />
   );
 };

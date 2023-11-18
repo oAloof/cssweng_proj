@@ -1,11 +1,12 @@
 /** @type {import('tailwindcss').Config} */
+
 export default {
   content: ["./frontend/src/**/*.{html,js,jsx}", "./src/styles/**/*.css"],
   theme: {
     extend: {
       fontFamily: {
         Nunito: ["Nunito", "sans-serif"],
-        Proxima: ['"Proxima Nova"', "sans-serif"],
+        proxima: ["Proxima Nova", "sans-serif"],
       },
       colors: {
         white: "#fff",
