@@ -56,7 +56,7 @@ function App() {
           <Route path="1" element={<Register1 />} />
           <Route path="2" element={<Register2 />} />
         </Route>
-
+        
         {/* ADMIN PAGES */}
         <Route path="/admin">
           <Route path="home" element={<AdminDashboard />} />

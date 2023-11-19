@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser')
 // const adminSalesRoutes = require('./src/routes/adminSalesRouter')
 const customerSalesRoutes = require('./routes/customerSalesRouter')
 const userController = require('./controllers/userController')
-const authenticate = require('./middlewares/authenticate')
+const { authenticate } = require('./middlewares/authenticate')
 // express app
 const app = express()
 
@@ -46,9 +46,10 @@ app.post('/api/logout', authenticate, userController.logoutUser)
 
 // Customer API
 app.use('/api/sales', customerSalesRoutes) 
+
 // Admin api
 // app.use('/admin/sales', adminSalesRoutes) // routes related to sales
-// app.use('/admin/products', adminProductRoutes) // routes related to products
+app.use('/api/admin/products', adminProductRoutes) // routes related to products
 // app.use('/admin/orders', adminOrdersRoutes) // routes related to orders
 
 
