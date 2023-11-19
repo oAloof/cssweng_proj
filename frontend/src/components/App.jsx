@@ -18,7 +18,7 @@ import {
 import Login from "../views/Login";
 import Register1 from "../views/registerPage1";
 import Register2 from "../views/registerPage2";
-import AccountPage from "../views/customer/accountPage.jsx";
+import AccountPage from "../views/customer/accountPage";
 import ForgotPassword from "../views/ForgotPasswordPage"; // TODO: delete this
 import ProductsPage from "../views/customer/productsPage";
 import LandingPage from "../views/customer/LandingPage";
