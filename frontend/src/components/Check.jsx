@@ -2,16 +2,16 @@ import styles from "../styles/Check.module.css";
 
 import React from "react";
 
-const checkIcon = ({ isValid }) => {
+const Check = ({ isValid }) => {
   return (
     <div className={styles.checkContainer}>
       {isValid ? (
-        <img src="/checked.svg" alt="Valid" />
+        <img src="../../public/icons/checked.svg" alt="Valid" />
       ) : (
-        <img src="/unchecked.svg" alt="Invalid" />
+        <img src="../../public/icons/unchecked.svg" alt="Invalid" />
       )}
     </div>
   );
 };
 
-export default checkIcon;
+export default Check;

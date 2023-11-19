@@ -1,13 +1,17 @@
+.cart,
 .pageContent {
   flex-grow: 1;
-  width: 95%;
-  margin: 0 auto;
+  width: 100%;
   overflow-y: auto;
-  padding: 100px 10px 85px 10px;
+  padding: 100px 20px 85px 20px;
   display: flex;
   flex-direction: column;
   gap: 2em;
   text-align: left;
+}
+
+.cart {
+  margin-bottom: 345px;
 }
 
 .page {
@@ -18,4 +22,17 @@
   background-color: var(--backgroundcolor);
   width: 100%;
   overflow: hidden;
+}
+
+.cartItems {
+  height: auto;
+  align-items: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  overflow-y: auto;
+  flex-shrink: 0;
+  gap: 0.7em;
+  justify-content: flex-start;
 }

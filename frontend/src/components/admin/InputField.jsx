@@ -1,17 +1,9 @@
-import { findInputError, isFormInvalid } from "../utils/";
+import { findInputError, isFormInvalid } from "../../utils";
 import { useFormContext } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdError } from "react-icons/md";
 
-const InputField = ({
-  label,
-  placeholder,
-  id,
-  type,
-  validation,
-  name,
-  onChange,
-}) => {
+const InputField = ({ label, placeholder, id, type, validation, name }) => {
   const {
     register,
     formState: { errors },
@@ -20,13 +12,8 @@ const InputField = ({
   const inputErrors = findInputError(errors, name);
   const isInvalid = isFormInvalid(inputErrors);
 
-  const handleChange = (e) => {
-    if (onChange) onChange(e);
-    register(name).onChange(e);
-  };
-
   return (
-    <div className="flex flex-col items-start justify-between">
+    <div className="flex flex-col items-start justify-between w-full">
       <div className="flex justify-between items-end pb-[0.1rem] w-full">
         <h6 htmlFor={id}>{label}</h6>
         <AnimatePresence mode="wait" initial={false}>
@@ -41,10 +28,9 @@ const InputField = ({
       <input
         id={id}
         type={type}
-        className="border-2 border-violet-300 font-semibold font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black"
+        className="border-2 border-violet-300 font-semibold font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black w-full"
         placeholder={placeholder}
         {...register(name, validation)}
-        onChange={handleChange}
       />
     </div>
   );

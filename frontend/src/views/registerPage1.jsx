@@ -5,9 +5,7 @@ import Button from "../components/Button";
 import styles from "../styles/Page.module.css";
 import ErrorMessage from "../components/ErrorMessage";
 import Logo from "../components/Logo";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Check from "../components/Check";
 
 import { useForm, FormProvider } from "react-hook-form";
 import {
@@ -23,12 +21,40 @@ import { RegistrationContext } from "../contexts/RegistrationContext";
 const RegisterPage1 = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
-  const { registrationData1, isPageOneComplete, setRegistrationData1, setIsPageOneComplete } = useContext(RegistrationContext);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmedPassword, setConfirmedPassword] = useState("");
+
+  const [validateLength, setValidateLength] = useState(false);
+  const [validateMixedCase, setValidateMixedCase] = useState(false);
+  const [validateNumber, setValidateNumber] = useState(false);
+  const [validatePasswordMatch, setValidatePasswordMatch] = useState(false);
+
+  useEffect(() => {
+    // Update password validations
+    const isLengthValid = password.length >= 8 && password.length <= 36;
+    const isMixedCaseValid = /[a-z]/.test(password) && /[A-Z]/.test(password);
+    const isNumberValid = /[0-9]/.test(password);
+    setValidateLength(isLengthValid);
+    setValidateMixedCase(isMixedCaseValid);
+    setValidateNumber(isNumberValid);
+    const bothFieldsFilled =
+      password.length > 0 && confirmedPassword.length > 0;
+    setValidatePasswordMatch(
+      bothFieldsFilled && password === confirmedPassword
+    );
+  }, [password, confirmedPassword]);
+
+  const {
+    registrationData1,
+    isPageOneComplete,
+    setRegistrationData1,
+    setIsPageOneComplete,
+  } = useContext(RegistrationContext);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (localStorage.getItem("isAuthenticated") === "true") {
-      navigate("/"); 
+      navigate("/");
     }
 
     if (isPageOneComplete) {
@@ -45,7 +71,7 @@ const RegisterPage1 = () => {
     let timer;
     if (errorMessage) {
       timer = setTimeout(() => {
-        setErrorMessage('');
+        setErrorMessage("");
       }, 5000);
     }
 
@@ -66,42 +92,57 @@ const RegisterPage1 = () => {
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
-    }).then((response) => {
-      if (response.status === 200) {
-        setIsPageOneComplete(true);
-        navigate("/register/2");
-      } else {
-        return response.json();
-      }
-    }).then((data) => {
-      setErrorMessage(data.message) // The message to be displayed to the user
-    }).catch(() => {
-      setErrorMessage("Unable to connect to the server. Please ensure you're connected to the internet and try again.") // If the server is down
-    });
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          setIsPageOneComplete(true);
+          navigate("/register/2");
+        } else {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        setErrorMessage(data.message); // The message to be displayed to the user
+      })
+      .catch(() => {
+        setErrorMessage(
+          "Unable to connect to the server. Please ensure you're connected to the internet and try again."
+        ); // If the server is down
+      });
   };
 
   const onSignInTextClick = useCallback(() => {
     navigate("/login");
   }, [navigate]);
 
-  /* const password = watch("password");
-  const confirmedPassword = watch("confirmedPassword"); */
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
 
-  // Validation Checks
-  /* const validateLength = password.length >= 8 && password.length <= 36;
-  const validateMixedCase = /[a-z]/.test(password) && /[A-Z]/.test(password);
-  const validateNumber = /[0-9]/.test(password);
-  const validatePasswordMatch =
-    password === confirmedPassword && password.length > 0; */
+    // Update state for each validation check
+    setValidateLength(newPassword.length >= 8 && newPassword.length <= 36);
+    setValidateMixedCase(
+      /[a-z]/.test(newPassword) && /[A-Z]/.test(newPassword)
+    );
+    setValidateNumber(/[0-9]/.test(newPassword));
+  };
+
+  const handleConfirmedPasswordChange = (e) => {
+    const newConfirmedPassword = e.target.value;
+    setConfirmedPassword(newConfirmedPassword);
+
+    // Perform confirmed password validation check
+    setValidatePasswordMatch(password && password === newConfirmedPassword);
+  };
 
   return (
     <div className={styles.page}>
-      {errorMessage && 
+      {errorMessage && (
         <ErrorMessage
           message={errorMessage}
           onClose={() => setErrorMessage("")}
         />
-      }
+      )}
 
       <Logo name="default"></Logo>
       <main className={styles.pageContent} id="Page Content">
@@ -120,10 +161,17 @@ const RegisterPage1 = () => {
             <InputField {...firstname_validation} />
             <InputField {...lastname_validation} />
             <InputField {...email_validation} />
-            <InputField {...password_validation} />
-            <InputField {...confirmPassword_validation} />
-
-            {/* 
+            <InputField
+              {...password_validation}
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <InputField
+              {...confirmPassword_validation}
+              value={confirmedPassword}
+              onChange={handleConfirmedPasswordChange}
+            />
+            {/* Password Validation */}
             <div className={styles.passwordValidation}>
               <div className={styles.validationCheckTitle}>
                 Your password must:
@@ -152,8 +200,7 @@ const RegisterPage1 = () => {
                   <div className={styles.validationText}>Match</div>
                 </div>
               </div>
-            </div> }
-  */}
+            </div>{" "}
             <Button
               buttonText="Next"
               logInTextAlign="center"
