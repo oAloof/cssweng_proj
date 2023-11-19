@@ -33,8 +33,6 @@ function AdminOrdersPage() {
                 />
                 <FiSearch className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" />
               </div>
-
-              <AddEditSale />
             </div>
             <div className="flex">
               <div className="w-1/4">

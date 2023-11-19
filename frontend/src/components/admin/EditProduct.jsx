@@ -10,39 +10,32 @@ import {
 import { useForm, FormProvider } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
 
-const addEditProduct = ({ title }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const categoryOptions = [
+  { value: "appliances", label: "Appliances" },
+  { value: "aircons", label: "Aircons" },
+  { value: "sound systems", label: "Sound Systems" },
+  { value: "refrigerators", label: "Refrigerators" },
+];
+
+const brandOptions = [
+  { value: "hitachi", label: "Hitachi" },
+  { value: "samsung", label: "Samsung" },
+  { value: "sennheiser", label: "Sennheiser" },
+  { value: "union", label: "Union" },
+];
+
+const Modal = ({ isOpen, setIsOpen, title }) => {
   const [images, setImages] = useState([]);
+  const methods = useForm({ mode: "onSubmit" });
+  const onSubmit = (data) => {
+    console.log(data);
+    //methods.reset();
+  };
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const images = files.map((file) => URL.createObjectURL(file));
     setImages((prevImages) => prevImages.concat(images));
-  };
-
-  return (
-    <div className="place-content-center">
-      <button
-        onClick={() => setIsOpen(true)}
-        className="bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium px-4 py-2 rounded hover:opacity-90 transition-opacity"
-      >
-        {title}
-      </button>
-      <Modal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        images={images}
-        handleImageChange={handleImageChange}
-      />
-    </div>
-  );
-};
-
-const Modal = ({ isOpen, setIsOpen, images, handleImageChange, title }) => {
-  const methods = useForm({ mode: "onSubmit" });
-  const onSubmit = (data) => {
-    console.log(data);
-    //methods.reset();
   };
 
   const categoryOptions = [
@@ -195,4 +188,4 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange, title }) => {
   );
 };
 
-export default addEditProduct;
+export default Modal;

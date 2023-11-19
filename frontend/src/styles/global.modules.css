@@ -255,4 +255,8 @@ h6,
     align-items: center;
     justify-content: flex-start;
   }
+
+  .navBarBtn:hover svg {
+    fill: red;
+  }
 }

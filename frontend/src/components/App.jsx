@@ -26,6 +26,7 @@ import CartPage from "../views/customer/cartPage";
 import OrderConfirmation from "../views/customer/orderConfirmation.jsx";
 import Billing from "../views/customer/billing.jsx";
 import Invoice from "../views/customer/invoice.jsx";
+import ProductPage from "../views/customer/productPage";
 
 // ADMIN PAGES
 import AdminDashboard from "../views/admin/adminHomepage";
@@ -56,6 +57,9 @@ function App() {
           <Route path="1" element={<Register1 />} />
           <Route path="2" element={<Register2 />} />
         </Route>
+
+        {/* DELETE LATER, FOR TESTING PURPOSES */}
+        <Route path="/union-aircon" element={<ProductPage />} />
 
         {/* ADMIN PAGES */}
         <Route path="/admin">

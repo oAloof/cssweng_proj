@@ -5,17 +5,15 @@ import Progress from "../../components/InvoiceProgress.jsx";
 import { useNavigate } from "react-router-dom";
 import ExpandableSection from "../../components/customer/ExpandableSection.jsx";
 import Button from "../../components/customer/Button.jsx";
-import InputField from "../../components/InputField.jsx";
-
+import Logo from "../../components/Logo.jsx";
 import { useForm, FormProvider } from "react-hook-form";
-import { referenceNumber_validation } from "../../utils/inputValidations.jsx";
 
 const CartItem = ({ item }) => {
   return (
     <div className="flex flex-grow items-center justify-between border-b border-gray-200 py-3">
       <div className="flex items-center w-full flex-grow">
         <img
-          className="h-full w-32 object-contain mr-4"
+          className="h-full w-14 object-contain mr-4"
           src={item.image}
           alt={item.name}
         />
@@ -25,21 +23,19 @@ const CartItem = ({ item }) => {
               <p className="text-xl font-semibold font-Proxima m-0">
                 {item.name}
               </p>
-              <p className="text-s text-indigo-400 font-Proxima mb-4 ">
+              <p className="text-s text-indigo-400 font-Proxima mb-2 ">
                 {item.brand}
               </p>
             </div>
           </div>
-          <div className="flex items-center justify-start">
+          <div className="flex flex-row items-center justify-between">
             <p className="text-lg text-gray-600 font-Nunito font-bold m-0">
               Qty: {item.quantity}
             </p>
+            <div className="flex flex-col justify-center items-end ">
+              <p className="font-Nunito font-bold m-0 text-xl">₱{item.price}</p>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="flex items-end">
-        <div className="flex flex-col justify-center items-end h-20">
-          <p className="font-Nunito font-bold m-0 text-2xl">₱{item.price}</p>
         </div>
       </div>
     </div>
@@ -154,30 +150,6 @@ const Billing = () => {
 
   const navigate = useNavigate();
 
-  const onUpdateClick = () => {
-    navigate("/cart");
-  };
-
-  const total = (
-    parseFloat(subtotal) +
-    parseFloat(totalSaved) +
-    parseFloat(shippingFee)
-  ).toFixed(2);
-
-  const OnProceedClick = useCallback(() => {
-    navigate("/billing");
-  }, [navigate]);
-
-  const methods = useForm({ mode: "onSubmit" });
-
-  const [images, setImages] = useState([]);
-
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    const images = files.map((file) => URL.createObjectURL(file));
-    setImages((prevImages) => prevImages.concat(images));
-  };
-
   const userInfo = [
     { label: "Name", value: "Juju Juwia" },
     { label: "Contact Number", value: "09199999999" },
@@ -185,41 +157,41 @@ const Billing = () => {
     { label: "Email", value: "juwiatheGOAT@gmail.com" },
   ];
 
-  const currentStatus = "Pending Confirmation";
+  const order = {
+    number: "123456789",
+    date: "2022-01-01",
+    total: "12300.00",
+    status: "Pending Confirmation",
+  };
 
   return (
     <div className="flex flex-col min-h-screen pt-[9vh] bg-slate-200 pb-[15vh] gap-4">
       <div className="md:justify-center flex flex-col md:flex-row gap-4 px-[2vw]">
         <TopNav />
-        <div className="md:w-1/4 w-full gap-4 flex flex-col">
-          <div className="p-4 rounded-xl border-[1px] bg-white border-slate-300 shadow-xl">
-            <h2 className="font-Proxima font-bold text-3xl mb-2 ">Invoice</h2>
-            <h2 className="font-Nunito font-bold text-xl mb-3 text-indigo-500">
+        <div className="md:w-1/3 w-full gap-4 flex flex-col">
+          <div className="px-4 pt-4 pb-10 rounded-xl border-[1px] bg-white border-slate-300 shadow-xl flex flex-col gap-2">
+            <div className="flex flex-row justify-between items-center mb-6">
+              <Logo name="invoice" />
+              <p className="font-Nunito font-bold text-2xl mb-0 text-slate-400">
+                ORDER {order.number}
+              </p>
+            </div>
+            <h2 className="font-Proxima font-bold text-3xl m-0 ">
               Thank you, {userInfo.find((item) => item.label === "Name").value}!
             </h2>
-            <Progress currentStatus={currentStatus} />
+
+            <p className="font-Nunito text-[18px] mt-0 mb-5 text-slate-500">
+              Your order will be on its way soon! Please visit this page
+              regularly to receive the latest updates regarding the status of
+              your order.
+            </p>
+            <Progress currentStatus={order.status} />
+            <div className="mt-10 w-3/4 md:w-1/3 self-center">
+              <Button text="CONTINUE SHOPPING" onClick={() => navigate("/")} />
+            </div>
           </div>
         </div>
-        <div className="md:w-1/4 w-full flex flex-col gap-4">
-          <ExpandableSection
-            title="Order Summary"
-            subtitle={`₱ ${total}`}
-            isOpen={isOrderSummaryOpen}
-            onToggle={() => setOrderSummaryOpen(!isOrderSummaryOpen)}
-          >
-            <p className="text-lg font-semibold text-gray-400">
-              Subtotal: ₱{subtotal}
-            </p>
-            <p className="text-lg font-semibold text-gray-400">
-              Total Saved: ₱{totalSaved}
-            </p>
-            <p className="text-lg font-semibold text-gray-400">
-              Shipping Fee: ₱{shippingFee}
-            </p>
-            <p className="text-3xl font-bold font-Proxima text-indigo-400">
-              Total: ₱{total}
-            </p>
-          </ExpandableSection>
+        <div className="md:w-2/5 w-full flex flex-col gap-4">
           <div>
             <ExpandableSection
               title="Your Information"
@@ -230,18 +202,29 @@ const Billing = () => {
             </ExpandableSection>
           </div>
           <ExpandableSection
-            title="Your Cart"
-            isOpen={isCartOpen}
-            subtitle={`${cartCount} items`}
-            onToggle={() => setCartOpen(!isCartOpen)}
+            title="Invoice"
+            subtitle={`₱ ${order.total}`}
+            isOpen={isOrderSummaryOpen}
+            onToggle={() => setOrderSummaryOpen(!isOrderSummaryOpen)}
           >
             <div className="bg-white ">
               {cartItems.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
-              <div className="flex justify-center mt-8">
-                <Button onClick={onUpdateClick} text="UPDATE CART" />
-              </div>
+            </div>
+            <div className="flex flex-col justify-end items-end pt-4">
+              <p className="text-lg font-semibold text-gray-400">
+                Subtotal: ₱{subtotal}
+              </p>
+              <p className="text-lg font-semibold text-gray-400">
+                Total Saved: ₱{totalSaved}
+              </p>
+              <p className="text-lg font-semibold text-gray-400 mb-4">
+                Shipping Fee: ₱{shippingFee}
+              </p>
+              <p className="text-3xl font-bold font-Proxima text-indigo-400 m-0">
+                Total: ₱{order.total}
+              </p>
             </div>
           </ExpandableSection>
         </div>

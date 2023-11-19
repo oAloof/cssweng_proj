@@ -1,5 +1,12 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTruckFast,
+  faBoxOpen,
+  faClipboard,
+  faHouse,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Progress = ({ currentStatus }) => {
   const orderStatus = [
@@ -7,27 +14,35 @@ const Progress = ({ currentStatus }) => {
     "Processing Your Order",
     "Shipped Out",
     "Delivered",
-    "Paid",
   ];
+
+  const labels = [
+    "Confirming your payment.",
+    "Packing your order.",
+    "Your order is on its way!",
+    "Delivered on",
+  ];
+
   const numSteps = orderStatus.length;
   const stepsComplete = orderStatus.indexOf(currentStatus) + 1;
 
   return (
-    <div className="p-0 flex justify-start rounded-md w-2/3 max-w-2/3 ">
+    <div className="pl-6 flex justify-start rounded-md w-full ">
       <Steps
         numSteps={numSteps}
         stepsComplete={stepsComplete}
         orderStatus={orderStatus}
+        labels={labels}
       />
     </div>
   );
 };
 
-const Steps = ({ numSteps, stepsComplete, orderStatus }) => {
+const Steps = ({ numSteps, stepsComplete, orderStatus, labels }) => {
   const stepArray = Array.from(Array(numSteps).keys());
 
   return (
-    <div className="flex flex-col items-start gap-3">
+    <div className="flex flex-col items-start text-xl">
       {stepArray.map((num) => {
         const stepNum = num + 1;
         const isActive = stepNum <= stepsComplete;
@@ -35,15 +50,15 @@ const Steps = ({ numSteps, stepsComplete, orderStatus }) => {
           <React.Fragment key={stepNum}>
             <div className="flex items-center">
               <Step num={stepNum} isActive={isActive} />
-              <div className="ml-4 w-full text-left">
-                <div className="font-semibold font-Nunito text-lg">
+              <div className="ml-7 w-full text-left">
+                <div className="font-semibold font-Nunito text-xl">
                   {orderStatus[num]}
                 </div>
-                <div className="text-base">{"hi"}</div>
+                <div className="text-base font-Nunito">{labels[num]}</div>
               </div>
             </div>
             {stepNum !== stepArray.length && (
-              <div className="h-10 w-1 left-5 bg-gray-400 relative overflow-hidden">
+              <div className="h-20 w-1 left-7 bg-gray-300 relative overflow-hidden">
                 <motion.div
                   className="absolute top-0 left-0 w-full h-full bg-indigo-600"
                   initial={{ scaleY: 0 }}
@@ -64,10 +79,10 @@ const Step = ({ num, isActive }) => {
   return (
     <div className="relative">
       <div
-        className={`w-10 h-10 flex items-center justify-center shrink-0 border-2 rounded-full font-semibold text-sm relative z-10 transition-colors duration-300 ${
+        className={`w-14 h-14 flex items-center justify-center shrink-0 border-3 rounded-full font-bold text-lg relative z-10 transition-colors duration-300 ${
           isActive
             ? "border-indigo-600 bg-indigo-600 text-white"
-            : "border-gray-400 text-gray-400"
+            : "border-gray-300 text-gray-300"
         }`}
       >
         <AnimatePresence mode="wait">
@@ -102,10 +117,9 @@ const Step = ({ num, isActive }) => {
         </AnimatePresence>
       </div>
       {isActive && (
-        <div className="absolute z-0 -inset-1.5 bg-indigo-100 rounded-full animate-pulse" />
+        <div className="absolute z-0 -inset-2 bg-indigo-100 rounded-full animate-pulse" />
       )}
     </div>
   );
 };
-
 export default Progress;

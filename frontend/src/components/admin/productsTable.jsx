@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, React } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import EditProduct from "./EditProduct";
+import { AnimatePresence } from "framer-motion";
 
 const ProductsTable = () => {
   return <Table />;
@@ -9,32 +11,58 @@ const ProductsTable = () => {
 
 const Table = () => {
   const [products, setProducts] = useState(productData);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const handleEditClick = (product) => {
+    setSelectedProduct(product);
+    setIsEditModalOpen(true);
+    console.log(isEditModalOpen);
+  };
 
   return (
-    <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible mx-auto overflow-x-auto">
-      <table className="w-full ">
-        <thead>
-          <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase">
-            <th className="text-start p-4 font-medium">Product</th>
-            <th className="text-start p-4 font-medium">Available Qty</th>
-            <th className="text-start p-4 font-medium">Sales</th>
-            <th className="text-start p-4 font-medium">Original Price</th>
-            <th className="text-start p-4 font-medium">Discounted Price</th>
-            <th className="text-start p-4 font-medium"></th>
-          </tr>
-        </thead>
+    <div>
+      <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible mx-auto overflow-x-auto">
+        <table className="w-full ">
+          <thead>
+            <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase">
+              <th className="text-start p-4 font-medium">Product</th>
+              <th className="text-start p-4 font-medium">Available Qty</th>
+              <th className="text-start p-4 font-medium">Sales</th>
+              <th className="text-start p-4 font-medium">Original Price</th>
+              <th className="text-start p-4 font-medium">Discounted Price</th>
+              <th className="text-start p-4 font-medium"></th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {products.map((product) => {
-            return <TableRows key={product.id} product={product} />;
-          })}
-        </tbody>
-      </table>
+          <tbody>
+            {products.map((product) => {
+              return (
+                <TableRows
+                  key={product.id}
+                  product={product}
+                  onEditClick={handleEditClick}
+                  setIsEditModalOpen={setIsEditModalOpen}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <AnimatePresence>
+        {isEditModalOpen && (
+          <EditProduct
+            title="Edit Product"
+            isOpen={isEditModalOpen}
+            setIsOpen={setIsEditModalOpen}
+            product={selectedProduct}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
-const TableRows = ({ product }) => {
+const TableRows = ({ product, onEditClick }) => {
   return (
     <motion.tr
       layoutId={`row-${product.id}`}
@@ -68,6 +96,7 @@ const TableRows = ({ product }) => {
         <FontAwesomeIcon
           icon={faEdit}
           className="text-black hover:text-indigo-500 cursor-pointer mr-2 text-lg"
+          onClick={() => onEditClick(product)}
         />
         <FontAwesomeIcon
           icon={faTrashAlt}
