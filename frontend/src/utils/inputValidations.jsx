@@ -52,6 +52,24 @@ export const lastname_validation = {
   },
 };
 
+export const referenceNumber_validation = {
+  name: "referenceNumber",
+  label: "Reference Number",
+  type: "text",
+  id: "referenceNumber",
+  placeholder: "Reference Number",
+  validation: {
+    required: {
+      value: true,
+      message: "Required",
+    },
+    pattern: {
+      value: /^[0-9]+$/,
+      message: "Only numbers allowed",
+    },
+  },
+};
+
 export const desc_validation = {
   name: "description",
   label: "Description",

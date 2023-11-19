@@ -15,14 +15,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 // USER PAGES
-import Login from "../views/Login";
+import Login from "../views/login";
 import Register1 from "../views/registerPage1";
 import Register2 from "../views/registerPage2";
 import AccountPage from "../views/customer/accountPage.jsx";
-import ForgotPassword from "../views/ForgotPasswordPage"; // TODO: delete this
+import ForgotPassword from "../views/ForgotPasswordPage";
 import ProductsPage from "../views/customer/productsPage";
 import LandingPage from "../views/customer/LandingPage";
 import CartPage from "../views/customer/cartPage";
+import OrderConfirmation from "../views/customer/orderConfirmation.jsx";
+import Billing from "../views/customer/billing.jsx";
+import Invoice from "../views/customer/invoice.jsx";
 
 // ADMIN PAGES
 import AdminDashboard from "../views/admin/adminHomepage";
@@ -45,6 +48,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/account" element={<AccountPage />} />
+        <Route path="/billing" element={<Billing />} />
+        <Route path="/confirm-order" element={<OrderConfirmation />} />
+        <Route path="/invoice" element={<Invoice />} />
         <Route path="/register" element={<RegistrationProvider />}>
           <Route index element={<Navigate to="/register/1" />} />
           <Route path="1" element={<Register1 />} />

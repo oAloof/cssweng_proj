@@ -33,7 +33,7 @@ const ProductsPage = () => {
 
   return (
     <div>
-      <div className="mt-[5vh] pb-[5vh]">
+      <div className="mt-[7vh] pb-[15vh]">
         <Menu />
         <section className="overflow-auto ">
           <Countdown saleData={saleData} />

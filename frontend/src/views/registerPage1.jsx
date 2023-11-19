@@ -7,7 +7,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import Logo from "../components/Logo";
 import Check from "../components/Check";
 
-import { useForm, FormProvider, Controller } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import {
   username_validation,
   email_validation,
