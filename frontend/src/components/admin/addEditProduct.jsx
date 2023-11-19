@@ -42,7 +42,29 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange }) => {
   const methods = useForm({ mode: "onSubmit" });
   const onSubmit = (data) => {
     console.log(data);
-    //methods.reset();
+    addProduct(data);
+  };
+
+  const addProduct = async (data) => {
+    // Send data to backend
+    try {
+      const response = await fetch("/api/admin/products/addProduct", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        console.error("Failed to add product: ", response.status);
+      }
+      const responseData = await response.json();
+      console.log(responseData);
+    } catch (error) {
+      console.error(error);
+      return;
+    }
   };
 
   const categoryOptions = [
@@ -94,7 +116,7 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange }) => {
 
                   <InputField {...availableQuantity_validation} />
 
-                  <InputField {...discountPercentage_validation} />
+                  {/* <InputField {...discountPercentage_validation} /> */}
 
                   <MultiSelect
                     name={"Category"}

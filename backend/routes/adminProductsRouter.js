@@ -4,16 +4,14 @@ const router = express.Router()
 
 const productController = require('../controllers/adminProductController')
 const { authenticate, isAdmin } = require('../middlewares/authenticate')
-const upload = require('../middlewares/fileUpload')
+const upload = require('../middlewares/fileUpload.js')
 
 // GET all products
 router.get('/getProducts', authenticate, isAdmin, productController.getProducts)
 
-// // GET the add product page
-// router.get('/add', productController.addProductView)
 
-// // POST a new product
-// router.post('/add', upload.uploadImage.any(), productController.addNewProduct)        
+// POST a new product
+router.post('/addProduct', upload.uploadImage.any(), productController.addProduct)        
 
 // // DELETE a product
 // router.delete('/delete/:id', productController.deleteProduct)
