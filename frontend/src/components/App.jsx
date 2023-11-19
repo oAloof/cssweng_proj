@@ -18,8 +18,8 @@ import {
 import Login from "../views/login";
 import Register1 from "../views/registerPage1";
 import Register2 from "../views/registerPage2";
-import AccountPage from "../views/customer/accountPage.jsx";
-import ForgotPassword from "../views/ForgotPasswordPage";
+import AccountPage from "../views/customer/accountPage";
+import ForgotPassword from "../views/ForgotPasswordPage"; 
 import ProductsPage from "../views/customer/productsPage";
 import LandingPage from "../views/customer/LandingPage";
 import CartPage from "../views/customer/cartPage";
