@@ -9,7 +9,7 @@ const productSchema = new Schema({
         required: true
     },
     brand: {
-        type: [String],
+        type: String,
         default: 'Generic' 
     },
     description: {
