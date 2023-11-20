@@ -52,11 +52,11 @@ const Table = () => {
 
   return (
     <div>
-      <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible overflow-x-auto font-Nunito">
+      <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase">
-              <th className="text-start p-4">Sale Title</th>
+              <th className="text-start p-4 font-medium">Title</th>
               <th className="text-start p-4 font-medium">Start Date</th>
               <th className="text-start p-4 font-medium">End Date</th>
               <th className="text-start p-4 font-medium">Location</th>
@@ -87,7 +87,6 @@ const Table = () => {
           />
         )}
       </AnimatePresence>
-
     </div>
   );
 };

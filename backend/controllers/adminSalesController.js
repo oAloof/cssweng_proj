@@ -2,7 +2,6 @@ const Sale = require('../models/saleModel');
 
 const getSales = async (req, res) => {
     const sales = await Sale.find({}).sort({createdAt: -1})
-    console.log(sales)
     res.status(200).json(sales)
 }
 
@@ -15,9 +14,6 @@ const addSales = async (req, res) => {
         //     res.status(400).send('Product already exists.')
         //     return
         // }
-
-        
-
     } catch (error) {
         console.log(error);
         res.status(500).send({message: 'Server error'});
