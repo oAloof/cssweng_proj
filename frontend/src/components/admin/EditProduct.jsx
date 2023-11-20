@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputField from "./InputField";
 import {
   productName_validation,
@@ -21,6 +21,13 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
   const formattedSalePrice = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
   }).format(salePrice);
+
+  useEffect(() => {
+    if (product) {
+      
+    }
+  }, [product]);
+
   const onSubmit = (data) => {
     console.log(data);
     // Add any additional submission logic here !!!

@@ -1,6 +1,8 @@
 // import necessary node_modules
 const express = require('express')
 const router = express.Router()
+const multer = require('multer')
+const upload = multer()
 
 const salesController = require('../controllers/adminSalesController')
 const { authenticate, isAdmin } = require('../middlewares/authenticate')
@@ -8,9 +10,8 @@ const { authenticate, isAdmin } = require('../middlewares/authenticate')
 // GET all sales
 router.get('/getSales', salesController.getSales) //authenticate, isAdmin,
 
-
 // POST a new product
-router.post('/addSales', salesController.addSales)        
+router.post('/addSales', upload.any(), salesController.addSales)        
 
 // // DELETE a product
 // router.delete('/delete/:id', productController.deleteProduct)

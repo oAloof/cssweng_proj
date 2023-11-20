@@ -16,6 +16,7 @@ const Table = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleEditClick = (product) => {
+    console.log(product);
     setSelectedProduct(product);
     setIsEditModalOpen(true);
     console.log(isEditModalOpen);
@@ -72,7 +73,7 @@ const Table = () => {
               <th className="text-start p-4 font-medium"></th>
             </tr>
           </thead>
-
+          
           <tbody>
             {products.map((product) => {
               return (

@@ -44,14 +44,13 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
       console.log(key, value);
     }
 
-    console.log(formData);
-
     try {
       const response = await fetch("http://localhost:4000/api/admin/sales/addSales", {
         method: "POST",
         credentials: "include",
         body: formData,
       });
+
       if (!response.ok) {
         console.error("Failed to add Sales: ", response.status);
         return;
@@ -99,17 +98,18 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                   <InputField {...saleName_validation} />
 
                   <Controller
-                    name="Location"
+                    name="location"
                     control={methods.control}
                     render={( {field} ) => (
                       <MultiSelect
                         field={field}
-                        name={"Location"}
+                        name={"location"}
                         selectOptions={location}
                         isUserInputAllowed={true}
                       />
                     )}
                   />
+
                   <div className="flex flex-col space-y-1">
                     <label
                       htmlFor="start-date"
@@ -141,6 +141,7 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                     >
                       End Date
                     </label>
+                    
                     <Controller
                       name="endDate"
                       control={methods.control}

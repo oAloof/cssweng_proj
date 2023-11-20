@@ -22,8 +22,8 @@ app.set('views', './src/views')
 
 // middlewares
 const corsOptions = {
-    origin: 'http://localhost:3000', // replace with your own URL
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    origin: 'http://localhost:3000', // Frontend URL
+    optionsSuccessStatus: 200, 
     credentials: true // allow cookies to be sent to and from the client
 };
 
