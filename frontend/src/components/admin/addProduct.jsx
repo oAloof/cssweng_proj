@@ -36,15 +36,20 @@ const AddProduct = ({ title }) => {
         images={images}
         fileObjects={fileObjects}
         handleImageChange={handleImageChange}
+        setImages={setImages}
       />
     </div>
   );
 };
 
-const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, title }) => {
+const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, title, setImages }) => {
   const methods = useForm({ mode: "onSubmit" });
+
   const onSubmit = (data) => {
     addProduct(data);
+    setIsOpen(false);
+    setImages([]);
+    methods.reset();
   };
 
   const addProduct = async (data) => {
@@ -157,7 +162,7 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
                       />
                     )}
                   />
-
+                
                   <div className="flex flex-row gap-4">
                     <div className="flex flex-col gap-2">
                       <label htmlFor="images" className="text-lg font-medium">
@@ -231,7 +236,6 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
                       Close
                     </button>
                     <button
-                      onClick={() => setIsOpen(false)}
                       className="bg-white hover:opacity-90 transition-opacity text-indigo-600 font-semibold w-full py-2 rounded"
                       type="submit"
                     >
