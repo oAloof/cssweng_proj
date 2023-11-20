@@ -9,7 +9,7 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const adminProductRoutes = require('./routes/adminProductsRouter')
 // const adminOrdersRoutes = require('./src/routes/adminOrdersRouter')
-// const adminSalesRoutes = require('./src/routes/adminSalesRouter')
+const adminSalesRoutes = require('./routes/adminSalesRouter')
 const customerSalesRoutes = require('./routes/customerSalesRouter')
 const userController = require('./controllers/userController')
 const { authenticate } = require('./middlewares/authenticate')
@@ -48,7 +48,7 @@ app.post('/api/logout', authenticate, userController.logoutUser)
 app.use('/api/sales', customerSalesRoutes) 
 
 // Admin api
-// app.use('/admin/sales', adminSalesRoutes) // routes related to sales
+app.use('/api/admin/sales', adminSalesRoutes) // routes related to sales
 app.use('/api/admin/products', adminProductRoutes) // routes related to products
 // app.use('/admin/orders', adminOrdersRoutes) // routes related to orders
 
