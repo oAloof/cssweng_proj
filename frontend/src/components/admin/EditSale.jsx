@@ -7,22 +7,6 @@ import MultiSelect from "./multiSelect.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const EditSale = ({ title }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="place-content-center">
-      <button
-        onClick={() => setIsOpen(true)}
-        className="bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium px-4 py-2 rounded hover:opacity-90 transition-opacity"
-      >
-        {title}
-      </button>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} title={title} />
-    </div>
-  );
-};
-
 const Modal = ({ isOpen, setIsOpen, title }) => {
   const methods = useForm({ mode: "onSubmit" });
   const [startDate, setStartDate] = useState(new Date());
@@ -30,7 +14,9 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
 
   const onSubmit = (data) => {
     console.log(data);
-    //methods.reset();
+    // Add any additional submission logic here !!!
+    // Close the modal after successful form submission
+    setIsOpen(false);
   };
 
   const location = [
@@ -110,7 +96,6 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                       Close
                     </button>
                     <button
-                      onClick={() => setIsOpen(false)}
                       className="bg-white hover:opacity-90 transition-opacity text-indigo-600 font-semibold w-full py-2 rounded"
                       type="submit"
                     >
@@ -127,4 +112,4 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
   );
 };
 
-export default EditSale;
+export default Modal;

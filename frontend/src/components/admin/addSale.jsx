@@ -30,7 +30,9 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
 
   const onSubmit = (data) => {
     console.log(data);
-    //methods.reset();
+    // Add any additional submission logic here !!!
+    // Close the modal after successful form submission
+    setIsOpen(false);
   };
 
   const location = [
@@ -110,7 +112,6 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                       Close
                     </button>
                     <button
-                      onClick={() => setIsOpen(false)}
                       className="bg-white hover:opacity-90 transition-opacity text-indigo-600 font-semibold w-full py-2 rounded"
                       type="submit"
                     >

@@ -10,26 +10,22 @@ import {
 import { useForm, FormProvider } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
 
-const categoryOptions = [
-  { value: "appliances", label: "Appliances" },
-  { value: "aircons", label: "Aircons" },
-  { value: "sound systems", label: "Sound Systems" },
-  { value: "refrigerators", label: "Refrigerators" },
-];
-
-const brandOptions = [
-  { value: "hitachi", label: "Hitachi" },
-  { value: "samsung", label: "Samsung" },
-  { value: "sennheiser", label: "Sennheiser" },
-  { value: "union", label: "Union" },
-];
-
 const Modal = ({ isOpen, setIsOpen, title }) => {
   const [images, setImages] = useState([]);
   const methods = useForm({ mode: "onSubmit" });
+  const { handleSubmit, watch } = methods;
+
+  const originalPrice = watch("originalPrice", 0);
+  const discountPercentage = watch("discountPercentage", 0);
+  const salePrice = originalPrice - (originalPrice * discountPercentage) / 100;
+  const formattedSalePrice = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 2,
+  }).format(salePrice);
   const onSubmit = (data) => {
     console.log(data);
-    //methods.reset();
+    // Add any additional submission logic here !!!
+    // Close the modal after successful form submission
+    setIsOpen(false);
   };
 
   const handleImageChange = (e) => {
@@ -78,9 +74,16 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                   className="flex flex-col gap-4"
                 >
                   <InputField {...productName_validation} />
-                  <div className="flex flex-row justify-between gap-4">
-                    <InputField {...productOriginalPrice_validation} />
-                    <InputField {...discountPercentage_validation} />
+                  <div className="flex flex-row justify-between gap-4 items-start">
+                    <div className="flex flex-col gap-1 items-end w-1/2">
+                      <InputField {...productOriginalPrice_validation} />
+                    </div>
+                    <div className="flex flex-col gap-1 items-end w-1/2">
+                      <InputField {...discountPercentage_validation} />
+                      <p className="font-Nunito font-mb">
+                        Sale Price: ₱{formattedSalePrice}
+                      </p>
+                    </div>
                   </div>
 
                   <InputField {...availableQuantity_validation} />
@@ -171,7 +174,6 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                       Close
                     </button>
                     <button
-                      onClick={() => setIsOpen(false)}
                       className="bg-white hover:opacity-90 transition-opacity text-indigo-600 font-semibold w-full py-2 rounded"
                       type="submit"
                     >

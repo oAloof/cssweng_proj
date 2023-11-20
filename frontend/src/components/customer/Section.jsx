@@ -22,7 +22,7 @@ const Section = ({ category }) => {
   };
 
   return (
-    <section className="bg-slate-100">
+    <section className="">
       <div className="relative overflow-hidden p-4">
         <div className="mx-auto">
           <div className="flex flex-row items-center justify-between py-3">
