@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import EditProduct from "./EditProduct";
 import { AnimatePresence } from "framer-motion";
-import { set } from "mongoose";
 
 const ProductsTable = () => {
   return <Table />;
