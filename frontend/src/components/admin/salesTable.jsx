@@ -102,14 +102,22 @@ const TableRows = ({ sale }) => {
       <td className="p-4">
         <span
           className={`px-2 py-1 text-xs font-medium rounded ${
-            sale.status === "Completed"
+              (new Date(sale.endDate) < new Date())
               ? "bg-green-200/60 text-green-800"
-              : sale.status === "Ongoing"
+              : ((new Date(sale.endDate) >= new Date()) && (new Date(sale.startDate) <= new Date()))
               ? "bg-yellow-200/60 text-yellow-800"
               : "bg-slate-200 text-slate-800"
           }`}
         >
-          {sale.status}
+          {(() => {
+          if (new Date(sale.endDate) < new Date()) { return (
+            "Completed"
+          )} else if ((new Date(sale.endDate) >= new Date()) && (new Date(sale.startDate) <= new Date())) { return (
+            "Ongoing"
+          )} else { return (
+            "Planned"
+          )}
+          })()}
         </span>
       </td>
 
