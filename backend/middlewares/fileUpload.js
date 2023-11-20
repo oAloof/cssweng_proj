@@ -17,7 +17,7 @@ const imageFileFilter = (req, file, cb) => {
 const uploadImage = multer({storage: storage, fileFilter: imageFileFilter})
 
 // Google Drive API settings
-const KEYFILEPATH = path.join(__dirname, '../../google_credentials.json')
+const KEYFILEPATH = path.join(__dirname, '../google_credentialsss.json')
 const SCOPES = ['https://www.googleapis.com/auth/drive']
 
 const auth = new google.auth.GoogleAuth({
@@ -63,7 +63,7 @@ const uploadFile = async (file) => {
             return updatedFile.data.id
     } catch (err) {
         console.log(err)
-        return
+        throw err
     }
 }
 
