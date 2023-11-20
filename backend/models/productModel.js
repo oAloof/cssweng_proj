@@ -9,12 +9,12 @@ const productSchema = new Schema({
         required: true
     },
     brand: {
-        type: String,
+        type: [String],
         default: 'Generic' 
     },
     description: {
         type: String,
-        required: true
+        // required: true // ! require later
     },
     images: {
         type: [String], 
@@ -32,9 +32,9 @@ const productSchema = new Schema({
         type: Number,
         required: true
     },
-    salePrice: {
+    discountedPrice: {
         type: Number,
-        // required: true // ! require later
+        required: true 
     },
     // Listed attribute -- if true: product will be added to the list of products for sale
     //                     if false: product will not be added to the list of products for sale
@@ -43,8 +43,8 @@ const productSchema = new Schema({
         default: false,
         required: true
     },
-    type: {
-        type: String, 
+    category: {
+        type: [String], 
         required: true
     }
 })
