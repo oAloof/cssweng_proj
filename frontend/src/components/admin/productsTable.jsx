@@ -4,15 +4,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import EditProduct from "./EditProduct";
 import { AnimatePresence } from "framer-motion";
+import { set } from "mongoose";
 
 const ProductsTable = () => {
   return <Table />;
 };
 
 const Table = () => {
-  const [products, setProducts] = useState(productData);
+  const [products, setProducts] = useState();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const handleEditClick = (product) => {
     setSelectedProduct(product);
     setIsEditModalOpen(true);
@@ -39,9 +42,17 @@ const Table = () => {
   }
 
   useEffect(() => {
-    // Fetch products data from database
-    const data = fetchProducts();
-    setProducts(productData);
+    const loadData = async () => {
+      try {
+        const fetchedProducts = await fetchProducts();
+        setProducts(fetchedProducts.products);
+        setIsLoading(false);
+        console.log(fetchedProducts.products);
+      } catch (error) {
+        console.error('Error fetching products: ', error);
+      }
+    };
+    // loadData();
   }, []);
 
   return (
@@ -95,8 +106,8 @@ const TableRows = ({ product, onEditClick }) => {
     >
       <td className="p-4 flex items-center gap-3 overflow-hidden">
         <img
-          src={product.photo}
-          alt="Upload a product photo"
+          src={`https://drive.google.com/uc?export=view&id=${product.images[0]}`}
+          alt="Product Image"
           className="w-10 h-10 rounded-full bg-slate-300 object-cover object-top shrink-0"
         />
         <div>

@@ -2,7 +2,15 @@ const Product = require('../models/productModel');
 const upload = require('../middlewares/fileUpload');
 
 const getProducts = async (req, res) => {
-    
+    try {
+        const products = await Product.find({})
+        res.status(200).send({products: products})
+        return
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({message: 'Server error'})
+        return
+    }
 }
 
 const addProduct = async (req, res) => {
