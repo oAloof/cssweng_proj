@@ -52,7 +52,7 @@ const Table = () => {
         console.error('Error fetching products: ', error);
       }
     };
-    // loadData();
+    loadData();
   }, []);
 
   return (
