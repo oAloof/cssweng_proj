@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState, React } from "react";
+import { useState, useEffect, React } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import EditProduct from "./EditProduct";
@@ -18,6 +18,31 @@ const Table = () => {
     setIsEditModalOpen(true);
     console.log(isEditModalOpen);
   };
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/admin/products/getProducts", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Failed to fetch products: ", response.status);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching products: ', error);
+    }
+  }
+
+  useEffect(() => {
+    // Fetch products data from database
+    const data = fetchProducts();
+    setProducts(productData);
+  }, []);
 
   return (
     <div>

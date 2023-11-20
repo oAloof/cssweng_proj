@@ -89,10 +89,10 @@ export const desc_validation = {
 };
 
 export const productName_validation = {
-  name: "productName",
+  name: "name",
   label: "Product Name",
   type: "text",
-  id: "productName",
+  id: "name",
   placeholder: "Product Name",
   validation: {
     required: {

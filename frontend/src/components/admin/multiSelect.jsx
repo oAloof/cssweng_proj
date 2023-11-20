@@ -6,13 +6,18 @@ import CreatableSelect from "react-select/creatable";
    @TODO: Implement logic to retrieve user selections for backend and pass them to filters
 **/
 
-const MultiSelect = ({ name, selectOptions, isUserInputAllowed = true }) => {
+const MultiSelect = ({ name, selectOptions, isUserInputAllowed = true, field }) => {
   const [options, setOptions] = useState(selectOptions);
   const [selectedValues, setSelectedValues] = useState([]); // State for selected values
 
   const handleChange = (newValue, actionMeta) => {
     // Handle change in selection
     setSelectedValues(newValue);
+
+    // Check if field is defined
+    if (field && field.onChange) {
+      field.onChange(newValue.map(item => item.value)); // update form data
+    }
   };
 
   const handleCreate = (inputValue) => {
