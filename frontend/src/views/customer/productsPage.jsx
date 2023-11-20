@@ -6,7 +6,7 @@ import Section from "../../components/customer/Section.jsx";
 
 const ProductsPage = () => {
   const [saleData, setSaleData] = useState(null);
-  const [ProductsListed, setProductsListed] = useState(true);
+  const [ProductsListed, setProductsListed] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
