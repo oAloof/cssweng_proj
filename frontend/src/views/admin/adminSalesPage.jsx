@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AdminNavbar from "../../components/admin/adminNavbar.jsx";
 import SalesTable from "../../components/admin/salesTable.jsx";
-import AddEditSale from "../../components/admin/addEditSale.jsx";
+import AddSale from "../../components/admin/addSale.jsx";
 import MultiSelect from "../../components/admin/multiSelect.jsx";
 import { FiSearch } from "react-icons/fi";
 import DatePicker from "react-datepicker";
@@ -33,7 +33,7 @@ function AdminSalesPage() {
                 <FiSearch className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" />
               </div>
 
-              <AddEditSale title="Add a Sale" />
+              <AddSale title="Add a Sale" />
             </div>
             <div className="flex">
               <div className="w-1/4">

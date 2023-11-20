@@ -7,7 +7,7 @@ import MultiSelect from "./multiSelect.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const addEditSale = ({ title }) => {
+const AddSale = ({ title }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -127,4 +127,4 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
   );
 };
 
-export default addEditSale;
+export default AddSale;

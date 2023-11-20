@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import AdminNavbar from "../../components/admin/adminNavbar.jsx";
 import OrdersTable from "../../components/admin/ordersTable.jsx";
-import AddEditSale from "../../components/admin/addEditSale.jsx";
 import MultiSelect from "../../components/admin/multiSelect.jsx";
 import { FiSearch } from "react-icons/fi";
 import DatePicker from "react-datepicker";

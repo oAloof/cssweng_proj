@@ -1,12 +1,5 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTruckFast,
-  faBoxOpen,
-  faClipboard,
-  faHouse,
-} from "@fortawesome/free-solid-svg-icons";
 
 const Progress = ({ currentStatus }) => {
   const orderStatus = [

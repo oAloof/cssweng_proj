@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import InputField from "./InputField";
+import InputField from "./InputField.jsx";
 import {
   productName_validation,
   availableQuantity_validation,
@@ -10,7 +10,7 @@ import {
 import { useForm, FormProvider } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
 
-const addEditProduct = ({ title }) => {
+const AddProduct = ({ title }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [images, setImages] = useState([]);
 
@@ -195,4 +195,4 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange, title }) => {
   );
 };
 
-export default addEditProduct;
+export default AddProduct;

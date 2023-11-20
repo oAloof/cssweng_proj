@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AdminNavbar from "../../components/admin/adminNavbar.jsx";
 import ProductsTable from "../../components/admin/productsTable.jsx";
-import AddEditProduct from "../../components/admin/addEditProduct.jsx";
+import AddProduct from "../../components/admin/addProduct.jsx";
 import MultiSelect from "../../components/admin/multiSelect.jsx";
 import { FiSearch } from "react-icons/fi";
 
@@ -82,7 +82,7 @@ function AdminProductPage() {
                   isUserInputAllowed={false}
                 />
               </div>
-              <AddEditProduct title="Add a Product" />
+              <AddProduct title="Add a Product" />
             </div>
             <div className="flex">
               <div className="w-1/4">
