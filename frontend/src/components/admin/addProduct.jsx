@@ -45,6 +45,15 @@ const AddProduct = ({ title }) => {
 const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, title, setImages }) => {
   const methods = useForm({ mode: "onSubmit" });
 
+  const { handleSubmit, watch } = methods;
+
+  const originalPrice = watch("originalPrice", 0);
+  const discountPercentage = watch("discountPercentage", 0);
+  const salePrice = originalPrice - (originalPrice * discountPercentage) / 100;
+  const formattedSalePrice = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 2,
+  }).format(salePrice);
+
   const onSubmit = (data) => {
     addProduct(data);
     setIsOpen(false);
@@ -53,6 +62,7 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
   };
 
   const addProduct = async (data) => {
+
     const formData = new FormData();
     // Append existing form data
     Object.keys(data).forEach(key => {
@@ -85,6 +95,7 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
       console.error(error);
       return;
     }
+
   };
 
   const categoryOptions = [
@@ -127,9 +138,16 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
                   className="flex flex-col gap-4"
                 >
                   <InputField {...productName_validation} />
-                  <div className="flex flex-row justify-between gap-4">
-                    <InputField {...productOriginalPrice_validation} />
-                    <InputField {...discountPercentage_validation} />
+                  <div className="flex flex-row justify-between gap-4 items-start">
+                    <div className="flex flex-col gap-1 items-end w-1/2">
+                      <InputField {...productOriginalPrice_validation} />
+                    </div>
+                    <div className="flex flex-col gap-1 items-end w-1/2">
+                      <InputField {...discountPercentage_validation} />
+                      <p className="font-Nunito font-mb">
+                        Sale Price: ₱{formattedSalePrice}
+                      </p>
+                    </div>
                   </div>
 
                   <InputField {...availableQuantity_validation} />
@@ -140,7 +158,7 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
                   <Controller
                     name="category"
                     control={methods.control}
-                    render={( {field} ) => (
+                    render={({ field }) => (
                       <MultiSelect
                         field={field}
                         name={"category"}
@@ -153,7 +171,7 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
                   <Controller
                     name="brand"
                     control={methods.control}
-                    render={( {field} ) => (
+                    render={({ field }) => (
                       <MultiSelect
                         field={field}
                         name="brand"

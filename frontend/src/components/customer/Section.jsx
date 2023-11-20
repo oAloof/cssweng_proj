@@ -4,6 +4,7 @@ import {
   faArrowRight,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
+//import { useState } from "react";
 
 const CARD_WIDTH = 300;
 const CARD_HEIGHT = 440;
@@ -12,9 +13,13 @@ const MARGIN = 20;
 
 import ProductModal from "./ProductModal";
 
-const Section = ({ category }) => {
+const Section = ({ title, category }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null); // new state for selected product
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const filteredProducts = products.filter((product) =>
+    product.categories.includes(category)
+  );
 
   const handleCardClick = (product) => {
     setSelectedProduct(product);
@@ -22,12 +27,12 @@ const Section = ({ category }) => {
   };
 
   return (
-    <section className="bg-slate-100">
+    <section className="">
       <div className="relative overflow-hidden p-4">
         <div className="mx-auto">
           <div className="flex flex-row items-center justify-between py-3">
             <p className="text-3xl text-slate-700 font-Proxima font-bold m-0">
-              {category}
+              {title}
             </p>
             <div>
               <Button type="viewAll" />
@@ -40,11 +45,11 @@ const Section = ({ category }) => {
               height: CARD_CONTAINER_HEIGHT,
             }}
           >
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <Card
                 key={product.id}
                 {...product}
-                onClick={() => handleCardClick(product)} // pass handleCardClick to Card
+                onClick={() => handleCardClick(product)}
                 style={{ marginRight: MARGIN }}
               />
             ))}

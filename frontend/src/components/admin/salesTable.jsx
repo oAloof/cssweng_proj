@@ -2,13 +2,24 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import EditSale from "../admin/EditSale";
+import { AnimatePresence } from "framer-motion";
 
 const salesTable = () => {
   return <Table />;
 };
 
 const Table = () => {
+
   const [sales, setSales] = useState(null);
+  const [selectedSale, setSelectedSale] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const handleEditClick = (sale) => {
+    setSelectedSale(sale);
+    setIsEditModalOpen(true);
+    console.log(isEditModalOpen);
+  };
 
   useEffect(() => {
     // Fetch sales data from database
@@ -37,34 +48,51 @@ const Table = () => {
   
     fetchSales()
   }, []);
-  
+ 
 
   return (
-    <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible overflow-x-auto font-Nunito">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase">
-            <th className="text-start p-4">Sale Title</th>
-            <th className="text-start p-4 font-medium">Start Date</th>
-            <th className="text-start p-4 font-medium">End Date</th>
-            <th className="text-start p-4 font-medium">Location</th>
-            <th className="text-start p-4 font-medium">Sale Revenue</th>
-            <th className="text-start p-4 font-medium">Status</th>
-            <th className="text-start p-4 font-medium"></th>
-          </tr>
-        </thead>
+    <div>
+      <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible overflow-x-auto font-Nunito">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase">
+              <th className="text-start p-4">Sale Title</th>
+              <th className="text-start p-4 font-medium">Start Date</th>
+              <th className="text-start p-4 font-medium">End Date</th>
+              <th className="text-start p-4 font-medium">Location</th>
+              <th className="text-start p-4 font-medium">Sale Revenue</th>
+              <th className="text-start p-4 font-medium">Status</th>
+              <th className="text-start p-4 font-medium"></th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {sales && sales.map((sale) => {
-            return <TableRows key={sale._id} sale={sale} />;
-          })}
-        </tbody>
-      </table>
+          <tbody>
+            {sales && sales.map((sale) => {
+              return <
+                TableRows key={sale._id} sale={sale} 
+                onEditClick={handleEditClick}
+                setIsEditModalOpen={setIsEditModalOpen}
+              />;
+            })}
+          </tbody>
+        </table>
+      </div>
+       <AnimatePresence>
+        {isEditModalOpen && (
+          <EditSale
+            title="Edit Sale"
+            isOpen={isEditModalOpen}
+            setIsOpen={setIsEditModalOpen}
+            sale={selectedSale}
+          />
+        )}
+      </AnimatePresence>
+
     </div>
   );
 };
 
-const TableRows = ({ sale }) => {
+const TableRows = ({ sale, onEditClick }) => {
   return (
     <motion.tr
       layoutId={`row-${sale._id}`}
@@ -125,6 +153,7 @@ const TableRows = ({ sale }) => {
         <FontAwesomeIcon
           icon={faEdit}
           className="text-black hover:text-indigo-500 cursor-pointer mr-2 text-lg"
+          onClick={() => onEditClick(sale)}
         />
         <FontAwesomeIcon
           icon={faTrashAlt}
