@@ -20,7 +20,7 @@ const productSchema = new Schema({
         type: [String], 
         required: true
     },
-    quantity: {
+    availableQuantity: {
         type: Number,
         required: true
     },
@@ -28,20 +28,20 @@ const productSchema = new Schema({
         type: Number, 
         required: true
     },
-    salePercentage: {
+    discountPercentage: {
         type: Number,
         required: true
     },
     salePrice: {
         type: Number,
-        required: true
+        // required: true // ! require later
     },
-    // Listed attribute -- if Listed: product will be added to the list of products for sale
-    //                     if unlisted: product will not be added to the list of products for sale
-    status: {
-        type: String,
-        enum: ['listed', 'unlisted'],
-        default: 'listed'
+    // Listed attribute -- if true: product will be added to the list of products for sale
+    //                     if false: product will not be added to the list of products for sale
+    listProduct: {
+        type: Boolean,
+        default: false,
+        required: true
     },
     type: {
         type: String, 

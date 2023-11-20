@@ -12,7 +12,7 @@ const Table = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("/api/admin/products/getProducts", {
+      const response = await fetch("http://localhost:4000/api/admin/products/getProducts", {
         method: "GET",
         credentials: "include",
         headers: {

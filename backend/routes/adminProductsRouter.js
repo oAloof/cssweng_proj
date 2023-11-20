@@ -2,7 +2,7 @@
 const express = require('express')
 const router = express.Router()
 
-const productController = require('../controllers/adminProductController')
+const productController = require('../controllers/adminProductsController')
 const { authenticate, isAdmin } = require('../middlewares/authenticate')
 const upload = require('../middlewares/fileUpload.js')
 

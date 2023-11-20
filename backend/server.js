@@ -7,7 +7,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-// const adminProductRoutes = require('./src/routes/adminProductRouter')
+const adminProductRoutes = require('./routes/adminProductsRouter')
 // const adminOrdersRoutes = require('./src/routes/adminOrdersRouter')
 // const adminSalesRoutes = require('./src/routes/adminSalesRouter')
 const customerSalesRoutes = require('./routes/customerSalesRouter')
@@ -54,10 +54,7 @@ app.use('/api/admin/products', adminProductRoutes) // routes related to products
 
 
 // connect to the mongoDB database
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,      // use the new URL parser
-    useUnifiedTopology: true    // use the new server discovery and monitoring engine
-})
+mongoose.connect(process.env.MONGODB_URI)
     .then (() => {
         console.log('Connected to database.')
         
