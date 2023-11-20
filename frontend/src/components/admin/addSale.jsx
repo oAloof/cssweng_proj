@@ -7,7 +7,7 @@ import MultiSelect from "./multiSelect.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const addEditSale = () => {
+const AddSale = ({ title }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -16,14 +16,14 @@ const addEditSale = () => {
         onClick={() => setIsOpen(true)}
         className="bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium px-4 py-2 rounded hover:opacity-90 transition-opacity"
       >
-        Add a Sale
+        {title}
       </button>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen} title={title} />
     </div>
   );
 };
 
-const Modal = ({ isOpen, setIsOpen }) => {
+const Modal = ({ isOpen, setIsOpen, title }) => {
   const methods = useForm({ mode: "onSubmit" });
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -58,7 +58,7 @@ const Modal = ({ isOpen, setIsOpen }) => {
             className="bg-gradient-to-br from-violet-600 to-indigo-600 text-white p-6 rounded-lg w-full max-w-lg shadow-xl cursor-default relative overflow-visible"
           >
             <div className="relative z-10">
-              <h3 className="text-3xl font-bold text-left mb-2">Add a Sale</h3>
+              <h3 className="text-3xl font-bold text-left mb-2">{title}</h3>
               <FormProvider {...methods}>
                 <form
                   onSubmit={methods.handleSubmit(onSubmit)}
@@ -127,4 +127,4 @@ const Modal = ({ isOpen, setIsOpen }) => {
   );
 };
 
-export default addEditSale;
+export default AddSale;

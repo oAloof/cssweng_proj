@@ -7,71 +7,35 @@ import {
   discountPercentage_validation,
   productOriginalPrice_validation,
 } from "../../utils/inputValidations.jsx";
-import { useForm, FormProvider, Controller } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
 
-const addEditProduct = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const categoryOptions = [
+  { value: "appliances", label: "Appliances" },
+  { value: "aircons", label: "Aircons" },
+  { value: "sound systems", label: "Sound Systems" },
+  { value: "refrigerators", label: "Refrigerators" },
+];
+
+const brandOptions = [
+  { value: "hitachi", label: "Hitachi" },
+  { value: "samsung", label: "Samsung" },
+  { value: "sennheiser", label: "Sennheiser" },
+  { value: "union", label: "Union" },
+];
+
+const Modal = ({ isOpen, setIsOpen, title }) => {
   const [images, setImages] = useState([]);
+  const methods = useForm({ mode: "onSubmit" });
+  const onSubmit = (data) => {
+    console.log(data);
+    //methods.reset();
+  };
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const images = files.map((file) => URL.createObjectURL(file));
     setImages((prevImages) => prevImages.concat(images));
-  };
-
-  return (
-    <div className="place-content-center">
-      <button
-        onClick={() => setIsOpen(true)}
-        className="bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium px-4 py-2 rounded hover:opacity-90 transition-opacity"
-      >
-        Add a Product
-      </button>
-      <Modal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        images={images}
-        handleImageChange={handleImageChange}
-      />
-    </div>
-  );
-};
-
-const Modal = ({ isOpen, setIsOpen, images, handleImageChange }) => {
-  const methods = useForm({ mode: "onSubmit" });
-  const onSubmit = (data) => {
-    console.log(data);
-    addProduct(data);
-  };
-
-  const addProduct = async (data) => {
-    // Send data to backend
-   const dataToSend = {
-    ...data,
-    images,
-   }
-
-   console.log(dataToSend);
-    // try {
-    //   const response = await fetch("http://localhost:4000/api/admin/products/addProduct", {
-    //     method: "POST",
-    //     credentials: "include",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: dataToSend,
-    //   });
-    //   if (!response.ok) {
-    //     console.error("Failed to add product: ", response.status);
-    //     return;
-    //   }
-    //   const responseData = await response.json();
-    //   console.log(responseData);
-    // } catch (error) {
-    //   console.error(error);
-    //   return;
-    // }
   };
 
   const categoryOptions = [
@@ -106,9 +70,7 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange }) => {
             className="bg-gradient-to-br from-violet-600 to-indigo-600 text-white p-6 rounded-lg w-full max-w-lg shadow-xl cursor-default relative overflow-visible"
           >
             <div className="relative z-10">
-              <h3 className="text-3xl font-bold text-left mb-2">
-                Add a Product
-              </h3>
+              <h3 className="text-3xl font-bold text-left mb-2">{title}</h3>
               <FormProvider {...methods}>
                 <form
                   onSubmit={methods.handleSubmit(onSubmit)}
@@ -123,33 +85,18 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange }) => {
 
                   <InputField {...availableQuantity_validation} />
 
-                  {/* <InputField {...discountPercentage_validation} /> */}
+                  <InputField {...discountPercentage_validation} />
 
-                  {/* wrapped in controller tags to update form data on change */}
-                  <Controller
-                    name="category"
-                    control={methods.control}
-                    render={( {field} ) => (
-                      <MultiSelect
-                        field={field}
-                        name={"category"}
-                        selectOptions={categoryOptions}
-                        isUserInputAllowed={true}
-                      />
-                    )}
+                  <MultiSelect
+                    name={"Category"}
+                    selectOptions={categoryOptions}
+                    isUserInputAllowed={true}
                   />
 
-                  <Controller
-                    name="brand"
-                    control={methods.control}
-                    render={( {field} ) => (
-                      <MultiSelect
-                        field={field}
-                        name="brand"
-                        selectOptions={brandOptions}
-                        isUserInputAllowed={true}
-                      />
-                    )}
+                  <MultiSelect
+                    name={"Brand"}
+                    selectOptions={brandOptions}
+                    isUserInputAllowed={true}
                   />
 
                   <div className="flex flex-row gap-4">
@@ -184,7 +131,6 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange }) => {
                       </label>
                       <div className="relative flex items-center">
                         <input
-                          {...methods.register("listProduct")} // includes checkbox value in form data
                           type="checkbox"
                           id="listProduct"
                           name="listProduct"
@@ -242,4 +188,4 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange }) => {
   );
 };
 
-export default addEditProduct;
+export default Modal;

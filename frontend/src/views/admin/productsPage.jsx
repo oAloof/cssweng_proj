@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AdminNavbar from "../../components/admin/adminNavbar.jsx";
 import ProductsTable from "../../components/admin/productsTable.jsx";
-import AddEditProduct from "../../components/admin/addEditProduct.jsx";
+import AddProduct from "../../components/admin/addProduct.jsx";
 import MultiSelect from "../../components/admin/multiSelect.jsx";
 import { FiSearch } from "react-icons/fi";
 
@@ -66,12 +66,14 @@ function AdminProductPage() {
             <h3 className="text-gray-700 text-3xl font-medium">Products</h3>
             <div className="flex justify-end mb-3 space-x-4">
               <div className="self-stretch flex-1 justify-between">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="px-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 borders-gray-500 focus:ring-indigo-600 font-Nunito w-2/3"
-                />
-                <FiSearch className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" />
+                <div className="relative h-auto">
+                  <FiSearch className="absolute top-1/3 left-2 text-gray-500" />
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    className="pr-4 pl-8 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 borders-gray-500 focus:ring-indigo-600 font-Nunito w-2/3"
+                  />
+                </div>
               </div>
               <div className="w-1/3">
                 <MultiSelect
@@ -80,7 +82,7 @@ function AdminProductPage() {
                   isUserInputAllowed={false}
                 />
               </div>
-              <AddEditProduct />
+              <AddProduct title="Add a Product" />
             </div>
             <div className="flex">
               <div className="w-1/4">

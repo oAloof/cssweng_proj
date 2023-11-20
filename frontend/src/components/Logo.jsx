@@ -21,6 +21,11 @@ const logos = {
     src: "/logos/BlueLogo.png",
     className: "relative w-auto h-[38px] object-cover",
   },
+
+  invoice: {
+    src: "/logos/Full Blue Logo.png",
+    className: "relative w-auto h-[70px] object-cover",
+  },
 };
 
 const Logo = ({ name, ...props }) => {
