@@ -47,7 +47,6 @@ const Table = () => {
         const fetchedProducts = await fetchProducts();
         setProducts(fetchedProducts.products);
         setIsLoading(false);
-        console.log(fetchedProducts.products);
       } catch (error) {
         console.error('Error fetching products: ', error);
       }
@@ -73,7 +72,7 @@ const Table = () => {
               <th className="text-start p-4 font-medium"></th>
             </tr>
           </thead>
-          
+
           <tbody>
             {products.map((product) => {
               return (

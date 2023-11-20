@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 
 /**
@@ -8,12 +8,17 @@ import CreatableSelect from "react-select/creatable";
 
 const MultiSelect = ({ name, selectOptions, isUserInputAllowed = true, field }) => {
   const [options, setOptions] = useState(selectOptions);
-  const [selectedValues, setSelectedValues] = useState([]); // State for selected values
+  const [selectedValues, setSelectedValues] = useState(field?.value || []); // State for selected values
+
+  useEffect(() => {
+    if (field) {
+      console.log(field.value);
+    }
+  }), [field];
 
   const handleChange = (newValue, actionMeta) => {
     // Handle change in selection
     setSelectedValues(newValue);
-    
     // Check if field is defined
     if (field && field.onChange) {
       field.onChange(newValue.map(item => item.value)); // update form data

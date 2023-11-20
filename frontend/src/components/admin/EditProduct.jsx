@@ -7,16 +7,27 @@ import {
   discountPercentage_validation,
   productOriginalPrice_validation,
 } from "../../utils/inputValidations.jsx";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
 
-const Modal = ({ isOpen, setIsOpen, title }) => {
+const Modal = ({ isOpen, setIsOpen, title, product }) => {
   const [images, setImages] = useState([]);
-  const methods = useForm({ mode: "onSubmit" });
+  const methods = useForm({ 
+    mode: "onSubmit",
+    defaultValues: {
+      name: product.name,
+      originalPrice: product.originalPrice,
+      discountPercentage: product.discountPercentage,
+      availableQuantity: product.availableQuantity,
+      category: product.category,
+      brand: product.brand,
+      listProduct: product.listProduct,
+    }, 
+  });
   const { handleSubmit, watch } = methods;
-
-  const originalPrice = watch("originalPrice", 0);
-  const discountPercentage = watch("discountPercentage", 0);
+  
+  const originalPrice = watch("originalPrice", product.originalPrice);
+  const discountPercentage = watch("discountPercentage", product.discountPercentage);
   const salePrice = originalPrice - (originalPrice * discountPercentage) / 100;
   const formattedSalePrice = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
@@ -24,7 +35,7 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
 
   useEffect(() => {
     if (product) {
-      
+
     }
   }, [product]);
 
@@ -95,18 +106,30 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
 
                   <InputField {...availableQuantity_validation} />
 
-                  <InputField {...discountPercentage_validation} />
-
-                  <MultiSelect
-                    name={"Category"}
-                    selectOptions={categoryOptions}
-                    isUserInputAllowed={true}
+                  <Controller
+                    name="category"
+                    control={methods.control}
+                    render={({ field }) => (
+                      <MultiSelect
+                        field={field}
+                        name={"category"}
+                        selectOptions={categoryOptions}
+                        isUserInputAllowed={true}
+                      />
+                    )}
                   />
 
-                  <MultiSelect
-                    name={"Brand"}
-                    selectOptions={brandOptions}
-                    isUserInputAllowed={true}
+                  <Controller
+                    name="brand"
+                    control={methods.control}
+                    render={({ field }) => (
+                      <MultiSelect
+                        field={field}
+                        name={"brand"}
+                        selectOptions={brandOptions}
+                        isUserInputAllowed={true}
+                      />
+                    )}
                   />
 
                   <div className="flex flex-row gap-4">
@@ -141,6 +164,7 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                       </label>
                       <div className="relative flex items-center">
                         <input
+                          {...methods.register("listProduct")}
                           type="checkbox"
                           id="listProduct"
                           name="listProduct"
