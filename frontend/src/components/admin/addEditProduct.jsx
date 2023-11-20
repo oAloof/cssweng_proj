@@ -125,7 +125,7 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange }) => {
 
                   {/* <InputField {...discountPercentage_validation} /> */}
 
-                  /* wrapped in controller tags to update form data on change */
+                  {/* wrapped in controller tags to update form data on change */}
                   <Controller
                     name="category"
                     control={methods.control}
