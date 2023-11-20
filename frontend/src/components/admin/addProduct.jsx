@@ -18,7 +18,7 @@ const AddProduct = ({ title }) => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const images = files.map((file) => URL.createObjectURL(file));
-    setFileObjects(files); // Store the file objects in state
+    setFileObjects((prevFiles) => prevFiles.concat(files)); // Store the file objects in state
     setImages((prevImages) => prevImages.concat(images));
   };
 
@@ -44,41 +44,38 @@ const AddProduct = ({ title }) => {
 
 const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, title, setImages }) => {
   const methods = useForm({ mode: "onSubmit" });
-
   const { handleSubmit, watch } = methods;
 
   const originalPrice = watch("originalPrice", 0);
   const discountPercentage = watch("discountPercentage", 0);
-  const salePrice = originalPrice - (originalPrice * discountPercentage) / 100;
+  const discountedPrice = originalPrice - (originalPrice * discountPercentage) / 100;
   const formattedSalePrice = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
-  }).format(salePrice);
+  }).format(discountedPrice);
 
   const onSubmit = (data) => {
     addProduct(data);
     setIsOpen(false);
     setImages([]);
+    setFileObjects([]);
     methods.reset();
   };
 
   const addProduct = async (data) => {
-
     const formData = new FormData();
     // Append existing form data
     Object.keys(data).forEach(key => {
       formData.append(key, data[key]);
     });
-
-    // Calculate discounted price 
-    if (data.originalPrice && data.discountPercentage) {
-      const discountedPrice = data.originalPrice - (data.originalPrice * data.discountPercentage / 100);
-      formData.append('discountedPrice', discountedPrice.toString());
-    }
+    
+    // Append discounted price 
+    formData.append('discountedPrice', discountedPrice.toString());
+    
     // Append images 
     fileObjects.forEach((file) => {
       formData.append("images", file);
     });
-
+    
     try {
       const response = await fetch("http://localhost:4000/api/admin/products/addProduct", {
         method: "POST",
@@ -95,7 +92,6 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
       console.error(error);
       return;
     }
-
   };
 
   const categoryOptions = [

@@ -17,6 +17,7 @@ const addProduct = async (req, res) => {
     try {
         const { 
             name, 
+            brand,
             // description, // ! add description field
             availableQuantity, 
             originalPrice, 
@@ -25,7 +26,6 @@ const addProduct = async (req, res) => {
             listProduct
         } = req.body 
         const images = req.files
-        const brand = req.body.brand.split(',')
         const category = req.body.category.split(',')
         // Check if the product with the same name and brand already exists
         const result = await Product.find({ name: name, brand: brand })

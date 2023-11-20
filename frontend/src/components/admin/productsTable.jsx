@@ -10,7 +10,7 @@ const ProductsTable = () => {
 };
 
 const Table = () => {
-  const [products, setProducts] = useState(productData);
+  const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,8 +51,12 @@ const Table = () => {
         console.error('Error fetching products: ', error);
       }
     };
-    // loadData();
+    loadData();
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -105,8 +109,8 @@ const TableRows = ({ product, onEditClick }) => {
     >
       <td className="p-4 flex items-center gap-3 overflow-hidden">
         <img
-          // src={`https://drive.google.com/uc?export=view&id=${product.images[0]}`}
-          src="/Product Photo Placeholder.png"
+          src={`https://drive.google.com/uc?export=view&id=${product.images[0]}`}
+          // src="/Product Photo Placeholder.png"
           alt="Product Image"
           className="w-10 h-10 rounded-full bg-slate-300 object-cover object-top shrink-0"
         />
@@ -116,7 +120,7 @@ const TableRows = ({ product, onEditClick }) => {
         </div>
       </td>
 
-      <td className="p-4 font-medium">{product.quantity}</td>
+      <td className="p-4 font-medium">{product.availableQuantity}</td>
 
       <td className="p-4 font-medium">{product.sales}</td>
 
