@@ -58,7 +58,7 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
     Object.keys(data).forEach(key => {
       formData.append(key, data[key]);
     });
-
+    
     // Calculate discounted price 
     if (data.originalPrice && data.discountPercentage) {
       const discountedPrice = data.originalPrice - (data.originalPrice * data.discountPercentage / 100);
