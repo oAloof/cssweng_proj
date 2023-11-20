@@ -7,12 +7,12 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-// const adminProductRoutes = require('./src/routes/adminProductRouter')
+const adminProductRoutes = require('./routes/adminProductsRouter')
 // const adminOrdersRoutes = require('./src/routes/adminOrdersRouter')
 // const adminSalesRoutes = require('./src/routes/adminSalesRouter')
 const customerSalesRoutes = require('./routes/customerSalesRouter')
 const userController = require('./controllers/userController')
-const authenticate = require('./middlewares/authenticate')
+const { authenticate } = require('./middlewares/authenticate')
 // express app
 const app = express()
 
@@ -46,17 +46,15 @@ app.post('/api/logout', authenticate, userController.logoutUser)
 
 // Customer API
 app.use('/api/sales', customerSalesRoutes) 
+
 // Admin api
 // app.use('/admin/sales', adminSalesRoutes) // routes related to sales
-// app.use('/admin/products', adminProductRoutes) // routes related to products
+app.use('/api/admin/products', adminProductRoutes) // routes related to products
 // app.use('/admin/orders', adminOrdersRoutes) // routes related to orders
 
 
 // connect to the mongoDB database
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,      // use the new URL parser
-    useUnifiedTopology: true    // use the new server discovery and monitoring engine
-})
+mongoose.connect(process.env.MONGODB_URI)
     .then (() => {
         console.log('Connected to database.')
         

@@ -12,4 +12,15 @@ const authenticate = (req, res, next) => {
     }
 }
 
-module.exports = authenticate
+const isAdmin = (req, res, next) => {
+    if (req.user && req.user.userType === 'Admin') {
+        next()
+    } else {
+        res.status(401).json({ message: 'Unauthorized' })
+    }
+}
+
+module.exports = {
+    authenticate,
+    isAdmin
+}
