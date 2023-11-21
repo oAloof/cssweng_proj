@@ -3,7 +3,7 @@ import AdminNavbar from "../../components/admin/adminNavbar.jsx";
 import SalesTable from "../../components/admin/salesTable.jsx";
 import AddSale from "../../components/admin/addSale.jsx";
 import MultiSelect from "../../components/admin/multiSelect.jsx";
-import { FiSearch } from "react-icons/fi";
+import SearchBar from "../../components/SearchBar.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -25,12 +25,7 @@ function AdminSalesPage() {
             <h3 className="text-gray-700 text-3xl font-medium">Sales</h3>
             <div className="flex justify-end mb-3 space-x-4">
               <div className="self-stretch flex-1 justify-between">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="px-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 borders-gray-500 focus:ring-indigo-600 font-Nunito w-2/3"
-                />
-                <FiSearch className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" />
+                <SearchBar />
               </div>
 
               <AddSale title="Add a Sale" />

@@ -4,7 +4,7 @@ import {
   faArrowRight,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-//import { useState } from "react";
+import { useState } from "react";
 
 const CARD_WIDTH = 300;
 const CARD_HEIGHT = 440;
@@ -225,8 +225,6 @@ const products = [
     ],
   },
 ];
-
-import { useState } from "react";
 
 const Button = ({ type }) => {
   const [isClicked, setIsClicked] = useState(false);

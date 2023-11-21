@@ -7,7 +7,7 @@ import MenuButton from "./customer/MenuBtn";
 
 const TopNav = () => {
   return (
-    <nav className="bg-white p-4 border-b-[1px] border-gray-200 flex items-center justify-between fixed w-full top-0 right-0 -left-0 z-50 h-[7vh]">
+    <nav className="bg-white p-4 border-b-[1px] border-gray-200 flex items-center justify-between fixed w-full top-0 right-0 left-0 z-50 h-[7vh] mb-0">
       <NavLeft />
       <div className="flex justify-center">
         <Logo name="topbar" />

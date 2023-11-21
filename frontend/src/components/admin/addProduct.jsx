@@ -6,6 +6,7 @@ import {
   availableQuantity_validation,
   discountPercentage_validation,
   productOriginalPrice_validation,
+  desc_validation,
 } from "../../utils/inputValidations.jsx";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
@@ -129,7 +130,7 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange, title }) => {
                     </div>
                     <div className="flex flex-col gap-1 items-end w-1/2">
                       <InputField {...discountPercentage_validation} />
-                      <p className="font-Nunito font-mb">
+                      <p className="font-Nunito font-medium mb-0">
                         Sale Price: ₱{formattedSalePrice}
                       </p>
                     </div>
@@ -137,9 +138,8 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange, title }) => {
 
                   <InputField {...availableQuantity_validation} />
 
-                  {/* <InputField {...discountPercentage_validation} /> */}
+                  <InputField {...desc_validation} />
 
-                  {/* wrapped in controller tags to update form data on change */}
                   <Controller
                     name="category"
                     control={methods.control}

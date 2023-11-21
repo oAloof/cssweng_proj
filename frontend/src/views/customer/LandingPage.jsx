@@ -3,6 +3,7 @@ import Countdown from "../../components/CountdownTimer.jsx";
 import NavBar from "../../components/NavBar.jsx";
 import Menu from "../../components/Menu.jsx";
 import Section from "../../components/customer/Section.jsx";
+import SearchBar from "../../components/customer/customerSearch.jsx";
 
 const LandingPage = () => {
   const [saleData, setSaleData] = useState(null);
@@ -34,23 +35,24 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="bg-slate-100 min-h-screen min">
+    <div className="bg-slate-100 min-h-screen flex flex-col">
       <Menu />
-
-      {ProductsListed ? (
-        <div className="mt-[7vh] pb-[15vh]">
-          <Countdown saleData={saleData} />
-          <section className="overflow-auto ">
-            <Section title="Big Discounts!" category="Energy Efficient" />
-            <Section title="Big Discounts!" category="Energy Efficient" />
-            <Section title="Big Discounts!" category="Energy Efficient" />
-            <Section title="Big Discounts!" category="Energy Efficient" />
-          </section>
-        </div>
-      ) : (
-        <NoProductsView saleData={saleData} />
-      )}
-
+      <div className="flex-grow mt-[7vh] pb-[15vh]">
+        {ProductsListed ? (
+          <>
+            <Countdown saleData={saleData} />
+            <section className="overflow-auto">
+              <SearchBar />
+              <Section title="Big Discounts!" category="Energy Efficient" />
+              <Section title="Big Discounts!" category="Energy Efficient" />
+              <Section title="Big Discounts!" category="Energy Efficient" />
+              <Section title="Big Discounts!" category="Energy Efficient" />
+            </section>
+          </>
+        ) : (
+          <NoProductsView saleData={saleData} />
+        )}
+      </div>
       <NavBar />
     </div>
   );
@@ -58,11 +60,13 @@ const LandingPage = () => {
 
 const NoProductsView = ({ saleData }) => {
   return (
-    <div className="flex min-w-screen h-screen items-center justify-center bg-slate-400">
-      <div className="w-full absolute top-0 mt-[7vh]">
+    <div className="flex min-w-screen min-h-screen flex-col items-center justify-start bg-slate-400">
+      <div className="w-full mt-[7vh]">
         <Countdown saleData={saleData} />
       </div>
-      <div className="flex flex-col items-center justify-center p-4 font-Nunito">
+      <div className="flex flex-col items-center justify-center p-4 font-Nunito mt-8">
+        {" "}
+        {/* Adjust this margin-top (mt-8) as needed */}
         <img
           src="/NoProducts.png"
           alt="No products available"
@@ -78,5 +82,4 @@ const NoProductsView = ({ saleData }) => {
     </div>
   );
 };
-
 export default LandingPage;

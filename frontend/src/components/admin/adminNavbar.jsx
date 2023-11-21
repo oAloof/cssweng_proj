@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { FiMenu, FiArrowRight, FiSearch } from "react-icons/fi";
+import { FiMenu, FiArrowRight } from "react-icons/fi";
 import Logo from "../Logo.jsx";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "../SearchBar.jsx";
 
 const adminNavbar = () => {
   return (
@@ -116,12 +117,7 @@ const NavRight = () => {
   return (
     <div className="flex items-center gap-4">
       <div className="relative">
-        <input
-          type="text"
-          placeholder="Search"
-          className="px-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
-        />
-        <FiSearch className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" />
+        <SearchBar />
       </div>
       <motion.button
         whileHover={{ scale: 1.05 }}

@@ -25,7 +25,7 @@ const Table = () => {
       <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible overflow-x-auto font-Nunito">
         <table className="w-full">
           <thead>
-            <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase">
+            <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase font-bold">
               <th className="text-start p-4">Sale</th>
               <th className="text-start p-4 font-medium">Start Date</th>
               <th className="text-start p-4 font-medium">End Date</th>
