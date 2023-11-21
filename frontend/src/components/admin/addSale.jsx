@@ -40,10 +40,6 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
       formData.append(key, data[key]);
     });
 
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
     try {
       const response = await fetch("http://localhost:4000/api/admin/sales/addSales", {
         method: "POST",
@@ -64,10 +60,10 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
   };
 
   const location = [
-    { value: "manila", label: "Manila" },
-    { value: "laguna", label: "Laguna" },
-    { value: "quezon city", label: "Quezon City" },
-    { value: "ortigas", label: "Ortigas" },
+    { value: "Manila", label: "Manila" },
+    { value: "Laguna", label: "Laguna" },
+    { value: "Quezon city", label: "Quezon City" },
+    { value: "Ortigas", label: "Ortigas" },
   ];
 
   return (
