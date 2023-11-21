@@ -56,25 +56,16 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
     Object.keys(data).forEach(key => {
       formData.append(key, data[key]);
     });
-
     // append discounted price
     formData.append("discountedPrice", discountedPrice.toString());
-
     // append images
     fileObjects.forEach((file) => {
       formData.append("images", file);
     });
-
     // append deleted images
     formData.append("deletedImages", deletedImages);
-
     // append product id
     formData.append("productId", product._id);
-
-    // log formdata
-    for (var pair of formData.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]); 
-    }
 
     try {
       const response = await fetch("http://localhost:4000/api/admin/products/editProduct", {

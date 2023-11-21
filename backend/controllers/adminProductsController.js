@@ -88,10 +88,10 @@ const editProduct = async (req, res) => {
             deletedImages
         } = req.body 
         const images = req.files
-        console.log(deleteImages);
+        console.log(deletedImages);
         // check if there were images deleted
         if (deletedImages) {
-
+            
         }
 
     } catch (error) {
