@@ -11,7 +11,17 @@ import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
 
 const Modal = ({ isOpen, setIsOpen, title, product }) => {
+  const constructImageUrl = (imageId) => {
+    return `https://drive.google.com/uc?export=view&id=${imageId}`;
+  }
+
+  const [existingImages, setExistingImages] = useState(
+    product.images ? product.images.map(constructImageUrl) : []
+  ); 
+  const [deletedImages, setDeletedImages] = useState([]); 
   const [images, setImages] = useState([]);
+  const [fileObjects, setFileObjects] = useState([]);
+
   const methods = useForm({ 
     mode: "onSubmit",
     defaultValues: {
@@ -28,29 +38,81 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
   
   const originalPrice = watch("originalPrice", product.originalPrice);
   const discountPercentage = watch("discountPercentage", product.discountPercentage);
-  const salePrice = originalPrice - (originalPrice * discountPercentage) / 100;
+  const discountedPrice = originalPrice - (originalPrice * discountPercentage) / 100;
   const formattedSalePrice = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
-  }).format(salePrice);
-
-  useEffect(() => {
-    if (product) {
-
-    }
-  }, [product]);
+  }).format(discountedPrice);
 
   const onSubmit = (data) => {
-    console.log(data);
+    editProduct(data);
     // Add any additional submission logic here !!!
     // Close the modal after successful form submission
     setIsOpen(false);
   };
 
+  const editProduct = async (data) => {
+    const formData = new FormData();
+    // Append existing form data
+    Object.keys(data).forEach(key => {
+      formData.append(key, data[key]);
+    });
+
+    // append discounted price
+    formData.append("discountedPrice", discountedPrice.toString());
+
+    // append images
+    fileObjects.forEach((file) => {
+      formData.append("images", file);
+    });
+
+    // append deleted images
+    formData.append("deletedImages", deletedImages);
+
+    // append product id
+    formData.append("productId", product._id);
+
+    // log formdata
+    for (var pair of formData.entries()) {
+      console.log(pair[0]+ ', ' + pair[1]); 
+    }
+
+    try {
+      const response = await fetch("http://localhost:4000/api/admin/products/editProduct", {
+        method: "PATCH",
+        credentials: "include",
+        body: formData,
+      });
+      if (!response.ok) {
+        console.error("Failed to edit product: ", response.status);
+        return;
+      }
+      const responseData = await response.json();
+      setIsOpen(false); // close modal
+      // setImages([]);  // reset images
+      // setFileObjects([]); // reset file objects
+      // setIsLoading(true);
+      // setProductChanged(true); // trigger useEffect in ProductsContext to fetch products again
+      console.log(responseData);
+      return
+    } catch (error) {
+      console.log(error);
+      return
+    }
+  };
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const images = files.map((file) => URL.createObjectURL(file));
+    setFileObjects((prevFiles) => prevFiles.concat(files));
     setImages((prevImages) => prevImages.concat(images));
   };
+
+  const handleOldImageDelete = (imageUrl) => {
+    const url = new URL(imageUrl);
+    const imageId = url.searchParams.get("id");
+    setDeletedImages([...deletedImages, imageId])
+    setExistingImages(existingImages.filter((img) => img !== imageUrl));
+  }
 
   const categoryOptions = [
     { value: "appliances", label: "Appliances" },
@@ -135,7 +197,7 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                   <div className="flex flex-row gap-4">
                     <div className="flex flex-col gap-2">
                       <label htmlFor="images" className="text-lg font-medium">
-                        Upload Images ({images.length})
+                        Upload Images ({images.length + existingImages.length})
                       </label>
                       <div className="relative">
                         <input
@@ -176,7 +238,26 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-row gap-4 overflow-x-auto">
+                  {/* Image Div */}
+                  <div className="flex flex-row gap-4 overflow-x-auto"> 
+                    {/* render existing images */}
+                    {existingImages.map((image, index) => (
+                      <div key={image} className="relative">
+                        <img
+                          src={image}
+                          alt="uploaded photo"
+                          className="w-24 h-24 object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleOldImageDelete(image)}
+                          className="absolute top-0 right-0 text-white rounded-full w-6 h-6 flex items-center justify-center bg-rose-500"
+                        >
+                          <i className="fas fa-times"></i>
+                        </button>
+                      </div>
+                    ))}
+                    {/* render newly uploaded images */}
                     {images.map((image, index) => (
                       <div key={image} className="relative">
                         <img
@@ -185,10 +266,14 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                           className="w-24 h-24 object-cover rounded-lg"
                         />
                         <button
+                          type="button"
                           onClick={() => {
                             const newImages = [...images];
                             newImages.splice(index, 1);
                             setImages(newImages);
+                            const newFileObjects = [...fileObjects];
+                            newFileObjects.splice(index, 1);
+                            setFileObjects(newFileObjects);
                           }}
                           className="absolute top-0 right-0 text-white rounded-full w-6 h-6 flex items-center justify-center bg-rose-500"
                         >
@@ -199,6 +284,7 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                   </div>
                   <div className="flex gap-2">
                     <button
+                      type="button"
                       onClick={() => setIsOpen(false)}
                       className="bg-transparent hover:bg-white/10 transition-colors text-white font-semibold w-full py-2 rounded"
                     >

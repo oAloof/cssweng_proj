@@ -21,6 +21,8 @@ const AddProduct = ({ title }) => {
     const images = files.map((file) => URL.createObjectURL(file));
     setFileObjects((prevFiles) => prevFiles.concat(files)); // Store the file objects in state
     setImages((prevImages) => prevImages.concat(images));
+    console.log(fileObjects);
+    console.log(images);
   };
 
   return (
@@ -94,6 +96,7 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
       setIsLoading(true);
       setProductChanged(true); // trigger useEffect in ProductsContext to fetch products again
       console.log(responseData);
+      return
     } catch (error) {
       console.error(error);
       return;
@@ -240,6 +243,9 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
                             const newImages = [...images];
                             newImages.splice(index, 1);
                             setImages(newImages);
+                            const newFileObjects = [...fileObjects];
+                            newFileObjects.splice(index, 1);
+                            setFileObjects(newFileObjects);
                           }}
                           className="absolute top-0 right-0 text-white rounded-full w-6 h-6 flex items-center justify-center bg-rose-500"
                         >
@@ -250,6 +256,7 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
                   </div>
                   <div className="flex gap-2">
                     <button
+                      type="button"
                       onClick={() => setIsOpen(false)}
                       className="bg-transparent hover:bg-white/10 transition-colors text-white font-semibold w-full py-2 rounded"
                     >

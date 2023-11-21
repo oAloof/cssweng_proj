@@ -13,6 +13,9 @@ router.get('/getProducts', productController.getProducts)
 // POST a new product
 router.post('/addProduct', upload.uploadImage.any(), productController.addProduct)        
 
+// UPDATE a product
+router.patch('/editProduct', upload.uploadImage.any(), productController.editProduct)
+
 // // DELETE a product
 // router.delete('/delete/:id', productController.deleteProduct)
 

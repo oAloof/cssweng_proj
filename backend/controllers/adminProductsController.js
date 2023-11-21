@@ -74,7 +74,34 @@ const addProduct = async (req, res) => {
     }
 }
 
+const editProduct = async (req, res) => {
+    try {
+        const {
+            productId,
+            brand,
+            // description, // ! add description field
+            availableQuantity, 
+            originalPrice, 
+            discountPercentage, 
+            discountedPrice,
+            listProduct,
+            deletedImages
+        } = req.body 
+        const images = req.files
+        console.log(deleteImages);
+        // check if there were images deleted
+        if (deletedImages) {
+
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({message: 'Server error'});
+    }
+}
+
 module.exports = {
     getProducts,
-    addProduct
+    addProduct,
+    editProduct
 }
