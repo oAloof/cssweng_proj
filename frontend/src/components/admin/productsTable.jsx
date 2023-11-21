@@ -1,58 +1,26 @@
 import { motion } from "framer-motion";
-import { useState, useEffect, React } from "react";
+import { useState, useEffect, useContext,React } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import EditProduct from "./EditProduct";
 import { AnimatePresence } from "framer-motion";
+import { ProductsContext } from "../../contexts/ProductsContext";
 
 const ProductsTable = () => {
   return <Table />;
 };
 
 const Table = () => {
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
+  // const [isLoading, setIsLoading] = useState(true);
+  const { products, isLoading } = useContext(ProductsContext);
+  
   const handleEditClick = (product) => {
-    console.log(product);
     setSelectedProduct(product);
     setIsEditModalOpen(true);
-    console.log(isEditModalOpen);
-  };
-
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch("http://localhost:4000/api/admin/products/getProducts", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        console.error("Failed to fetch products: ", response.status);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Error fetching products: ', error);
-    }
   }
-
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const fetchedProducts = await fetchProducts();
-        setProducts(fetchedProducts.products);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching products: ', error);
-      }
-    };
-    loadData();
-  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -77,7 +45,7 @@ const Table = () => {
             {products.map((product) => {
               return (
                 <TableRows
-                  key={product.id}
+                  key={product._id}
                   product={product}
                   onEditClick={handleEditClick}
                   setIsEditModalOpen={setIsEditModalOpen}
@@ -146,52 +114,5 @@ const TableRows = ({ product, onEditClick }) => {
     </motion.tr>
   );
 };
-
-const productData = [
-  {
-    id: 1,
-    name: "Product 1",
-    brand: "Brand 1",
-    photo: "/Product Photo Placeholder.png",
-    quantity: 10,
-    sales: 5,
-    originalPrice: 100,
-    discountedPrice: 80,
-    status: "In Stock",
-  },
-  {
-    id: 2,
-    name: "Product 2",
-    brand: "Brand 2",
-    photo: "/Product Photo Placeholder.png",
-    quantity: 20,
-    sales: 10,
-    originalPrice: 200,
-    discountedPrice: 150,
-    status: "In Stock",
-  },
-  {
-    id: 3,
-    name: "Product 3",
-    brand: "Brand 3",
-    photo: "/Product Photo Placeholder.png",
-    quantity: 5,
-    sales: 2,
-    originalPrice: 50,
-    discountedPrice: 40,
-    status: "Out of Stock",
-  },
-  {
-    id: 4,
-    name: "Product 4",
-    brand: "Brand 4",
-    photo: "/Product Photo Placeholder.png",
-    quantity: 0,
-    sales: 0,
-    originalPrice: 300,
-    discountedPrice: 250,
-    status: "Out of Stock",
-  },
-];
 
 export default ProductsTable;

@@ -14,7 +14,7 @@ const MultiSelect = ({ name, selectOptions, isUserInputAllowed = true, field }) 
       return string.charAt(0).toUpperCase() + string.slice(1);
     };
   
-    // If value is a string, transform it into an object and return as a single-element array
+    // If value is a string, transform it into an object and return as a single element array
     if (typeof value === 'string') {
       return [{ value, label: capitalizeFirstLetter(value) }];
     }

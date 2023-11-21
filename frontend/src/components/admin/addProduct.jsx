@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import InputField from "./InputField.jsx";
 import {
   productName_validation,
@@ -9,6 +9,7 @@ import {
 } from "../../utils/inputValidations.jsx";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
+import { ProductsContext } from "../../contexts/ProductsContext.jsx";
 
 const AddProduct = ({ title }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,18 +35,19 @@ const AddProduct = ({ title }) => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         images={images}
-        fileObjects={fileObjects}
-        handleImageChange={handleImageChange}
         setImages={setImages}
+        fileObjects={fileObjects}
+        setFileObjects={setFileObjects}
+        handleImageChange={handleImageChange}
+        
       />
     </div>
   );
 };
 
-const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, title, setImages }) => {
+const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjects, handleImageChange, title,  }) => {
   const methods = useForm({ mode: "onSubmit" });
   const { handleSubmit, watch } = methods;
-
   const originalPrice = watch("originalPrice", 0);
   const discountPercentage = watch("discountPercentage", 0);
   const discountedPrice = originalPrice - (originalPrice * discountPercentage) / 100;
@@ -53,12 +55,10 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
     maximumFractionDigits: 2,
   }).format(discountedPrice);
 
+  const { setProductChanged, setIsLoading } = useContext(ProductsContext);
+
   const onSubmit = (data) => {
     addProduct(data);
-    setIsOpen(false);
-    setImages([]);
-    setFileObjects([]);
-    methods.reset();
   };
 
   const addProduct = async (data) => {
@@ -87,6 +87,12 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
         return;
       }
       const responseData = await response.json();
+      setIsOpen(false); // close modal
+      setImages([]);  // reset images
+      setFileObjects([]); // reset file objects
+      methods.reset(); // reset form
+      setIsLoading(true);
+      setProductChanged(true); // trigger useEffect in ProductsContext to fetch products again
       console.log(responseData);
     } catch (error) {
       console.error(error);

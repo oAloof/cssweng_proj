@@ -4,6 +4,7 @@ import ProductsTable from "../../components/admin/productsTable.jsx";
 import AddProduct from "../../components/admin/addProduct.jsx";
 import MultiSelect from "../../components/admin/multiSelect.jsx";
 import { FiSearch } from "react-icons/fi";
+import { ProductsProvider } from "../../contexts/ProductsContext.jsx";
 
 function AdminProductPage() {
   const [showCategories, setShowCategories] = useState(true);
@@ -58,62 +59,64 @@ function AdminProductPage() {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-200">
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <AdminNavbar />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-          <div className="container mx-auto px-6 py-8">
-            <h3 className="text-gray-700 text-3xl font-medium">Products</h3>
-            <div className="flex justify-end mb-3 space-x-4">
-              <div className="self-stretch flex-1 justify-between">
-                <div className="relative h-auto">
-                  <FiSearch className="absolute top-1/3 left-2 text-gray-500" />
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    className="pr-4 pl-8 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 borders-gray-500 focus:ring-indigo-600 font-Nunito w-2/3"
-                  />
-                </div>
-              </div>
-              <div className="w-1/3">
-                <MultiSelect
-                  name="Status"
-                  selectOptions={status}
-                  isUserInputAllowed={false}
-                />
-              </div>
-              <AddProduct title="Add a Product" />
-            </div>
-            <div className="flex">
-              <div className="w-1/4">
-                <div className="bg-white rounded-lg shadow-md px-4 pt-4 pb-1 space-y-6 flex-col">
-                  <div className="flex place-items-center justify-start space-x-2 mb-3">
-                    <i className="fas fa-filter text-gray-400 mr-2"></i>
-                    <h4 className="text-gray-700 font-medium mb-0">Filters</h4>
+    <ProductsProvider>
+      <div className="flex h-screen bg-gray-200">
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <AdminNavbar />
+          <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
+            <div className="container mx-auto px-6 py-8">
+              <h3 className="text-gray-700 text-3xl font-medium">Products</h3>
+              <div className="flex justify-end mb-3 space-x-4">
+                <div className="self-stretch flex-1 justify-between">
+                  <div className="relative h-auto">
+                    <FiSearch className="absolute top-1/3 left-2 text-gray-500" />
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      className="pr-4 pl-8 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 borders-gray-500 focus:ring-indigo-600 font-Nunito w-2/3"
+                    />
                   </div>
-                  <FilterItems
-                    title="Categories"
-                    items={categories}
-                    showItems={showCategories}
-                    setShowItems={setShowCategories}
-                  />
-                  <hr className="my-2" />
-                  <FilterItems
-                    title="Brands"
-                    items={brands}
-                    showItems={showBrands}
-                    setShowItems={setShowBrands}
+                </div>
+                <div className="w-1/3">
+                  <MultiSelect
+                    name="Status"
+                    selectOptions={status}
+                    isUserInputAllowed={false}
                   />
                 </div>
+                <AddProduct title="Add a Product" />
               </div>
-              <div className="w-3/4 pl-4">
-                <ProductsTable />
+              <div className="flex">
+                <div className="w-1/4">
+                  <div className="bg-white rounded-lg shadow-md px-4 pt-4 pb-1 space-y-6 flex-col">
+                    <div className="flex place-items-center justify-start space-x-2 mb-3">
+                      <i className="fas fa-filter text-gray-400 mr-2"></i>
+                      <h4 className="text-gray-700 font-medium mb-0">Filters</h4>
+                    </div>
+                    <FilterItems
+                      title="Categories"
+                      items={categories}
+                      showItems={showCategories}
+                      setShowItems={setShowCategories}
+                    />
+                    <hr className="my-2" />
+                    <FilterItems
+                      title="Brands"
+                      items={brands}
+                      showItems={showBrands}
+                      setShowItems={setShowBrands}
+                    />
+                  </div>
+                </div>
+                <div className="w-3/4 pl-4">
+                  <ProductsTable />
+                </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
-    </div>
+    </ProductsProvider>
   );
 }
 
