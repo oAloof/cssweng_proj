@@ -3,11 +3,14 @@ import Countdown from "../../components/CountdownTimer.jsx";
 import NavBar from "../../components/NavBar.jsx";
 import Menu from "../../components/Menu.jsx";
 import Section from "../../components/customer/Section.jsx";
+import ErrorMessage from "../../components/ErrorMessage.jsx";
 
 const LandingPage = () => {
   const [saleData, setSaleData] = useState(null);
   const [products, setProducts] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +38,16 @@ const LandingPage = () => {
     
     fetchData();
     fetchProducts();
-  }, []);
+    
+    let timer;
+    if (errorMessage) {
+      timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+    }
+
+    return () => clearTimeout(timer);
+  }, [errorMessage]);
 
   const getSaleData = async () => {
     try {
@@ -74,7 +86,14 @@ const LandingPage = () => {
 
   return (
     <div className="bg-slate-100 min-h-screen min">
-      <Menu />
+      {errorMessage && (
+        <ErrorMessage
+          message={errorMessage}
+          onClose={() => setErrorMessage("")}
+        />
+      )}
+
+      <Menu setErrorMessage={setErrorMessage} />
 
       {products ? (
         <div className="mt-[7vh] pb-[15vh]">
