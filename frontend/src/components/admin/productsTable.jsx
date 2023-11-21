@@ -11,10 +11,8 @@ const ProductsTable = () => {
 };
 
 const Table = () => {
-  // const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  // const [isLoading, setIsLoading] = useState(true);
   const { products, isLoading } = useContext(ProductsContext);
   
   const handleEditClick = (product) => {
@@ -70,6 +68,39 @@ const Table = () => {
 };
 
 const TableRows = ({ product, onEditClick }) => {
+  const { setIsLoading, setProductChanged } = useContext(ProductsContext);
+
+  const deleteProduct = async (product) => {
+    try {
+      const dataToSend = {
+        id: product._id,
+      };
+      const response = await fetch("http://localhost:4000/api/admin/products/delete",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSend),
+        });
+      if (!response.ok) {
+        console.error("Failed to delete product: ", response.status);
+        return;
+      }
+      const responseData = await response.json();
+      setIsLoading(true);
+      setProductChanged(true); // trigger useEffect in ProductsContext to fetch products again
+      console.log(responseData);
+    } catch (error) {
+      console.error("Fetch error: ", error);
+      return;
+    }
+  };
+
+  const handleDeleteClick = (product) => {
+    deleteProduct(product);
+  }
+
   return (
     <motion.tr
       layoutId={`row-${product.id}`}
@@ -109,6 +140,7 @@ const TableRows = ({ product, onEditClick }) => {
         <FontAwesomeIcon
           icon={faTrashAlt}
           className="text-black hover:text-indigo-500 cursor-pointer text-lg"
+          onClick={() => handleDeleteClick(product)}
         />
       </td>
     </motion.tr>

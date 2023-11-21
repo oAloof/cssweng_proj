@@ -1,10 +1,11 @@
 const Product = require('../models/productModel');
 const upload = require('../middlewares/fileUpload');
+const mongoose = require('mongoose');
 const { deleteFile } = require('../middlewares/fileDelete');
 
 const getProducts = async (req, res) => {
     try {
-        const products = await Product.find({})
+        const products = await Product.find({}).sort({ createdAt: -1 });
         res.status(200).send({products: products})
         return
     } catch (error) {
@@ -157,8 +158,39 @@ const editProduct = async (req, res) => {
     }
 }
 
+const deleteProduct = async (req, res) => {
+    const { id } = req.body
+
+     // check if the id is valid
+     if (!mongoose.isValidObjectId(id)) {
+        res.status(400).send('Invalid product id')
+        return
+    }
+    try {
+        const product = await Product.findById(id)
+        // check if the product exists
+        if (!product) {
+            res.status(400).send({message: 'Product does not exist'})
+            return
+        }
+        // delete product images from google drive
+        for (let imageId of product.images) {
+            await deleteFile(imageId)
+        }
+        // delete product from database
+        await Product.findByIdAndDelete(id)
+        res.status(200).send({message: 'Product deleted successfully'})
+        return
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({message: 'Server error'})
+        return
+    }
+}
+
 module.exports = {
     getProducts,
     addProduct,
-    editProduct
+    editProduct,
+    deleteProduct
 }

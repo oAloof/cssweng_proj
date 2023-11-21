@@ -24,6 +24,6 @@ const saleSchema = new Schema({
         type: Number, 
         required: true
     }
-})
+}, { timestamps: true }); // Enable timestamps
 
 module.exports = mongoose.model('Sale', saleSchema)

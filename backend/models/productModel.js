@@ -47,6 +47,6 @@ const productSchema = new Schema({
         type: [String], 
         required: true
     }
-})
+}, { timestamps: true }); // Enable timestamps
 
 module.exports = mongoose.model('Product', productSchema)

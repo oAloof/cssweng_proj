@@ -79,7 +79,8 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
     });
     
     try {
-      const response = await fetch("http://localhost:4000/api/admin/products/addProduct", {
+      const response = await fetch("http://localhost:4000/api/admin/products/addProduct", 
+      {
         method: "POST",
         credentials: "include",
         body: formData,
