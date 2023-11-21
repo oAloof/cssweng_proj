@@ -6,19 +6,50 @@ import Section from "../../components/customer/Section.jsx";
 
 const ProductsPage = () => {
   const [saleData, setSaleData] = useState(null);
-  const [ProductsListed, setProductsListed] = useState(false);
+  const [products, setProducts] = useState(false);
+  const [ProductCategories, setProductCategories] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchSale = async () => {
       try {
         const data = await getSaleData();
-        setSaleData(data.sale);
-        setProductsListed(data.sale.some((product) => product.listed)); // TODO: CHECK IF ANY PRODUCTS ARE LISTED
+
+        setSaleData(data);
+        setIsLoading(false);
+
       } catch (error) {
         console.log(error);
       }
     };
-    fetchData();
+
+    const fetchProducts = async () => {
+      try {
+        const data = await getProductData();
+  
+        setProducts(data)
+        setIsLoading(false);
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+
+    const fetchProductCategories = async () => {
+      try {
+        const data = await getProductCategories();
+  
+        setProductCategories(data)
+        setIsLoading(false);
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+    
+    fetchSale();
+    fetchProducts();
+    fetchProductCategories();
   }, []);
 
   const getSaleData = async () => {
@@ -33,18 +64,64 @@ const ProductsPage = () => {
     }
   };
 
+  const getProductData = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/products", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!response.ok) {
+          console.error("Failed to fetch products: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getProductCategories = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/categories", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!response.ok) {
+          console.error("Failed to fetch product Categories: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    if (!string) return string;
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="bg-slate-100 min-h-screen min">
       <Menu />
 
-      {ProductsListed ? (
+      {products ? (
         <div className="mt-[7vh] pb-[15vh]">
-          <Countdown saleData={saleData} />
+          {/* <Countdown saleData={saleData} /> */}
           <section className="overflow-auto ">
-            <Section title="Big Discounts!" category="Energy Efficient" />
-            <Section title="Big Discounts!" category="Energy Efficient" />
-            <Section title="Big Discounts!" category="Energy Efficient" />
-            <Section title="Big Discounts!" category="Energy Efficient" />
+            {ProductCategories && ProductCategories.map((productCategory) => {
+              return <Section title= {capitalizeFirstLetter(productCategory)} category= {productCategory} products = {products}/>
+            })}
           </section>
         </div>
       ) : (

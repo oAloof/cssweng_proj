@@ -11,6 +11,7 @@ const adminProductRoutes = require('./routes/adminProductsRouter')
 // const adminOrdersRoutes = require('./src/routes/adminOrdersRouter')
 const adminSalesRoutes = require('./routes/adminSalesRouter')
 const customerSalesRoutes = require('./routes/customerSalesRouter')
+const customerGeneralRoutes = require('./routes/customerGeneralRouter')
 const userController = require('./controllers/userController')
 const { authenticate } = require('./middlewares/authenticate')
 // express app
@@ -46,6 +47,7 @@ app.post('/api/logout', authenticate, userController.logoutUser)
 
 // Customer API
 app.use('/api/sales', customerSalesRoutes) 
+app.use('/api/', customerGeneralRoutes)
 
 // Admin api
 app.use('/api/admin/sales', adminSalesRoutes) // routes related to sales
