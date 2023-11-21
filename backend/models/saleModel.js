@@ -16,22 +16,13 @@ const saleSchema = new Schema({
         type: Date,
         required: true
     },
-    startTime: {
-        type: String,
-        required: true
-    },
     endDate: {
         type: Date,
         required: true
     }, 
-    endTime: {
-        type: String,
+    revenue: {
+        type: Number, 
         required: true
-    }, 
-    blackList: { 
-        type: Schema.Types.ObjectId,
-        ref: 'Product',
-        required: false
     }
 })
 

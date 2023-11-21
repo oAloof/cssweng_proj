@@ -157,6 +157,13 @@ const TableRows = ({ sale, onEditClick }) => {
         <FontAwesomeIcon
           icon={faTrashAlt}
           className="text-black hover:text-indigo-500 cursor-pointer text-lg"
+          onClick={() => {fetch("http://localhost:4000/api/admin/sales/" + sale._id, {
+            method: "DELETE",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })}}
         />
       </td>
     </motion.tr>

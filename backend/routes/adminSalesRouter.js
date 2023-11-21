@@ -14,7 +14,7 @@ router.get('/getSales', salesController.getSales) //authenticate, isAdmin,
 router.post('/addSales', upload.any(), salesController.addSales)        
 
 // // DELETE a product
-// router.delete('/delete/:id', productController.deleteProduct)
+router.delete('/:id', salesController.deleteSales)
 
 // // GET a single product
 // router.get('/:id', productController.singleProductView)
@@ -22,8 +22,8 @@ router.post('/addSales', upload.any(), salesController.addSales)
 // // GET the update product page
 // router.get('/edit/:id', productController.updateProductView)
 
-// // UPDATE a product
-// router.patch('/edit/:id', productController.updateProduct) 
+// // EDIT a sale
+router.patch('/:id',  upload.any(), salesController.editSale)
 
 // export the router
 module.exports = router
