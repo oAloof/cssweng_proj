@@ -7,25 +7,29 @@ import CreatableSelect from "react-select/creatable";
 **/
 
 const MultiSelect = ({ name, selectOptions, isUserInputAllowed = true, field }) => {
-  const capitalizeFirstLetter = (string) => {
-    if (!string) return string; // return original string if it's false
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  };
-
   const transformFieldValue = (value) => {
-    // Check if value is an array and map it
-    return Array.isArray(value) ? value.map(val => ({ value: val, label: capitalizeFirstLetter(val) })) : [];
+    // Function to capitalize the first letter of a string
+    const capitalizeFirstLetter = (string) => {
+      if (!string) return string;
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+  
+    // If value is a string, transform it into an object and return as a single-element array
+    if (typeof value === 'string') {
+      return [{ value, label: capitalizeFirstLetter(value) }];
+    }
+  
+    // If value is an array, map each string to an object
+    if (Array.isArray(value)) {
+      return value.map(val => ({ value: val, label: capitalizeFirstLetter(val) }));
+    }
+  
+    // If value is neither a string nor an array, return an empty array
+    return [];
   };
   
   const [options, setOptions] = useState(selectOptions);
   const [selectedValues, setSelectedValues] = useState( transformFieldValue(field?.value) || []);
-
-  useEffect(() => {
-    if (field) {
-      console.log(selectedValues);
-      
-    }
-  }), [field];
 
   const handleChange = (newValue, actionMeta) => {
     // Handle change in selection
