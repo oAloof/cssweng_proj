@@ -7,12 +7,14 @@ import Section from "../../components/customer/Section.jsx";
 const LandingPage = () => {
   const [saleData, setSaleData] = useState(null);
   const [ProductsListed, setProductsListed] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getSaleData();
         setSaleData(data);
+        setIsLoading(false);
         setProductsListed(data.sale.some((product) => product.listed)); // TODO: CHECK IF ANY PRODUCTS ARE LISTED
       } catch (error) {
         console.log(error);
@@ -32,6 +34,10 @@ const LandingPage = () => {
       console.error("Error fetching data:", error);
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-slate-100 min-h-screen min">

@@ -11,7 +11,7 @@ function AdminProductPage() {
   const [showBrands, setShowBrands] = useState(true);
   const categories = ["Category 1", "Category 2", "Category 3"];
   const brands = ["Brand 1", "Brand 2", "Brand 3"];
-
+  
   const FilterItems = ({ title, items, showItems, setShowItems }) => {
     return (
       <div>
