@@ -25,16 +25,19 @@ export const ProductsProvider = ({ children }) => {
         }
     }
 
+    const loadData = async () => {
+        try {
+            const fetchedProducts = await fetchProducts();
+            setProducts(fetchedProducts.products);
+        } catch (error) {
+            console.error('Error fetching products: ', error);
+        } finally {
+            setIsLoading(false);
+            setProductChanged(false);
+        }
+    };
+
     useEffect(() => {
-        const loadData = async () => {
-            try {
-                const fetchedProducts = await fetchProducts();
-                setProducts(fetchedProducts.products);
-                setIsLoading(false);
-            } catch (error) {
-                console.error('Error fetching products: ', error);
-            }
-        };
         loadData();
     }, [productChanged]);
 

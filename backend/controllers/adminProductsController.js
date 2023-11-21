@@ -1,5 +1,6 @@
 const Product = require('../models/productModel');
 const upload = require('../middlewares/fileUpload');
+const { deleteFile } = require('../middlewares/fileDelete');
 
 const getProducts = async (req, res) => {
     try {
@@ -78,6 +79,7 @@ const editProduct = async (req, res) => {
     try {
         const {
             productId,
+            name,
             brand,
             // description, // ! add description field
             availableQuantity, 
@@ -88,12 +90,67 @@ const editProduct = async (req, res) => {
             deletedImages
         } = req.body 
         const images = req.files
-        console.log(deletedImages);
+        // Check if the productId exists in the database
+        const product = await Product.findById(productId)
+        if (!product) {
+            res.status(400).send({message: 'Product does not exist.'})
+            return
+        }
         // check if there were images deleted
         if (deletedImages) {
-            
+            // delete the images from google drive
+            try {
+                // Check if deletedImages is an array or not
+                if (!Array.isArray(deletedImages)) {
+                    await deleteFile(deletedImages)
+                } else {
+                    for (let imageId of deletedImages) {
+                        await deleteFile(imageId)
+                    }
+                }
+                
+                // delete the image ids from the product
+                product.images = product.images.filter(imageId => !deletedImages.includes(imageId))
+            } catch (error) {
+                console.log(error)
+                res.status(500).send({message: 'Server error: failed to delete images'})
+                return
+            }
         }
 
+        // check if there were images added
+        if (images) {
+            // upload the images to google drive
+            try {
+                for (let image of images) {
+                    const imageId = await upload.uploadFile(image)
+                    product.images.push(imageId)
+                }
+            } catch (error) {
+                console.log(error)
+                res.status(500).send({message: 'Server error: failed to upload new images'})
+                return
+            }
+        }
+
+        // update the product
+        try {
+            product.name = name
+            product.brand = brand
+            // product.description = description
+            product.availableQuantity = availableQuantity
+            product.originalPrice = originalPrice
+            product.discountPercentage = discountPercentage
+            product.discountedPrice = discountedPrice
+            product.listProduct = listProduct
+            const updatedProduct = await product.save()
+            res.status(200).send({message: "Product updated successfully."})
+            return
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({message: 'Server error: failed to save product to database'})
+            return
+        }
     } catch (error) {
         console.log(error);
         res.status(500).send({message: 'Server error'});

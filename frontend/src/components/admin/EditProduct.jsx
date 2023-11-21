@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import InputField from "./InputField";
 import {
   productName_validation,
@@ -9,6 +9,7 @@ import {
 } from "../../utils/inputValidations.jsx";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
+import { ProductsContext } from "../../contexts/ProductsContext.jsx";
 
 const Modal = ({ isOpen, setIsOpen, title, product }) => {
   const constructImageUrl = (imageId) => {
@@ -21,6 +22,7 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
   const [deletedImages, setDeletedImages] = useState([]); 
   const [images, setImages] = useState([]);
   const [fileObjects, setFileObjects] = useState([]);
+  const { setProductChanged, setIsLoading } = useContext(ProductsContext);
 
   const methods = useForm({ 
     mode: "onSubmit",
@@ -79,10 +81,8 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
       }
       const responseData = await response.json();
       setIsOpen(false); // close modal
-      // setImages([]);  // reset images
-      // setFileObjects([]); // reset file objects
-      // setIsLoading(true);
-      // setProductChanged(true); // trigger useEffect in ProductsContext to fetch products again
+      setIsLoading(true);
+      setProductChanged(true); // trigger useEffect in ProductsContext to fetch products again
       console.log(responseData);
       return
     } catch (error) {
@@ -101,7 +101,7 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
   const handleOldImageDelete = (imageUrl) => {
     const url = new URL(imageUrl);
     const imageId = url.searchParams.get("id");
-    setDeletedImages([...deletedImages, imageId])
+    setDeletedImages((prevImages) => prevImages.concat(imageId))
     setExistingImages(existingImages.filter((img) => img !== imageUrl));
   }
 
