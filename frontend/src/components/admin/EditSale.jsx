@@ -145,7 +145,7 @@ const Modal = ({ isOpen, setIsOpen, title, sale }) => {
                       render={( {field} ) => (
                         <DatePicker
                           field={field}
-                          name={"startDate"}
+                          name={"endDate"}
                           filterDate={past}
                           onChange={(date) => {setEndDate(date)
                             field.onChange(date)}}

@@ -4,6 +4,7 @@ const Sales = require('../models/saleModel');
 const getOngoingSale = async (req, res) => {
     try {
         const earliestSale = await Sales.findOne().sort({ startDate: 1 });
+        console.log(earliestSale);
         res.status(200).send({sale: earliestSale});
     } catch (error) {
         console.log(error);

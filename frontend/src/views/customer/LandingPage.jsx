@@ -12,7 +12,7 @@ const LandingPage = () => {
     const fetchData = async () => {
       try {
         const data = await getSaleData();
-        setSaleData(data.sale);
+        setSaleData(data);
         setProductsListed(data.sale.some((product) => product.listed)); // TODO: CHECK IF ANY PRODUCTS ARE LISTED
       } catch (error) {
         console.log(error);
