@@ -44,6 +44,6 @@ const orderSchema = new Schema({
         type: Number, 
         required: true
     }
-})
+}, { timestamps: true }); // Enable timestamps
 
 module.exports = mongoose.model('Order', orderSchema)

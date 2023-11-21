@@ -21,8 +21,6 @@ const AddProduct = ({ title }) => {
     const images = files.map((file) => URL.createObjectURL(file));
     setFileObjects((prevFiles) => prevFiles.concat(files)); // Store the file objects in state
     setImages((prevImages) => prevImages.concat(images));
-    console.log(fileObjects);
-    console.log(images);
   };
 
   return (
