@@ -14,10 +14,12 @@ import MultiSelect from "./multiSelect.jsx";
 const AddProduct = ({ title }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [images, setImages] = useState([]);
+  const [fileObjects, setFileObjects] = useState([]);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const images = files.map((file) => URL.createObjectURL(file));
+    setFileObjects(files); // Store the file objects in state
     setImages((prevImages) => prevImages.concat(images));
   };
 
@@ -33,14 +35,17 @@ const AddProduct = ({ title }) => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         images={images}
+        fileObjects={fileObjects}
         handleImageChange={handleImageChange}
+        setImages={setImages}
       />
     </div>
   );
 };
 
-const Modal = ({ isOpen, setIsOpen, images, handleImageChange, title }) => {
+const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, title, setImages }) => {
   const methods = useForm({ mode: "onSubmit" });
+
   const { handleSubmit, watch } = methods;
 
   const originalPrice = watch("originalPrice", 0);
@@ -51,37 +56,47 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange, title }) => {
   }).format(salePrice);
 
   const onSubmit = (data) => {
-    console.log(data);
     addProduct(data);
+    setIsOpen(false);
+    setImages([]);
+    methods.reset();
   };
 
   const addProduct = async (data) => {
-    // Send data to backend
-    const dataToSend = {
-      ...data,
-      images,
-    };
 
-    console.log(dataToSend);
-    // try {
-    //   const response = await fetch("http://localhost:4000/api/admin/products/addProduct", {
-    //     method: "POST",
-    //     credentials: "include",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: dataToSend,
-    //   });
-    //   if (!response.ok) {
-    //     console.error("Failed to add product: ", response.status);
-    //     return;
-    //   }
-    //   const responseData = await response.json();
-    //   console.log(responseData);
-    // } catch (error) {
-    //   console.error(error);
-    //   return;
-    // }
+    const formData = new FormData();
+    // Append existing form data
+    Object.keys(data).forEach(key => {
+      formData.append(key, data[key]);
+    });
+
+    // Calculate discounted price 
+    if (data.originalPrice && data.discountPercentage) {
+      const discountedPrice = data.originalPrice - (data.originalPrice * data.discountPercentage / 100);
+      formData.append('discountedPrice', discountedPrice.toString());
+    }
+    // Append images 
+    fileObjects.forEach((file) => {
+      formData.append("images", file);
+    });
+
+    try {
+      const response = await fetch("http://localhost:4000/api/admin/products/addProduct", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+      if (!response.ok) {
+        console.error("Failed to add product: ", response.status);
+        return;
+      }
+      const responseData = await response.json();
+      console.log(responseData);
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+
   };
 
   const categoryOptions = [
@@ -165,7 +180,7 @@ const Modal = ({ isOpen, setIsOpen, images, handleImageChange, title }) => {
                       />
                     )}
                   />
-
+                
                   <div className="flex flex-row gap-4">
                     <div className="flex flex-col gap-2">
                       <label htmlFor="images" className="text-lg font-medium">

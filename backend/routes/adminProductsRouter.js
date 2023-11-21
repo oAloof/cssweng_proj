@@ -7,8 +7,8 @@ const { authenticate, isAdmin } = require('../middlewares/authenticate')
 const upload = require('../middlewares/fileUpload.js')
 
 // GET all products
-router.get('/getProducts', authenticate, isAdmin, productController.getProducts)
-
+// router.get('/getProducts', authenticate, isAdmin, productController.getProducts)
+router.get('/getProducts', productController.getProducts)
 
 // POST a new product
 router.post('/addProduct', upload.uploadImage.any(), productController.addProduct)        

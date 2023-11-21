@@ -13,7 +13,7 @@ const MultiSelect = ({ name, selectOptions, isUserInputAllowed = true, field }) 
   const handleChange = (newValue, actionMeta) => {
     // Handle change in selection
     setSelectedValues(newValue);
-
+    
     // Check if field is defined
     if (field && field.onChange) {
       field.onChange(newValue.map(item => item.value)); // update form data
