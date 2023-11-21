@@ -5,8 +5,9 @@ const User = require('../models/userModel')
 
 const loginUser = async (req, res) => {
     // Check if user is already logged in
+    console.log(req.user)
     if (req.user) {
-        res.status(200).send({message: 'User is already logged in.'})
+        res.status(400).send({message: 'User is already logged in.'})
         return
     }
 
@@ -85,7 +86,7 @@ const registerUser = async (req, res) => {
 const logoutUser = (req, res) => { 
     // Check if user is already logged in
     if (!req.user) {
-        res.status(200).send({message: 'User is not logged in.'})
+        res.status(400).send({message: 'User is not logged in.'})
         return
     }
 
