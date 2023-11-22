@@ -92,6 +92,7 @@ const editProduct = async (req, res) => {
             deletedImages
         } = req.body 
         const images = req.files
+        const category = req.body.category.split(',')
         // Check if the productId exists in the database
         const product = await Product.findById(productId)
         if (!product) {
@@ -145,6 +146,7 @@ const editProduct = async (req, res) => {
             product.discountPercentage = discountPercentage
             product.discountedPrice = discountedPrice
             product.listProduct = listProduct
+            product.category = category
             const updatedProduct = await product.save()
             res.status(200).send({message: "Product updated successfully."})
             return
