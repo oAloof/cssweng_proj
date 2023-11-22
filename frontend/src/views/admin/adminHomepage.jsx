@@ -175,7 +175,7 @@ function AdminDashboard() {
     return <div>Loading...</div>;
   }
 
-  if (!isAuthenticated && !isAdmin) {
+  if (!isAuthenticated || !isAdmin) {
     return <div>404 Page Not Found</div>;
   }
 
