@@ -6,6 +6,7 @@ import {
   availableQuantity_validation,
   discountPercentage_validation,
   productOriginalPrice_validation,
+  desc_validation,
 } from "../../utils/inputValidations.jsx";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
@@ -64,7 +65,7 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
   const addProduct = async (data) => {
     const formData = new FormData();
     // Append existing form data
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
     
@@ -148,7 +149,7 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
                     </div>
                     <div className="flex flex-col gap-1 items-end w-1/2">
                       <InputField {...discountPercentage_validation} />
-                      <p className="font-Nunito font-mb">
+                      <p className="font-Nunito font-medium mb-0">
                         Sale Price: ₱{formattedSalePrice}
                       </p>
                     </div>
@@ -156,9 +157,8 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
 
                   <InputField {...availableQuantity_validation} />
 
-                  {/* <InputField {...discountPercentage_validation} /> */}
+                  <InputField {...desc_validation} />
 
-                  {/* wrapped in controller tags to update form data on change */}
                   <Controller
                     name="category"
                     control={methods.control}
@@ -184,7 +184,7 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
                       />
                     )}
                   />
-                
+
                   <div className="flex flex-row gap-4">
                     <div className="flex flex-col gap-2">
                       <label htmlFor="images" className="text-lg font-medium">

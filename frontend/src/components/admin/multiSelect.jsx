@@ -6,6 +6,7 @@ import CreatableSelect from "react-select/creatable";
    @TODO: Implement logic to retrieve user selections for backend and pass them to filters
 **/
 
+
 const MultiSelect = ({ name, selectOptions, isUserInputAllowed = true, field }) => {
   const transformFieldValue = (value) => {
     // Function to capitalize the first letter of a string
@@ -36,7 +37,7 @@ const MultiSelect = ({ name, selectOptions, isUserInputAllowed = true, field }) 
     setSelectedValues(newValue);
     // Check if field is defined
     if (field && field.onChange) {
-      field.onChange(newValue.map(item => item.value)); // update form data
+      field.onChange(newValue.map((item) => item.value)); // update form data
     }
   };
 

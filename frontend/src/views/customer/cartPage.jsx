@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TopNav from "../../components/Menu";
 import { FiTrash2 } from "react-icons/fi";
@@ -26,6 +26,10 @@ const CartItem = ({ item, onDelete, onQuantityChange }) => {
       handleQuantityChange(newQuantity);
     }
   };
+
+  useEffect(() => {
+    setQuantity(item.quantity);
+  }, [item.quantity]);
 
   return (
     <div className="flex flex-grow items-center justify-between border-b border-gray-200 py-3">
@@ -77,7 +81,10 @@ const CartItem = ({ item, onDelete, onQuantityChange }) => {
       </div>
       <div className="flex items-end">
         <div className="flex flex-col justify-between items-end h-20">
-          <p className="font-Nunito font-bold m-0 text-1xl">₱{item.price}</p>
+          <p className="font-Nunito font-bold m-0 text-1xl">
+            ₱{(item.price * quantity).toFixed(2)}
+          </p>
+
           <button
             className="text-red-500 hover:text-red-700 text-2xl"
             onClick={() => onDelete(item.id)}

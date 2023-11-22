@@ -2,6 +2,7 @@ import { findInputError, isFormInvalid } from "../utils/";
 import { useFormContext } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdError } from "react-icons/md";
+import { useEffect } from "react";
 
 const InputField = ({
   label,
@@ -11,17 +12,28 @@ const InputField = ({
   validation,
   name,
   onChange,
+  defaultValue,
 }) => {
   const {
     register,
     formState: { errors },
+    setValue,
   } = useFormContext();
+
+  useEffect(() => {
+    if (defaultValue) {
+      setValue(name, defaultValue); // Set the default value using setValue
+    }
+  }, [name, defaultValue, setValue]);
 
   const inputErrors = findInputError(errors, name);
   const isInvalid = isFormInvalid(inputErrors);
 
   const handleChange = (e) => {
-    if (onChange) onChange(e);
+    console.log(`InputField ${name} changed:`, e.target.value);
+    if (onChange) {
+      onChange(e);
+    }
     register(name).onChange(e);
   };
 

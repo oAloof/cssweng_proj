@@ -309,7 +309,7 @@ export const quantity_validation = {
   label: "Quantity",
   type: "number",
   id: "quantity",
-  placeholder: "Enter quantity",
+  placeholder: "0",
   validation: {
     required: {
       value: true,
@@ -327,5 +327,9 @@ export const quantity_validation = {
       value: /^\d+$/,
       message: "Quantity must be a positive integer",
     },
+  },
+  validate: {
+    exceedsAvailable: (value, availableQuantity) =>
+      parseInt(value, 10) <= availableQuantity || "Exceeds available quantity",
   },
 };
