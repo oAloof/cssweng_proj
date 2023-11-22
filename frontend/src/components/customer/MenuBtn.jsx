@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { FiMenu, FiX, FiArrowRight } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -21,39 +21,56 @@ const MenuButton = () => {
   );
 };
 
+const capitalizeFirstLetter = (string) => {
+  if (!string) return string;
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 const Nav = ({ isOpen, setIsOpen }) => {
   const navigate = useNavigate();
+  const [ProductCategories, setProductCategories] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const categories = [
-    { text: "Appliances", path: "/" },
-    { text: "Aircons", path: "/products" },
-    { text: "Sound Systems", path: "/cart" },
-    { text: "Blah Blah", path: "/account" },
-    { text: "Appliances", path: "/" },
-    { text: "Aircons", path: "/products" },
-    { text: "Sound Systems", path: "/cart" },
-    { text: "Blah Blah", path: "/account" },
-    { text: "Appliances", path: "/" },
-    { text: "Aircons", path: "/products" },
-    { text: "Sound Systems", path: "/cart" },
-    { text: "Blah Blah", path: "/account" },
-    { text: "Appliances", path: "/" },
-    { text: "Aircons", path: "/products" },
-    { text: "Sound Systems", path: "/cart" },
-    { text: "Blah Blah", path: "/account" },
-    { text: "Appliances", path: "/" },
-    { text: "Aircons", path: "/products" },
-    { text: "Sound Systems", path: "/cart" },
-    { text: "Blah Blah", path: "/account" },
-    { text: "Appliances", path: "/" },
-    { text: "Aircons", path: "/products" },
-    { text: "Sound Systems", path: "/cart" },
-    { text: "Blah Blah", path: "/account" },
-    { text: "Appliances", path: "/" },
-    { text: "Aircons", path: "/products" },
-    { text: "Sound Systems", path: "/cart" },
-    { text: "Blah Blah", path: "/account" },
-  ];
+  useEffect(() => {
+  
+    const fetchProductCategories = async () => {
+      try {
+        const data = await getProductCategories();
+  
+        setProductCategories(data)
+        setIsLoading(false);
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+    
+    fetchProductCategories();
+  }, []);
+
+  const getProductCategories = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/categories", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!response.ok) {
+          console.error("Failed to fetch product Categories: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  var categories = []
+  for (var i = 0 ; i < ProductCategories.length; i++) {
+    categories.push({ text: capitalizeFirstLetter(ProductCategories[i]), path: "/" +  ProductCategories[i]})
+  }
 
   return (
     <motion.nav

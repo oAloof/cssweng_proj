@@ -9,7 +9,7 @@ const productSchema = new Schema({
         required: true
     },
     brand: {
-        type: [String],
+        type: String,
         default: 'Generic' 
     },
     description: {
@@ -46,7 +46,12 @@ const productSchema = new Schema({
     category: {
         type: [String], 
         required: true
+    }, 
+    quantitySold: {
+        type: Number,
+        required: true 
     }
-})
+    
+}, { timestamps: true }); // Enable timestamps
 
 module.exports = mongoose.model('Product', productSchema)

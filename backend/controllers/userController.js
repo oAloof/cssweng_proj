@@ -3,10 +3,38 @@ const bcrypt = require('bcrypt')
 
 const User = require('../models/userModel')
 
+const getAuthData = async (req, res) => {
+    if (!req.user) {
+        res.status(200).send({
+            message: 'Authentication data found.',
+            isAuthenticated: false,
+        })
+        return
+    }
+    const { _id } = req.user
+    // Check if user exists in the database
+    const user = await User.findOne({_id})
+
+    if (!user) {
+        res.status(404).send({
+            message: 'User not found.',
+            isAuthenticated: false,
+        })
+        return
+    }
+
+    res.status(200).send({
+        message: 'Authentication data found.',
+        isAuthenticated: true,
+        userType: user.userType,
+    })
+}   
+
 const loginUser = async (req, res) => {
     // Check if user is already logged in
+    console.log(req.user)
     if (req.user) {
-        res.status(200).send({message: 'User is already logged in.'})
+        res.status(400).send({message: 'User is already logged in.'})
         return
     }
 
@@ -26,7 +54,10 @@ const loginUser = async (req, res) => {
 
         const token = jwt.sign({_id: user._id}, process.env.JWTSECRET, {expiresIn: '3h'})
         res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 3600000 });
-        res.status(200).send({message: 'User found.'})
+        res.status(200).send({
+            message: 'User found.',
+            userType: user.userType,
+        })
     } catch (error) {
         console.log(error)
         res.status(500).send({message: 'Server error.'})
@@ -65,7 +96,7 @@ const registerUser = async (req, res) => {
             // Hash the password
             const salt = await bcrypt.genSalt(10)
             const hashedPassword = await bcrypt.hash(password, salt)
-
+            
             const newUser = await User.create({
                 username: username, 
                 firstName: firstName,
@@ -85,7 +116,7 @@ const registerUser = async (req, res) => {
 const logoutUser = (req, res) => { 
     // Check if user is already logged in
     if (!req.user) {
-        res.status(200).send({message: 'User is not logged in.'})
+        res.status(400).send({message: 'User is not logged in.'})
         return
     }
 
@@ -94,6 +125,7 @@ const logoutUser = (req, res) => {
 }
 
 module.exports = { 
+    getAuthData,
     loginUser,
     registerUser,
     logoutUser

@@ -16,7 +16,10 @@ import {
   firstname_validation,
   lastname_validation,
 } from "../utils/inputValidations";
+
+// CONTEXTS
 import { RegistrationContext } from "../contexts/RegistrationContext";
+import { AuthenticationContext } from "../contexts/AuthenticationContext";
 
 const RegisterPage1 = () => {
   const navigate = useNavigate();
@@ -28,6 +31,15 @@ const RegisterPage1 = () => {
   const [validateMixedCase, setValidateMixedCase] = useState(false);
   const [validateNumber, setValidateNumber] = useState(false);
   const [validatePasswordMatch, setValidatePasswordMatch] = useState(false);
+
+  const {
+      registrationData1,
+      isPageOneComplete,
+      setRegistrationData1,
+      setIsPageOneComplete,
+    } = useContext(RegistrationContext);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { isAuthenticated, isAdmin, isLoadingAuth } = useContext(AuthenticationContext);
 
   useEffect(() => {
     // Update password validations
@@ -44,19 +56,9 @@ const RegisterPage1 = () => {
     );
   }, [password, confirmedPassword]);
 
-  const {
-    registrationData1,
-    isPageOneComplete,
-    setRegistrationData1,
-    setIsPageOneComplete,
-  } = useContext(RegistrationContext);
-  const [errorMessage, setErrorMessage] = useState("");
+ 
 
   useEffect(() => {
-    if (localStorage.getItem("isAuthenticated") === "true") {
-      navigate("/");
-    }
-
     if (isPageOneComplete) {
       // fill up input fields with data from context
       methods.setValue("username", registrationData1.username);
@@ -134,6 +136,16 @@ const RegisterPage1 = () => {
     // Perform confirmed password validation check
     setValidatePasswordMatch(password && password === newConfirmedPassword);
   };
+
+  if (isAuthenticated && !isAdmin) {
+    navigate("/");
+  }
+  if (isAuthenticated && isAdmin) {
+    navigate("/admin/home");
+  }
+  if (isLoadingAuth) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={styles.page}>

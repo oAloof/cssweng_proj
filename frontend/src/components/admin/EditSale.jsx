@@ -2,28 +2,68 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import InputField from "./InputField.jsx";
 import { saleName_validation } from "../../utils/inputValidations.jsx";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const Modal = ({ isOpen, setIsOpen, title }) => {
-  const methods = useForm({ mode: "onSubmit" });
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+const Modal = ({ isOpen, setIsOpen, title, sale }) => {
+  const methods = useForm({ mode: "onSubmit", 
+    defaultValues: {
+      saleName: sale.title,
+      location: sale.location,
+      startDate: sale.startDate,
+      endDate: sale.endDate,
+      revenue: sale.Revenue,
+    }, 
+  });
 
+  const past = (date) => new Date() < date;
+  console.log(sale.startDate)
+  const [startDate, setStartDate] = useState(new Date(sale.startDate));
+  const [endDate, setEndDate] = useState(new Date(sale.endDate));
+  
   const onSubmit = (data) => {
     console.log(data);
-    // Add any additional submission logic here !!!
-    // Close the modal after successful form submission
+    editSale(data);
     setIsOpen(false);
   };
 
+  const editSale = async (data) => {
+    const formData = new FormData();
+    // Append existing form data
+    Object.keys(data).forEach(key => {
+      formData.append(key, data[key]);
+    });
+
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    try {
+      const response = await fetch("http://localhost:4000/api/admin/sales/" + sale._id, {
+        method: "PATCH",
+        credentials: "include",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        console.error("Failed to edit Sales: ", response.status);
+        return;
+      }
+      const responseData = await response.json();
+      // console.log(responseData);
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+  };
+
   const location = [
-    { value: "manila", label: "Manila" },
-    { value: "laguna", label: "Laguna" },
-    { value: "quezon city", label: "Quezon City" },
-    { value: "ortigas", label: "Ortigas" },
+    { value: "Manila", label: "Manila" },
+    { value: "Laguna", label: "Laguna" },
+    { value: "Quezon city", label: "Quezon City" },
+    { value: "Ortigas", label: "Ortigas" },
   ];
 
   return (
@@ -53,11 +93,19 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                 >
                   <InputField {...saleName_validation} />
 
-                  <MultiSelect
-                    name={"Location"}
-                    selectOptions={location}
-                    isUserInputAllowed={true}
+                  <Controller
+                    name="location"
+                    control={methods.control}
+                    render={( {field} ) => (
+                      <MultiSelect
+                        field={field}
+                        name={"location"}
+                        selectOptions={location}
+                        isUserInputAllowed={true}
+                      />
+                    )}
                   />
+
                   <div className="flex flex-col space-y-1">
                     <label
                       htmlFor="start-date"
@@ -65,12 +113,23 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                     >
                       Start Date
                     </label>
-                    <DatePicker
-                      selected={startDate}
-                      onChange={(date) => setStartDate(date)}
-                      dateFormat="MMMM d, yyyy"
-                      className="px-3 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 borders-gray-500 focus:ring-indigo-600 font-Nunito w-full text-slate-600"
-                      id="start-date"
+                    <Controller
+                      name="startDate"
+                      control={methods.control}
+                      render={( {field} ) => (
+                        <DatePicker
+                          field={field}
+                          name={"startDate"}
+                          filterDate={past}
+                          onChange={(date) => {setStartDate(date) 
+                            field.onChange(date)}}
+                          placeholderText='Select date'
+                          selected={startDate}
+                          dateFormat="MMMM d, yyyy"
+                          className="px-3 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 borders-gray-500 focus:ring-indigo-600 font-Nunito w-full text-slate-600"
+                          id="start-date"
+                        />
+                      )}
                     />
                   </div>
                   <div className="flex flex-col space-y-1">
@@ -80,12 +139,23 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                     >
                       End Date
                     </label>
-                    <DatePicker
-                      selected={endDate}
-                      onChange={(date) => setEndDate(date)}
-                      dateFormat="MMMM d, yyyy"
-                      className="px-3 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 borders-gray-500 focus:ring-indigo-600 font-Nunito text-slate-600 w-full"
-                      id="end-date"
+                    <Controller
+                      name="endDate"
+                      control={methods.control}
+                      render={( {field} ) => (
+                        <DatePicker
+                          field={field}
+                          name={"endDate"}
+                          filterDate={past}
+                          onChange={(date) => {setEndDate(date)
+                            field.onChange(date)}}
+                          placeholderText='Select date'
+                          selected={endDate}
+                          dateFormat="MMMM d, yyyy"
+                          className="px-3 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 borders-gray-500 focus:ring-indigo-600 font-Nunito w-full text-slate-600"
+                          id="end-date"
+                        />
+                      )}
                     />
                   </div>
                   <div className="flex gap-2">
@@ -96,6 +166,7 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                       Close
                     </button>
                     <button
+                      onClick={() => setIsOpen(false)}
                       className="bg-white hover:opacity-90 transition-opacity text-indigo-600 font-semibold w-full py-2 rounded"
                       type="submit"
                     >

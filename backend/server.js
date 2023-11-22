@@ -11,6 +11,7 @@ const adminProductRoutes = require('./routes/adminProductsRouter')
 // const adminOrdersRoutes = require('./src/routes/adminOrdersRouter')
 const adminSalesRoutes = require('./routes/adminSalesRouter')
 const customerSalesRoutes = require('./routes/customerSalesRouter')
+const customerGeneralRoutes = require('./routes/customerGeneralRouter')
 const userController = require('./controllers/userController')
 const { authenticate } = require('./middlewares/authenticate')
 // express app
@@ -22,8 +23,8 @@ app.set('views', './src/views')
 
 // middlewares
 const corsOptions = {
-    origin: 'http://localhost:3000', // replace with your own URL
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    origin: 'http://localhost:3000', // Frontend URL
+    optionsSuccessStatus: 200, 
     credentials: true // allow cookies to be sent to and from the client
 };
 
@@ -40,12 +41,14 @@ app.use((req, res, next) => {
 
 // API ROUTES 
 // Login and Register API
+app.get('/api/auth/status', authenticate, userController.getAuthData)
 app.post('/api/login', authenticate, userController.loginUser)
 app.post('/api/register', authenticate, userController.registerUser)
 app.post('/api/logout', authenticate, userController.logoutUser)
 
 // Customer API
 app.use('/api/sales', customerSalesRoutes) 
+app.use('/api/', customerGeneralRoutes)
 
 // Admin api
 app.use('/api/admin/sales', adminSalesRoutes) // routes related to sales

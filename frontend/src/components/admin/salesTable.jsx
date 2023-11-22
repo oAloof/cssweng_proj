@@ -1,61 +1,35 @@
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import EditSale from "../admin/EditSale";
 import { AnimatePresence } from "framer-motion";
+import { SalesContext } from "../../contexts/SalesContext";
 
 const salesTable = () => {
   return <Table />;
 };
 
 const Table = () => {
-  const [sales, setSales] = useState(null);
   const [selectedSale, setSelectedSale] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const { sales, isLoading } = useContext(SalesContext);
 
   const handleEditClick = (sale) => {
     setSelectedSale(sale);
     setIsEditModalOpen(true);
-    console.log(isEditModalOpen);
   };
 
-  useEffect(() => {
-    // Fetch sales data from database
-    const fetchSales = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:4000/api/admin/sales/getSales",
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          console.error("Failed to fetch sales: ", response.status);
-        }
-
-        const json = await response.json();
-        // console.log(json)
-
-        setSales(json);
-      } catch (error) {
-        console.error("Error fetching sales: ", error);
-      }
-    };
-
-    fetchSales();
-  }, []);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible overflow-x-auto font-Nunito">
+      <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible overflow-x-auto">
         <table className="w-full">
           <thead>
+
             <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase font-bold">
               <th className="text-start p-4">Sale</th>
               <th className="text-start p-4 font-medium">Start Date</th>
@@ -97,6 +71,35 @@ const Table = () => {
 };
 
 const TableRows = ({ sale, onEditClick }) => {
+  const { setIsLoading, setSaleChanged } = useContext(SalesContext);
+
+  const deleteSale = async (sale) => {
+    try {
+      const response = await fetch("http://localhost:4000/api/admin/sales/" + sale._id,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+      if (!response.ok) {
+        console.error("Failed to delete product: ", response.status);
+        return;
+      }
+      const responseData = await response.json();
+      setIsLoading(true);
+      setSaleChanged(true); // trigger useEffect in ProductsContext to fetch products again
+      console.log(responseData);
+    } catch (error) {
+      console.error("Fetch error: ", error);
+      return;
+    }
+  };
+
+  const handleDeleteClick = (product) => {
+    deleteSale(sale);
+  }
+
   return (
     <motion.tr
       layoutId={`row-${sale._id}`}
@@ -170,78 +173,11 @@ const TableRows = ({ sale, onEditClick }) => {
         <FontAwesomeIcon
           icon={faTrashAlt}
           className="text-black hover:text-indigo-500 cursor-pointer text-lg"
+          onClick={() => handleDeleteClick(sale)}
         />
       </td>
     </motion.tr>
   );
 };
-
-const saleData = [
-  {
-    id: 1,
-    duration: 5,
-    startDate: "2022-01-01",
-    status: "Upcoming",
-    location: "Manila",
-    endDate: "2022-01-01",
-    revenue: 1000,
-  },
-  {
-    id: 2,
-    duration: 3,
-    startDate: "2022-01-02",
-    status: "Ongoing",
-    location: "Cebu",
-    endDate: "2022-01-02",
-    revenue: 500,
-  },
-  {
-    id: 3,
-    duration: 2,
-    startDate: "2022-01-03",
-    status: "Completed",
-    location: "Davao",
-    endDate: "2022-01-03",
-    revenue: 2000,
-  },
-  {
-    id: 4,
-    duration: 1,
-    startDate: "2022-01-04",
-    status: "Upcoming",
-    location: "Manila",
-    endDate: "2022-01-04",
-    revenue: 1500,
-  },
-  {
-    id: 5,
-    duration: 1,
-    startDate: "2022-01-05",
-    status: "Ongoing",
-    location: "Gensan",
-    endDate: "2022-01-05",
-    revenue: 800,
-  },
-
-  {
-    id: 6,
-    duration: 1,
-    startDate: "2022-01-05",
-    status: "Completed",
-    location: "Laguna",
-    endDate: "2022-01-05",
-    revenue: 3000,
-  },
-
-  {
-    id: 7,
-    duration: 1,
-    startDate: "2022-01-05",
-    status: "Upcoming",
-    location: "Manila",
-    endDate: "2022-01-05",
-    revenue: 1200,
-  },
-];
 
 export default salesTable;

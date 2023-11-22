@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Countdown from "../../components/CountdownTimer.jsx";
 import NavBar from "../../components/NavBar.jsx";
 import Menu from "../../components/Menu.jsx";
@@ -6,25 +6,83 @@ import Section from "../../components/customer/Section.jsx";
 import SearchBar from "../../components/customer/customerSearch.jsx";
 import Loader from "../Loader.jsx";
 
+
+import ErrorMessage from "../../components/ErrorMessage.jsx";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
+
 const LandingPage = () => {
   const [saleData, setSaleData] = useState(null);
-  const [ProductsListed, setProductsListed] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [mostDiscounted, setMostDiscounted] = useState(false);
+  const [mostSold, setMostSold] = useState(false);
+  const [newestProducts, setNewestProducts] = useState(false);
+  const {isAuthenticated, isAdmin} = useContext(AuthenticationContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getSaleData();
-        setSaleData(data.sale);
-        setProductsListed(data.sale.some((product) => product.listed));
-        setIsLoading(false);
+
+        setSaleData(data);
+        // setIsLoading(false);
+
       } catch (error) {
         console.log(error);
         setIsLoading(false);
       }
     };
+
+    const fetchMostDiscounted = async () => {
+      try {
+        const data = await getMostDiscounted();
+  
+        setMostDiscounted(data)
+        // setIsLoading(false);
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+
+    const fetchMostSold = async () => {
+      try {
+        const data = await getMostSold();
+  
+        setMostSold(data)
+        // setIsLoading(false);
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+
+    const fetchNewestProducts = async () => {
+      try {
+        const data = await getNewestProducts();
+  
+        setNewestProducts(data)
+        setIsLoading(false);
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+    
     fetchData();
-  }, []);
+    fetchMostDiscounted();
+    fetchMostSold();
+    fetchNewestProducts();
+
+    let timer;
+    if (errorMessage) {
+      timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+    }
+
+    return () => clearTimeout(timer);
+  }, [errorMessage]);
 
   const getSaleData = async () => {
     try {
@@ -38,27 +96,71 @@ const LandingPage = () => {
     }
   };
 
+  const getMostDiscounted = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/mostDiscounted");
+  
+        if (!response.ok) {
+          console.error("Failed to fetch products: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getMostSold = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/mostSold");
+  
+        if (!response.ok) {
+          console.error("Failed to fetch products: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getNewestProducts = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/newest");
+        if (!response.ok) {
+          console.error("Failed to fetch products: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="bg-slate-100 min-h-screen flex flex-col">
-      <Menu />
-      <div className="flex-grow mt-[7vh] pb-[15vh]">
-        {isLoading ? (
-          <Loader />
-        ) : ProductsListed ? (
-          <>
-            <Countdown saleData={saleData} />
-            <section className="overflow-auto">
-              <SearchBar />
-              <Section title="Big Discounts!" category="Energy Efficient" />
-              <Section title="Big Discounts!" category="Energy Efficient" />
-              <Section title="Big Discounts!" category="Energy Efficient" />
-              <Section title="Big Discounts!" category="Energy Efficient" />
-            </section>
-          </>
-        ) : (
-          <NoProductsView saleData={saleData} />
-        )}
-      </div>
+    <div className="bg-slate-100 min-h-screen min">
+      {errorMessage && (
+        <ErrorMessage
+          message={errorMessage}
+          onClose={() => setErrorMessage("")}
+        />
+      )}
+
+      <Menu setErrorMessage={setErrorMessage} />
+
+      {mostDiscounted ? (
+        <div className="mt-[7vh] pb-[15vh]">
+          <Countdown saleData={saleData} />
+          <section className="overflow-auto ">
+            <Section title="Big Discounts!" category="Highest Discounts" products = {mostDiscounted}/>
+            <Section title="Top Sales!" category="Most Sold" products = {mostSold}/>
+            <Section title="Newest Products!" category="Newest Products" products = {newestProducts}/>
+          </section>
+        </div>
+      ) : (
+        <NoProductsView saleData={saleData} />
+      )}
       <NavBar />
     </div>
   );

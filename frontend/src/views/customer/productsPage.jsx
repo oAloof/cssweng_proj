@@ -7,19 +7,50 @@ import SearchBar from "../../components/customer/customerSearch.jsx";
 
 const ProductsPage = () => {
   const [saleData, setSaleData] = useState(null);
-  const [ProductsListed, setProductsListed] = useState(true);
+  const [mostSold, setMostSold] = useState(false);
+  const [ProductCategories, setProductCategories] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchSale = async () => {
       try {
         const data = await getSaleData();
-        setSaleData(data.sale);
-        setProductsListed(data.sale.some((product) => product.listed)); // TODO: CHECK IF ANY PRODUCTS ARE LISTED
+
+        setSaleData(data);
+        setIsLoading(false);
+
       } catch (error) {
         console.log(error);
       }
     };
-    fetchData();
+
+    const fetchMostSold = async () => {
+      try {
+        const data = await getMostSold();
+  
+        setMostSold(data)
+        setIsLoading(false);
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+
+    const fetchProductCategories = async () => {
+      try {
+        const data = await getProductCategories();
+  
+        setProductCategories(data)
+        setIsLoading(false);
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+    
+    fetchSale();
+    fetchMostSold();
+    fetchProductCategories();
   }, []);
 
   const getSaleData = async () => {
@@ -34,25 +65,58 @@ const ProductsPage = () => {
     }
   };
 
+  const getMostSold = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/mostSold");
+  
+        if (!response.ok) {
+          console.error("Failed to fetch products: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getProductCategories = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/categories");
+  
+        if (!response.ok) {
+          console.error("Failed to fetch product Categories: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    if (!string) return string;
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="bg-slate-100 min-h-screen flex flex-col">
       <Menu />
-      <div className="flex-grow mt-[7vh] pb-[15vh]">
-        {ProductsListed ? (
-          <>
-            <Countdown saleData={saleData} />
-            <section className="overflow-auto">
-              <SearchBar />
-              <Section title="Big Discounts!" category="Energy Efficient" />
-              <Section title="Big Discounts!" category="Energy Efficient" />
-              <Section title="Big Discounts!" category="Energy Efficient" />
-              <Section title="Big Discounts!" category="Energy Efficient" />
-            </section>
-          </>
-        ) : (
-          <NoProductsView saleData={saleData} />
-        )}
-      </div>
+
+      {mostSold ? (
+        <div className="mt-[7vh] pb-[15vh]">
+          {/* <Countdown saleData={saleData} /> */}
+          <section className="overflow-auto ">
+            {ProductCategories && ProductCategories.map((productCategory) => {
+              return <Section title= {capitalizeFirstLetter(productCategory)} category= {productCategory} products = {mostSold}/>
+            })}
+          </section>
+        </div>
+      ) : (
+        <NoProductsView saleData={saleData} />
+      )}
+      
       <NavBar />
     </div>
   );

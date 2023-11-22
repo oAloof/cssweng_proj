@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Chart from "react-apexcharts";
 import AdminNavbar from "../../components/admin/adminNavbar.jsx";
 import {
@@ -8,6 +8,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import OrdersTable from "../../components/admin/ordersTable.jsx";
+
+// CONTEXTS
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 const data = [
   {
@@ -53,6 +56,7 @@ function Card({ icon, label, value }) {
 }
 
 function AdminDashboard() {
+  const { isAuthenticated, isAdmin, isLoadingAuth } = useContext(AuthenticationContext);
   const [chartData, setChartData] = useState({
     options: {
       chart: {
@@ -168,6 +172,14 @@ function AdminDashboard() {
       </div>
     );
   };
+
+  if (isLoadingAuth) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated || !isAdmin) {
+    return <div>404 Page Not Found</div>;
+  }
 
   return (
     <div className="flex h-screen bg-gray-200 font-proxima">

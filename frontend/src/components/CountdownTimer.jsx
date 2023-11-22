@@ -3,9 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTruckFast, faBullhorn } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 
-import { AnimatePresence, motion } from "framer-motion";
-
-const COUNTDOWN_FROM = "12/31/2023";
+import { AnimatePresence, motion } from "framer-motion"
 
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
@@ -32,7 +30,12 @@ const CountdownTimer = ({ saleData }) => {
   }, []);
 
   const handleCountdown = () => {
-    const end = new Date(COUNTDOWN_FROM);
+    var end
+    if (new Date(saleData.sale.startDate) > new Date()){
+      end = new Date(saleData.sale.startDate);
+    } else {
+      end = new Date(saleData.sale.endDate);
+    }
 
     const now = new Date();
 
@@ -64,7 +67,7 @@ const CountdownTimer = ({ saleData }) => {
           />
         </div>
         <h3 className="text-3xl font-bold text-center mb-2">
-          No ongoing sales!
+          No current or future sales!
         </h3>
         <p className="text-center mb-6">
           Don't miss the next deals! Follow our socials to stay up to date and
@@ -85,10 +88,38 @@ const CountdownTimer = ({ saleData }) => {
     );
   }
 
+  // IF FUTURE SALE NOT STARTED
+  if (new Date(saleData.sale.startDate) > new Date()) {
+    return (
+      <div className="p-4 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-xl m-4">
+      <h1 className="text-3xl font-bold text-center text-white font-Proxima mb-0">
+        {saleData.sale.title}
+      </h1>
+      <h6 className="text-xl font-semibold text-center text-white font-Nunito ">
+        BEGINS IN
+      </h6>
+      <div className="w-full max-w-5xl mx-auto flex items-center bg-white">
+        <CountdownItem num={remaining.days} text="DAYS" />
+        <CountdownItem num={remaining.hours} text="HOURS" />
+        <CountdownItem num={remaining.minutes} text="MINUTES" />
+      </div>
+      <div className="w-auto max-w-5xl mx-auto flex items-center justify-center space-x-3 mt-3 mb-0">
+        <FontAwesomeIcon
+          icon={faTruckFast}
+          style={{ color: "#ffffff", height: "20px" }}
+        />
+        <h6 className="text-xl font-semibold text-white font-Nunito mr-0 ml-4 my-0">
+          Exclusive to customers in {saleData.sale.location}!
+        </h6>
+      </div>
+    </div>
+    )
+  }
+
   return (
     <div className="p-4 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-xl m-4">
       <h1 className="text-3xl font-bold text-center text-white font-Proxima mb-0">
-        {saleData.location} BODEGA SALE
+        {saleData.sale.title}
       </h1>
       <h6 className="text-xl font-semibold text-center text-white font-Nunito ">
         ENDS IN
@@ -104,7 +135,7 @@ const CountdownTimer = ({ saleData }) => {
           style={{ color: "#ffffff", height: "20px" }}
         />
         <h6 className="text-xl font-semibold text-white font-Nunito mr-0 ml-4 my-0">
-          Exclusive to customers in {saleData.location}!
+          Exclusive to customers in {saleData.sale.location}!
         </h6>
       </div>
     </div>

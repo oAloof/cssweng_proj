@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 
 /**
@@ -6,20 +6,35 @@ import CreatableSelect from "react-select/creatable";
    @TODO: Implement logic to retrieve user selections for backend and pass them to filters
 **/
 
-const MultiSelect = ({
-  name,
-  selectOptions,
-  isUserInputAllowed = true,
-  field,
-  preFilledValues,
-}) => {
+
+const MultiSelect = ({ name, selectOptions, isUserInputAllowed = true, field }) => {
+  const transformFieldValue = (value) => {
+    // Function to capitalize the first letter of a string
+    const capitalizeFirstLetter = (string) => {
+      if (!string) return string;
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+  
+    // If value is a string, transform it into an object and return as a single element array
+    if (typeof value === 'string') {
+      return [{ value, label: capitalizeFirstLetter(value) }];
+    }
+  
+    // If value is an array, map each string to an object
+    if (Array.isArray(value)) {
+      return value.map(val => ({ value: val, label: capitalizeFirstLetter(val) }));
+    }
+  
+    // If value is neither a string nor an array, return an empty array
+    return [];
+  };
+  
   const [options, setOptions] = useState(selectOptions);
-  const [selectedValues, setSelectedValues] = useState(preFilledValues || []); // State for selected values
+  const [selectedValues, setSelectedValues] = useState( transformFieldValue(field?.value) || []);
 
   const handleChange = (newValue, actionMeta) => {
     // Handle change in selection
     setSelectedValues(newValue);
-
     // Check if field is defined
     if (field && field.onChange) {
       field.onChange(newValue.map((item) => item.value)); // update form data

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import InputField from "./InputField.jsx";
 import {
   productName_validation,
@@ -10,6 +10,7 @@ import {
 } from "../../utils/inputValidations.jsx";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
+import { ProductsContext } from "../../contexts/ProductsContext.jsx";
 
 const AddProduct = ({ title }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +20,7 @@ const AddProduct = ({ title }) => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const images = files.map((file) => URL.createObjectURL(file));
-    setFileObjects(files); // Store the file objects in state
+    setFileObjects((prevFiles) => prevFiles.concat(files)); // Store the file objects in state
     setImages((prevImages) => prevImages.concat(images));
   };
 
@@ -35,39 +36,30 @@ const AddProduct = ({ title }) => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         images={images}
-        fileObjects={fileObjects}
-        handleImageChange={handleImageChange}
         setImages={setImages}
+        fileObjects={fileObjects}
+        setFileObjects={setFileObjects}
+        handleImageChange={handleImageChange}
+        
       />
     </div>
   );
 };
 
-const Modal = ({
-  isOpen,
-  setIsOpen,
-  images,
-  fileObjects,
-  handleImageChange,
-  title,
-  setImages,
-}) => {
+const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjects, handleImageChange, title,  }) => {
   const methods = useForm({ mode: "onSubmit" });
-
   const { handleSubmit, watch } = methods;
-
   const originalPrice = watch("originalPrice", 0);
   const discountPercentage = watch("discountPercentage", 0);
-  const salePrice = originalPrice - (originalPrice * discountPercentage) / 100;
+  const discountedPrice = originalPrice - (originalPrice * discountPercentage) / 100;
   const formattedSalePrice = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
-  }).format(salePrice);
+  }).format(discountedPrice);
+
+  const { setProductChanged, setIsLoading } = useContext(ProductsContext);
 
   const onSubmit = (data) => {
     addProduct(data);
-    setIsOpen(false);
-    setImages([]);
-    methods.reset();
   };
 
   const addProduct = async (data) => {
@@ -76,34 +68,35 @@ const Modal = ({
     Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
-
-    // Calculate discounted price
-    if (data.originalPrice && data.discountPercentage) {
-      const discountedPrice =
-        data.originalPrice -
-        (data.originalPrice * data.discountPercentage) / 100;
-      formData.append("discountedPrice", discountedPrice.toString());
-    }
-    // Append images
+    
+    // Append discounted price 
+    formData.append('discountedPrice', discountedPrice.toString());
+    
+    // Append images 
     fileObjects.forEach((file) => {
       formData.append("images", file);
     });
-
+    
     try {
-      const response = await fetch(
-        "http://localhost:4000/api/admin/products/addProduct",
-        {
-          method: "POST",
-          credentials: "include",
-          body: formData,
-        }
-      );
+      const response = await fetch("http://localhost:4000/api/admin/products/addProduct", 
+      {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
       if (!response.ok) {
         console.error("Failed to add product: ", response.status);
         return;
       }
       const responseData = await response.json();
+      setIsOpen(false); // close modal
+      setImages([]);  // reset images
+      setFileObjects([]); // reset file objects
+      methods.reset(); // reset form
+      setIsLoading(true);
+      setProductChanged(true); // trigger useEffect in ProductsContext to fetch products again
       console.log(responseData);
+      return
     } catch (error) {
       console.error(error);
       return;
@@ -249,6 +242,9 @@ const Modal = ({
                             const newImages = [...images];
                             newImages.splice(index, 1);
                             setImages(newImages);
+                            const newFileObjects = [...fileObjects];
+                            newFileObjects.splice(index, 1);
+                            setFileObjects(newFileObjects);
                           }}
                           className="absolute top-0 right-0 text-white rounded-full w-6 h-6 flex items-center justify-center bg-rose-500"
                         >
@@ -259,6 +255,7 @@ const Modal = ({
                   </div>
                   <div className="flex gap-2">
                     <button
+                      type="button"
                       onClick={() => setIsOpen(false)}
                       className="bg-transparent hover:bg-white/10 transition-colors text-white font-semibold w-full py-2 rounded"
                     >

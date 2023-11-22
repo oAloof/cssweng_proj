@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import ReactDOM from "react-dom";
-import { RegistrationProvider } from "../contexts/RegistrationContext";
 import "../index.css";
 
 // STYLES
@@ -13,6 +12,10 @@ import {
   faShoppingCart,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+
+// CONTEXTS
+import { RegistrationProvider } from "../contexts/RegistrationContext";
+import { AuthenticationProvider } from "../contexts/AuthenticationContext";
 
 // USER PAGES
 import Login from "../views/login";
@@ -42,35 +45,38 @@ library.add(faHome, faList, faShoppingCart, faUser);
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* USER */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/products" element={<ProductsPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/account" element={<AccountPage />} />
-        <Route path="/billing" element={<Billing />} />
-        <Route path="/confirm-order" element={<OrderConfirmation />} />
-        <Route path="/invoice" element={<Invoice />} />
-        <Route path="/register" element={<RegistrationProvider />}>
-          <Route index element={<Navigate to="/register/1" />} />
-          <Route path="1" element={<Register1 />} />
-          <Route path="2" element={<Register2 />} />
-        </Route>
-        <Route path="/searchtest" element={<TestAdminComponent />} />
+      <AuthenticationProvider>
+        <Routes>
+          {/* USER */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/account" element={<AccountPage />} />
+          <Route path="/billing" element={<Billing />} />
+          <Route path="/confirm-order" element={<OrderConfirmation />} />
+          <Route path="/invoice" element={<Invoice />} />
+            
+          <Route path="/register" element={<RegistrationProvider />}>
+            <Route index element={<Navigate to="/register/1" />} />
+            <Route path="1" element={<Register1 />} />
+            <Route path="2" element={<Register2 />} />
+          </Route>
 
-        {/* CATEGORY */}
-        <Route path="/categorytest" element={<CategoryPage />} />
+          <Route path="/searchtest" element={<TestAdminComponent />} />
+          {/* CATEGORY */}
+          <Route path="/categorytest" element={<CategoryPage />} />
 
-        {/* ADMIN PAGES */}
-        <Route path="/admin">
-          <Route path="home" element={<AdminDashboard />} />
-          <Route path="products" element={<AdminProductPage />} />
-          <Route path="sales" element={<AdminSalesPage />} />
-          <Route path="orders" element={<AdminOrdersPage />} />
-        </Route>
-      </Routes>
+          {/* ADMIN PAGES */}
+          <Route path="/admin">
+            <Route path="home" element={<AdminDashboard />} />
+            <Route path="products" element={<AdminProductPage />} />
+            <Route path="sales" element={<AdminSalesPage />} />
+            <Route path="orders" element={<AdminOrdersPage />} />
+          </Route>
+        </Routes>
+      </AuthenticationProvider>
     </Router>
   );
 }

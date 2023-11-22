@@ -13,13 +13,28 @@ const MARGIN = 20;
 
 import ProductModal from "./ProductModal";
 
-const Section = ({ title, category }) => {
+const Section = ({ title, category, products }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  
+  function checkCategory(product) {
+    return product.category.includes(category)
+  }
 
-  const filteredProducts = products.filter((product) =>
-    product.categories.includes(category)
-  );
+  var existingCategory = false 
+
+  for (let i = 0; i < products.length; i ++){
+    if (products[i].category.includes(category)){
+      existingCategory = true
+    }
+  }
+
+  var filteredProducts = []
+  if (existingCategory){
+    filteredProducts = products.filter(checkCategory);
+  } else {
+    filteredProducts = products
+  }
 
   const handleCardClick = (product) => {
     setSelectedProduct(product);
@@ -47,7 +62,7 @@ const Section = ({ title, category }) => {
           >
             {filteredProducts.map((product) => (
               <Card
-                key={product.id}
+                key={product._id}
                 {...product}
                 onClick={() => handleCardClick(product)}
                 style={{ marginRight: MARGIN }}
@@ -69,12 +84,13 @@ const Card = ({
   url,
   brand,
   name,
-  salePrice,
+  discountedPrice,
   originalPrice,
-  discount,
+  discountPercentage,
   style,
   description,
   onClick,
+  images,
 }) => {
   const navigate = useNavigate();
 
@@ -86,12 +102,13 @@ const Card = ({
     >
       <div className="relative">
         <img
-          src={url}
-          alt={name}
+          src={`https://drive.google.com/uc?export=view&id=${images[0]}`}
+          // src="/Product Photo Placeholder.png"
+          alt="Product Image"
           className="rounded-2xl w-full h-2/5 object-contain object-center"
         />
         <div className="absolute bottom-[-10px] right-[-10px] bg-rose-400 rounded-lg font-Nunito text-white font-bold text-lg px-2 py-1">
-          {discount}% OFF!
+          {discountPercentage}% OFF!
         </div>
       </div>
       <div className="rounded-2xl text-slate-500">
@@ -102,7 +119,7 @@ const Card = ({
         </div>
         <p className="my-2 text-xl font-bold">{name}</p>
         <h2 className="text-indigo-500 font-Nunito font-bold text-4xl">
-          ₱{salePrice}
+          ₱{discountedPrice}
         </h2>
         <p className="text-lg text-slate-400 font-Nunito">
           from ₱{originalPrice}
@@ -115,116 +132,116 @@ const Card = ({
 
 export default Section;
 
-const products = [
-  {
-    id: 1,
-    url: "/Product Photo Placeholder.png",
-    brand: "Union",
-    name: "Union Aircon",
-    salePrice: "1000",
-    originalPrice: "1000",
-    discount: "40",
-    description:
-      "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
-    categories: [
-      "Home Appliances",
-      "Air Conditioning",
-      "Energy Efficient",
-      "Electronics",
-      "Summer Essentials",
-    ],
-  },
-  {
-    id: 2,
-    url: "/Product Photo Placeholder.png",
-    brand: "Hitachi",
-    name: "Union Aircon",
-    salePrice: "1000",
-    originalPrice: "1000",
-    discount: "40",
-    description:
-      "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
-    categories: [
-      "Home Appliances",
-      "Air Conditioning",
-      "Energy Efficient",
-      "Electronics",
-      "Summer Essentials",
-    ],
-  },
-  {
-    id: 3,
-    url: "/Product Photo Placeholder.png",
-    brand: "Union",
-    name: "Union Aircon",
-    salePrice: "1000",
-    originalPrice: "1000",
-    discount: "40",
-    description:
-      "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
-    categories: [
-      "Home Appliances",
-      "Air Conditioning",
-      "Energy Efficient",
-      "Electronics",
-      "Summer Essentials",
-    ],
-  },
-  {
-    id: 4,
-    url: "/Product Photo Placeholder.png",
-    brand: "Hitachi",
-    name: "Union Aircon",
-    salePrice: "1000",
-    originalPrice: "1000",
-    discount: "40",
-    description:
-      "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
-    categories: [
-      "Home Appliances",
-      "Air Conditioning",
-      "Energy Efficient",
-      "Electronics",
-      "Summer Essentials",
-    ],
-  },
-  {
-    id: 5,
-    url: "/Product Photo Placeholder.png",
-    brand: "Union",
-    name: "Union Aircon",
-    salePrice: "1000",
-    originalPrice: "1000",
-    discount: "40",
-    description:
-      "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
-    categories: [
-      "Home Appliances",
-      "Air Conditioning",
-      "Energy Efficient",
-      "Electronics",
-      "Summer Essentials",
-    ],
-  },
-  {
-    id: 6,
-    url: "/Product Photo Placeholder.png",
-    brand: "Hitachi",
-    name: "Union Aircon",
-    salePrice: "1000",
-    originalPrice: "1000",
-    discount: "40",
-    description:
-      "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
-    categories: [
-      "Home Appliances",
-      "Air Conditioning",
-      "Energy Efficient",
-      "Electronics",
-      "Summer Essentials",
-    ],
-  },
-];
+// const products = [
+//   {
+//     id: 1,
+//     url: "/Product Photo Placeholder.png",
+//     brand: "Union",
+//     name: "Union Aircon",
+//     salePrice: "1000",
+//     originalPrice: "1000",
+//     discount: "40",
+//     description:
+//       "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
+//     categories: [
+//       "Home Appliances",
+//       "Air Conditioning",
+//       "Energy Efficient",
+//       "Electronics",
+//       "Summer Essentials",
+//     ],
+//   },
+//   {
+//     id: 2,
+//     url: "/Product Photo Placeholder.png",
+//     brand: "Hitachi",
+//     name: "Union Aircon",
+//     salePrice: "1000",
+//     originalPrice: "1000",
+//     discount: "40",
+//     description:
+//       "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
+//     categories: [
+//       "Home Appliances",
+//       "Air Conditioning",
+//       "Energy Efficient",
+//       "Electronics",
+//       "Summer Essentials",
+//     ],
+//   },
+//   {
+//     id: 3,
+//     url: "/Product Photo Placeholder.png",
+//     brand: "Union",
+//     name: "Union Aircon",
+//     salePrice: "1000",
+//     originalPrice: "1000",
+//     discount: "40",
+//     description:
+//       "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
+//     categories: [
+//       "Home Appliances",
+//       "Air Conditioning",
+//       "Energy Efficient",
+//       "Electronics",
+//       "Summer Essentials",
+//     ],
+//   },
+//   {
+//     id: 4,
+//     url: "/Product Photo Placeholder.png",
+//     brand: "Hitachi",
+//     name: "Union Aircon",
+//     salePrice: "1000",
+//     originalPrice: "1000",
+//     discount: "40",
+//     description:
+//       "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
+//     categories: [
+//       "Home Appliances",
+//       "Air Conditioning",
+//       "Energy Efficient",
+//       "Electronics",
+//       "Summer Essentials",
+//     ],
+//   },
+//   {
+//     id: 5,
+//     url: "/Product Photo Placeholder.png",
+//     brand: "Union",
+//     name: "Union Aircon",
+//     salePrice: "1000",
+//     originalPrice: "1000",
+//     discount: "40",
+//     description:
+//       "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
+//     categories: [
+//       "Home Appliances",
+//       "Air Conditioning",
+//       "Energy Efficient",
+//       "Electronics",
+//       "Summer Essentials",
+//     ],
+//   },
+//   {
+//     id: 6,
+//     url: "/Product Photo Placeholder.png",
+//     brand: "Hitachi",
+//     name: "Union Aircon",
+//     salePrice: "1000",
+//     originalPrice: "1000",
+//     discount: "40",
+//     description:
+//       "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
+//     categories: [
+//       "Home Appliances",
+//       "Air Conditioning",
+//       "Energy Efficient",
+//       "Electronics",
+//       "Summer Essentials",
+//     ],
+//   },
+// ];
 
 const Button = ({ type }) => {
   const [isClicked, setIsClicked] = useState(false);
