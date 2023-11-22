@@ -7,28 +7,54 @@ import ErrorMessage from "../../components/ErrorMessage.jsx";
 
 const LandingPage = () => {
   const [saleData, setSaleData] = useState(null);
-  const [products, setProducts] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  
+  const [mostDiscounted, setMostDiscounted] = useState(false);
+  const [mostSold, setMostSold] = useState(false);
+  const [newestProducts, setNewestProducts] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getSaleData();
+
         setSaleData(data);
         setIsLoading(false);
-        setProductsListed(data.sale.some((product) => product.listed)); // TODO: CHECK IF ANY PRODUCTS ARE LISTED
+
       } catch (error) {
         console.log(error);
       }
     };
 
-    const fetchProducts = async () => {
+    const fetchMostDiscounted = async () => {
       try {
-        const data = await getProductData();
+        const data = await getMostDiscounted();
   
-        setProducts(data)
+        setMostDiscounted(data)
+        setIsLoading(false);
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+
+    const fetchMostSold = async () => {
+      try {
+        const data = await getMostSold();
+  
+        setMostSold(data)
+        setIsLoading(false);
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+
+    const fetchNewestProducts = async () => {
+      try {
+        const data = await getNewestProducts();
+  
+        setNewestProducts(data)
         setIsLoading(false);
         
       } catch (error) {
@@ -37,8 +63,10 @@ const LandingPage = () => {
     }
     
     fetchData();
-    fetchProducts();
-    
+    fetchMostDiscounted();
+    fetchMostSold();
+    fetchNewestProducts();
+
     let timer;
     if (errorMessage) {
       timer = setTimeout(() => {
@@ -61,15 +89,35 @@ const LandingPage = () => {
     }
   };
 
-  const getProductData = async () => {
+  const getMostDiscounted = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/products", {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+      const response = await fetch("http://localhost:4000/api/mostDiscounted");
+  
+        if (!response.ok) {
+          console.error("Failed to fetch products: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getMostSold = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/mostSold");
+  
+        if (!response.ok) {
+          console.error("Failed to fetch products: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getNewestProducts = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/newest");
   
         if (!response.ok) {
           console.error("Failed to fetch products: ", response.status);
@@ -95,14 +143,13 @@ const LandingPage = () => {
 
       <Menu setErrorMessage={setErrorMessage} />
 
-      {products ? (
+      {mostDiscounted ? (
         <div className="mt-[7vh] pb-[15vh]">
           <Countdown saleData={saleData} />
           <section className="overflow-auto ">
-            <Section title="Big Discounts!" category="Energy Efficient" products = {products}/>
-            <Section title="Big Discounts!" category="Energy Efficient" products = {products}/>
-            <Section title="Big Discounts!" category="Energy Efficient" products = {products}/>
-            <Section title="Big Discounts!" category="Energy Efficient" products = {products}/>
+            <Section title="Big Discounts!" category="Highest Discounts" products = {mostDiscounted}/>
+            <Section title="Top Sales!" category="Most Sold" products = {mostSold}/>
+            <Section title="Newest Products!" category="Newest Products" products = {newestProducts}/>
           </section>
         </div>
       ) : (

@@ -4,9 +4,14 @@ const router = express.Router()
 const generalController = require('../controllers/customerGeneralController')
 
 // GET listed products
-router.get('/products', generalController.getProducts)
 
 router.get('/categories', generalController.getProductCategories)
+
+router.get('/mostDiscounted', generalController.getMostDiscounted)
+
+router.get('/mostSold', generalController.getMostSold)
+
+router.get('/newest', generalController.getNewestProducts)
 
 
 module.exports = router

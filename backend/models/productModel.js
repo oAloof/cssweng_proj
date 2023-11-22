@@ -46,6 +46,10 @@ const productSchema = new Schema({
     category: {
         type: [String], 
         required: true
+    }, 
+    quantitySold: {
+        type: Number,
+        required: true 
     }
 }, { timestamps: true }); // Enable timestamps
 

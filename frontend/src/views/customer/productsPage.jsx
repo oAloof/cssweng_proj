@@ -6,7 +6,7 @@ import Section from "../../components/customer/Section.jsx";
 
 const ProductsPage = () => {
   const [saleData, setSaleData] = useState(null);
-  const [products, setProducts] = useState(false);
+  const [mostSold, setMostSold] = useState(false);
   const [ProductCategories, setProductCategories] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,11 +23,11 @@ const ProductsPage = () => {
       }
     };
 
-    const fetchProducts = async () => {
+    const fetchMostSold = async () => {
       try {
-        const data = await getProductData();
+        const data = await getMostSold();
   
-        setProducts(data)
+        setMostSold(data)
         setIsLoading(false);
         
       } catch (error) {
@@ -48,7 +48,7 @@ const ProductsPage = () => {
     }
     
     fetchSale();
-    fetchProducts();
+    fetchMostSold();
     fetchProductCategories();
   }, []);
 
@@ -64,15 +64,9 @@ const ProductsPage = () => {
     }
   };
 
-  const getProductData = async () => {
+  const getMostSold = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/products", {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+      const response = await fetch("http://localhost:4000/api/mostSold");
   
         if (!response.ok) {
           console.error("Failed to fetch products: ", response.status);
@@ -85,13 +79,7 @@ const ProductsPage = () => {
 
   const getProductCategories = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/categories", {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+      const response = await fetch("http://localhost:4000/api/categories");
   
         if (!response.ok) {
           console.error("Failed to fetch product Categories: ", response.status);
@@ -115,12 +103,12 @@ const ProductsPage = () => {
     <div className="bg-slate-100 min-h-screen min">
       <Menu />
 
-      {products ? (
+      {mostSold ? (
         <div className="mt-[7vh] pb-[15vh]">
           {/* <Countdown saleData={saleData} /> */}
           <section className="overflow-auto ">
             {ProductCategories && ProductCategories.map((productCategory) => {
-              return <Section title= {capitalizeFirstLetter(productCategory)} category= {productCategory} products = {products}/>
+              return <Section title= {capitalizeFirstLetter(productCategory)} category= {productCategory} products = {mostSold}/>
             })}
           </section>
         </div>

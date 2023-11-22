@@ -59,7 +59,8 @@ const addProduct = async (req, res) => {
                 discountPercentage: discountPercentage,
                 discountedPrice: discountedPrice,
                 listProduct: listProduct,
-                category: category
+                category: category, 
+                quantitySold: 0,
             })
             res.status(200).send({message: "Product created successfully."})
             return

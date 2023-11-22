@@ -16,12 +16,25 @@ import ProductModal from "./ProductModal";
 const Section = ({ title, category, products }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
+  
   function checkCategory(product) {
     return product.category.includes(category)
   }
 
-  const filteredProducts = products.filter(checkCategory);
+  var existingCategory = false 
+
+  for (let i = 0; i < products.length; i ++){
+    if (products[i].category.includes(category)){
+      existingCategory = true
+    }
+  }
+
+  var filteredProducts = []
+  if (existingCategory){
+    filteredProducts = products.filter(checkCategory);
+  } else {
+    filteredProducts = products
+  }
 
   const handleCardClick = (product) => {
     setSelectedProduct(product);
