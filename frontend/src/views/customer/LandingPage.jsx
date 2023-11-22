@@ -7,7 +7,7 @@ import ErrorMessage from "../../components/ErrorMessage.jsx";
 
 const LandingPage = () => {
   const [saleData, setSaleData] = useState(null);
-  const [ProductsListed, setProductsListed] = useState(true);
+  const [products, setProducts] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   
@@ -23,8 +23,22 @@ const LandingPage = () => {
         console.log(error);
       }
     };
-    fetchData();
 
+    const fetchProducts = async () => {
+      try {
+        const data = await getProductData();
+  
+        setProducts(data)
+        setIsLoading(false);
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+    
+    fetchData();
+    fetchProducts();
+    
     let timer;
     if (errorMessage) {
       timer = setTimeout(() => {
@@ -47,6 +61,25 @@ const LandingPage = () => {
     }
   };
 
+  const getProductData = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/products", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!response.ok) {
+          console.error("Failed to fetch products: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -62,14 +95,14 @@ const LandingPage = () => {
 
       <Menu setErrorMessage={setErrorMessage} />
 
-      {ProductsListed ? (
+      {products ? (
         <div className="mt-[7vh] pb-[15vh]">
           <Countdown saleData={saleData} />
           <section className="overflow-auto ">
-            <Section title="Big Discounts!" category="Energy Efficient" />
-            <Section title="Big Discounts!" category="Energy Efficient" />
-            <Section title="Big Discounts!" category="Energy Efficient" />
-            <Section title="Big Discounts!" category="Energy Efficient" />
+            <Section title="Big Discounts!" category="Energy Efficient" products = {products}/>
+            <Section title="Big Discounts!" category="Energy Efficient" products = {products}/>
+            <Section title="Big Discounts!" category="Energy Efficient" products = {products}/>
+            <Section title="Big Discounts!" category="Energy Efficient" products = {products}/>
           </section>
         </div>
       ) : (
