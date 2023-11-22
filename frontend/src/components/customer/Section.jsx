@@ -62,7 +62,7 @@ const Section = ({ title, category, products }) => {
           >
             {filteredProducts.map((product) => (
               <Card
-                key={product.id}
+                key={product._id}
                 {...product}
                 onClick={() => handleCardClick(product)}
                 style={{ marginRight: MARGIN }}
