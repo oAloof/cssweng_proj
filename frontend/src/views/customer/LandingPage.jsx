@@ -21,7 +21,7 @@ const LandingPage = () => {
         const data = await getSaleData();
 
         setSaleData(data);
-        setIsLoading(false);
+        // setIsLoading(false);
 
       } catch (error) {
         console.log(error);
@@ -33,7 +33,7 @@ const LandingPage = () => {
         const data = await getMostDiscounted();
   
         setMostDiscounted(data)
-        setIsLoading(false);
+        // setIsLoading(false);
         
       } catch (error) {
         console.error('Error fetching sales: ', error);
@@ -45,7 +45,7 @@ const LandingPage = () => {
         const data = await getMostSold();
   
         setMostSold(data)
-        setIsLoading(false);
+        // setIsLoading(false);
         
       } catch (error) {
         console.error('Error fetching sales: ', error);
@@ -120,7 +120,6 @@ const LandingPage = () => {
   const getNewestProducts = async () => {
     try {
       const response = await fetch("http://localhost:4000/api/newest");
-  
         if (!response.ok) {
           console.error("Failed to fetch products: ", response.status);
         }
