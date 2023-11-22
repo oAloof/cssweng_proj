@@ -24,6 +24,7 @@ import Register2 from "../views/registerPage2";
 import AccountPage from "../views/customer/accountPage";
 import ForgotPassword from "../views/ForgotPasswordPage"; 
 import ProductsPage from "../views/customer/productsPage";
+import CategoryPage from "../views/customer/productsPage";
 import LandingPage from "../views/customer/LandingPage";
 import CartPage from "../views/customer/cartPage";
 import OrderConfirmation from "../views/customer/orderConfirmation.jsx";
@@ -50,6 +51,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/category" element={<CategoryPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/account" element={<AccountPage />} />
