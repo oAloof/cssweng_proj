@@ -2,8 +2,19 @@ import { findInputError, isFormInvalid } from "../../utils";
 import { useFormContext } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdError } from "react-icons/md";
+import { useEffect } from "react";
 
-const InputField = ({ label, placeholder, id, type, validation, name }) => {
+const InputField = ({
+  label,
+  placeholder,
+  id,
+  type,
+  validation,
+  name,
+  multiline,
+  value,
+  onChange,
+}) => {
   const {
     register,
     formState: { errors },
@@ -15,7 +26,9 @@ const InputField = ({ label, placeholder, id, type, validation, name }) => {
   return (
     <div className="flex flex-col items-start justify-between w-full">
       <div className="flex justify-between items-end pb-[0.1rem] w-full">
-        <h6 htmlFor={id}>{label}</h6>
+        <label htmlFor={id} className="font-bold  font-Nunito text-sm">
+          {label}
+        </label>
         <AnimatePresence mode="wait" initial={false}>
           {isInvalid && (
             <InputError
@@ -25,13 +38,24 @@ const InputField = ({ label, placeholder, id, type, validation, name }) => {
           )}
         </AnimatePresence>
       </div>
-      <input
-        id={id}
-        type={type}
-        className="border-2 border-violet-300 font-semibold font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black w-full"
-        placeholder={placeholder}
-        {...register(name, validation)}
-      />
+      {multiline ? (
+        <textarea
+          id={id}
+          className="border-2 border-violet-300 font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black w-full resize-none"
+          placeholder={placeholder}
+          {...register(name, validation)}
+        />
+      ) : (
+        <input
+          id={id}
+          type={type}
+          className="border-2 border-violet-300 font-semibold font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black w-full"
+          placeholder={placeholder}
+          {...register(name, validation)}
+          value={value}
+          onChange={onChange}
+        />
+      )}
     </div>
   );
 };

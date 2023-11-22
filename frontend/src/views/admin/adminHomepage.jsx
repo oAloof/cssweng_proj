@@ -8,6 +8,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import OrdersTable from "../../components/admin/ordersTable.jsx";
+
+// CONTEXTS
 import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 const data = [
@@ -175,7 +177,7 @@ function AdminDashboard() {
     return <div>Loading...</div>;
   }
 
-  if (!isAuthenticated && !isAdmin) {
+  if (!isAuthenticated || !isAdmin) {
     return <div>404 Page Not Found</div>;
   }
 

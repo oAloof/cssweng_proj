@@ -22,7 +22,7 @@ import Login from "../views/login";
 import Register1 from "../views/registerPage1";
 import Register2 from "../views/registerPage2";
 import AccountPage from "../views/customer/accountPage";
-import ForgotPassword from "../views/ForgotPasswordPage"; 
+import ForgotPassword from "../views/ForgotPasswordPage";
 import ProductsPage from "../views/customer/productsPage";
 import CategoryPage from "../views/customer/productsPage";
 import LandingPage from "../views/customer/LandingPage";
@@ -30,7 +30,6 @@ import CartPage from "../views/customer/cartPage";
 import OrderConfirmation from "../views/customer/orderConfirmation.jsx";
 import Billing from "../views/customer/billing.jsx";
 import Invoice from "../views/customer/invoice.jsx";
-import ProductPage from "../views/customer/productPage";
 
 // ADMIN PAGES
 import AdminDashboard from "../views/admin/adminHomepage";
@@ -39,6 +38,8 @@ import AdminSalesPage from "../views/admin/adminSalesPage.jsx";
 import AdminOrdersPage from "../views/admin/adminOrdersPage.jsx";
 
 // TESTING
+import TestAdminComponent from "./admin/testAdminComponent.jsx";
+import CategoryPage from "../views/customer/CategoryPage.jsx";
 
 library.add(faHome, faList, faShoppingCart, faUser);
 
@@ -58,14 +59,16 @@ function App() {
           <Route path="/billing" element={<Billing />} />
           <Route path="/confirm-order" element={<OrderConfirmation />} />
           <Route path="/invoice" element={<Invoice />} />
+            
           <Route path="/register" element={<RegistrationProvider />}>
             <Route index element={<Navigate to="/register/1" />} />
             <Route path="1" element={<Register1 />} />
             <Route path="2" element={<Register2 />} />
           </Route>
 
-          {/* DELETE LATER, FOR TESTING PURPOSES */}
-          <Route path="/union-aircon" element={<ProductPage />} />
+          <Route path="/searchtest" element={<TestAdminComponent />} />
+          {/* CATEGORY */}
+          <Route path="/categorytest" element={<CategoryPage />} />
 
           {/* ADMIN PAGES */}
           <Route path="/admin">

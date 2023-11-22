@@ -1,13 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  FiShoppingCart,
-  FiBox,
-  FiSearch,
-  FiHome,
-  FiUser,
-} from "react-icons/fi";
+import { FiShoppingCart, FiBox, FiHome, FiUser } from "react-icons/fi";
 
 const NavBar = () => {
   const navigate = useNavigate();

@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import SearchBar from "../SearchBar.jsx";
+import { useState, useContext } from "react";
 import { FiMenu, FiArrowRight, FiSearch } from "react-icons/fi";
 import Logo from "../Logo.jsx";
 import { useNavigate } from "react-router-dom";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 const adminNavbar = () => {
   return (
@@ -108,20 +110,43 @@ const NavLink = ({ text, children, ...props }) => {
 
 const NavRight = () => {
   const navigate = useNavigate();
+  const { setIsAuthenticated, setIsAdmin } = useContext(AuthenticationContext);
 
-  const handleLogout = () => {
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/logout", 
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      if (!response.ok) {
+        const responseData = await response.json();
+        if (responseData.message === "User is not logged in.") {
+          setIsAuthenticated(false);
+          setIsAdmin(false);
+          navigate("/login");
+          return;
+        }
+        console.log("Error logging out: ", response.status);
+        return;
+      }
+      const responseData = await response.json();
+      setIsAuthenticated(false);
+      setIsAdmin(false);
+      navigate("/login");
+      console.log(responseData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div className="flex items-center gap-4">
       <div className="relative">
-        <input
-          type="text"
-          placeholder="Search"
-          className="px-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
-        />
-        <FiSearch className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" />
+        <SearchBar />
       </div>
       <motion.button
         whileHover={{ scale: 1.05 }}

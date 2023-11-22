@@ -1,9 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Countdown from "../../components/CountdownTimer.jsx";
 import NavBar from "../../components/NavBar.jsx";
 import Menu from "../../components/Menu.jsx";
 import Section from "../../components/customer/Section.jsx";
+import SearchBar from "../../components/customer/customerSearch.jsx";
+import Loader from "../Loader.jsx";
+
+
 import ErrorMessage from "../../components/ErrorMessage.jsx";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 const LandingPage = () => {
   const [saleData, setSaleData] = useState(null);
@@ -12,6 +17,7 @@ const LandingPage = () => {
   const [mostDiscounted, setMostDiscounted] = useState(false);
   const [mostSold, setMostSold] = useState(false);
   const [newestProducts, setNewestProducts] = useState(false);
+  const {isAuthenticated, isAdmin} = useContext(AuthenticationContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,10 +25,11 @@ const LandingPage = () => {
         const data = await getSaleData();
 
         setSaleData(data);
-        setIsLoading(false);
+        // setIsLoading(false);
 
       } catch (error) {
         console.log(error);
+        setIsLoading(false);
       }
     };
 
@@ -31,7 +38,7 @@ const LandingPage = () => {
         const data = await getMostDiscounted();
   
         setMostDiscounted(data)
-        setIsLoading(false);
+        // setIsLoading(false);
         
       } catch (error) {
         console.error('Error fetching sales: ', error);
@@ -43,7 +50,7 @@ const LandingPage = () => {
         const data = await getMostSold();
   
         setMostSold(data)
-        setIsLoading(false);
+        // setIsLoading(false);
         
       } catch (error) {
         console.error('Error fetching sales: ', error);
@@ -118,7 +125,6 @@ const LandingPage = () => {
   const getNewestProducts = async () => {
     try {
       const response = await fetch("http://localhost:4000/api/newest");
-  
         if (!response.ok) {
           console.error("Failed to fetch products: ", response.status);
         }
@@ -155,7 +161,6 @@ const LandingPage = () => {
       ) : (
         <NoProductsView saleData={saleData} />
       )}
-
       <NavBar />
     </div>
   );
@@ -163,11 +168,13 @@ const LandingPage = () => {
 
 const NoProductsView = ({ saleData }) => {
   return (
-    <div className="flex min-w-screen h-screen items-center justify-center bg-slate-400">
-      <div className="w-full absolute top-0 mt-[7vh]">
+    <div className="flex min-w-screen min-h-screen flex-col items-center justify-start bg-slate-400">
+      <div className="w-full mt-[7vh]">
         <Countdown saleData={saleData} />
       </div>
-      <div className="flex flex-col items-center justify-center p-4 font-Nunito">
+      <div className="flex flex-col items-center justify-center p-4 font-Nunito mt-8">
+        {" "}
+        {/* Adjust this margin-top (mt-8) as needed */}
         <img
           src="/NoProducts.png"
           alt="No products available"
@@ -183,5 +190,4 @@ const NoProductsView = ({ saleData }) => {
     </div>
   );
 };
-
 export default LandingPage;

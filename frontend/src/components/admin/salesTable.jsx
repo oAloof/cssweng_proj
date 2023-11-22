@@ -29,8 +29,9 @@ const Table = () => {
       <div className="w-full bg-white shadow-lg rounded-lg overflow-y-visible overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase">
-              <th className="text-start p-4 font-medium">Title</th>
+
+            <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase font-bold">
+              <th className="text-start p-4">Sale</th>
               <th className="text-start p-4 font-medium">Start Date</th>
               <th className="text-start p-4 font-medium">End Date</th>
               <th className="text-start p-4 font-medium">Location</th>
@@ -41,17 +42,21 @@ const Table = () => {
           </thead>
 
           <tbody>
-            {sales && sales.map((sale) => {
-              return <
-                TableRows key={sale._id} sale={sale} 
-                onEditClick={handleEditClick}
-                setIsEditModalOpen={setIsEditModalOpen}
-              />;
-            })}
+            {sales &&
+              sales.map((sale) => {
+                return (
+                  <TableRows
+                    key={sale._id}
+                    sale={sale}
+                    onEditClick={handleEditClick}
+                    setIsEditModalOpen={setIsEditModalOpen}
+                  />
+                );
+              })}
           </tbody>
         </table>
       </div>
-       <AnimatePresence>
+      <AnimatePresence>
         {isEditModalOpen && (
           <EditSale
             title="Edit Sale"
@@ -104,7 +109,11 @@ const TableRows = ({ sale, onEditClick }) => {
         <div>
           <span className="block mb-1 font-medium">{sale.title}</span>
           <span className="block text-xs text-slate-500">
-            {Math.ceil(Math.abs(new Date(sale.startDate) - new Date(sale.endDate))/ (1000 * 60 * 60 * 24))} days
+            {Math.ceil(
+              Math.abs(new Date(sale.startDate) - new Date(sale.endDate)) /
+                (1000 * 60 * 60 * 24)
+            )}{" "}
+            days
           </span>
         </div>
       </td>
@@ -132,21 +141,25 @@ const TableRows = ({ sale, onEditClick }) => {
       <td className="p-4">
         <span
           className={`px-2 py-1 text-xs font-medium rounded ${
-              (new Date(sale.endDate) < new Date())
+            new Date(sale.endDate) < new Date()
               ? "bg-green-200/60 text-green-800"
-              : ((new Date(sale.endDate) >= new Date()) && (new Date(sale.startDate) <= new Date()))
+              : new Date(sale.endDate) >= new Date() &&
+                new Date(sale.startDate) <= new Date()
               ? "bg-yellow-200/60 text-yellow-800"
               : "bg-slate-200 text-slate-800"
           }`}
         >
           {(() => {
-          if (new Date(sale.endDate) < new Date()) { return (
-            "Completed"
-          )} else if ((new Date(sale.endDate) >= new Date()) && (new Date(sale.startDate) <= new Date())) { return (
-            "Ongoing"
-          )} else { return (
-            "Planned"
-          )}
+            if (new Date(sale.endDate) < new Date()) {
+              return "Completed";
+            } else if (
+              new Date(sale.endDate) >= new Date() &&
+              new Date(sale.startDate) <= new Date()
+            ) {
+              return "Ongoing";
+            } else {
+              return "Planned";
+            }
           })()}
         </span>
       </td>

@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useContext } from "react";
 import { FiMenu } from "react-icons/fi";
 import Logo from "./Logo";
 import { useNavigate } from "react-router-dom";
 import MenuButton from "./customer/MenuBtn";
+import { AuthenticationContext } from "../contexts/AuthenticationContext";
 
 const TopNav = ({ setErrorMessage }) => {
   return (
-    <nav className="bg-white p-4 border-b-[1px] border-gray-200 flex items-center justify-between fixed w-full top-0 right-0 -left-0 z-50 h-[7vh]">
+    <nav className="bg-white p-4 border-b-[1px] border-gray-200 flex items-center justify-between fixed w-full top-0 right-0 left-0 z-50 h-[7vh] mb-0">
       <NavLeft />
       <div className="flex justify-center">
         <Logo name="topbar" />
@@ -30,8 +31,8 @@ const NavLeft = () => {
 }
 
 const NavRight = ({ setErrorMessage }) => {
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("isAuthenticated") === "true" || false);
   const navigate = useNavigate();
+  const { isAuthenticated, isLoadingAuth, setIsAuthenticated } = useContext(AuthenticationContext);
 
   const OnLoginClick = useCallback(() => {
     navigate("/login");
@@ -54,8 +55,7 @@ const NavRight = ({ setErrorMessage }) => {
       if (!response.ok) {
         const responseData = await response.json();
         if (responseData.message === "User is not logged in.") {
-          setLoggedIn(false);
-          localStorage.setItem("isAuthenticated", false);
+          setIsAuthenticated(false);
           setErrorMessage("You are not logged in.");
           return;
         }
@@ -63,15 +63,18 @@ const NavRight = ({ setErrorMessage }) => {
         return;
       }
       const responseData = await response.json();
-      setLoggedIn(false);
-      localStorage.setItem("isAuthenticated", false);
+      setIsAuthenticated(false);
       console.log(responseData);
     } catch (error) {
       console.log(error);
     }
   }, []);
 
-  if (loggedIn == true) {
+  if (isLoadingAuth) {
+    return <div>Loading...</div>;
+  }
+
+  if (isAuthenticated) {
     return (
       <div className="flex items-center justify-end gap-4 w-1/3 text-sm">
         <motion.button

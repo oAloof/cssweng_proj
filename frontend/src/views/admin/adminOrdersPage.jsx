@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AdminNavbar from "../../components/admin/adminNavbar.jsx";
 import OrdersTable from "../../components/admin/ordersTable.jsx";
 import MultiSelect from "../../components/admin/multiSelect.jsx";
 import { FiSearch } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import SearchBar from "../../components/SearchBar.jsx";
+
+// CONTEXTS
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 function AdminOrdersPage() {
+  const { isAuthenticated, isAdmin, isLoadingAuth } = useContext(AuthenticationContext);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const status = [
@@ -15,6 +20,14 @@ function AdminOrdersPage() {
     { value: "Shipped Out", label: "Shipped Out" },
     { value: "Completed", label: "Completed" },
   ];
+
+  if (isLoadingAuth) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated || !isAdmin) {
+    return <div>404 Page Not Found</div>;
+  }
 
   return (
     <div className="flex h-screen bg-gray-200">
@@ -25,12 +38,7 @@ function AdminOrdersPage() {
             <h3 className="text-gray-700 text-3xl font-medium">Orders</h3>
             <div className="flex justify-end mb-3 space-x-4">
               <div className="self-stretch flex-1 justify-between">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="px-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 borders-gray-500 focus:ring-indigo-600 font-Nunito w-2/3"
-                />
-                <FiSearch className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500" />
+                <SearchBar />
               </div>
             </div>
             <div className="flex">

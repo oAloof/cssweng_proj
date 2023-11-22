@@ -32,7 +32,7 @@ const Table = () => {
             <tr className="border-b-[1px] border-slate-200 text-slate-400 text-sm uppercase">
               <th className="text-start p-4 font-medium">Product</th>
               <th className="text-start p-4 font-medium">Available Qty</th>
-              <th className="text-start p-4 font-medium">Sales</th>
+              <th className="text-start p-4 font-medium">Sold Qty</th>
               <th className="text-start p-4 font-medium">Original Price</th>
               <th className="text-start p-4 font-medium">Discounted Price</th>
               <th className="text-start p-4 font-medium"></th>

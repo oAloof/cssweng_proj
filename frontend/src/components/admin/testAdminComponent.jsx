@@ -1,7 +1,11 @@
-onClick = { handleClick };
+import SearchBar from "../customer/customerSearch";
 
-const navigate = useNavigate();
-
-const handleClick = () => {
-  navigate(`/order-${item.number}`);
+const TestAdminComponent = () => {
+  return (
+    <div>
+      <SearchBar />
+    </div>
+  );
 };
+
+export default TestAdminComponent;
