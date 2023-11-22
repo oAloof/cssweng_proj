@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import InputField from "./InputField.jsx";
 import {
   productName_validation,
@@ -55,12 +55,6 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
   const formattedSalePrice = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
   }).format(discountedPrice);
-
-  useEffect(() => {
-    console.log("originalPrice: ", originalPrice);
-    console.log("discountPercentage: ", discountPercentage);
-    console.log("discountedPrice: ", discountedPrice);
-  }, [originalPrice, discountPercentage, discountedPrice]);
 
   const { setProductChanged, setIsLoading } = useContext(ProductsContext);
 
