@@ -53,6 +53,10 @@ function Card({ icon, label, value }) {
 }
 
 function AdminDashboard() {
+  if (localStorage.getItem("isAuthenticated") !== "true") {
+    return <div>404 Page Not Found</div>;
+  }
+
   const [chartData, setChartData] = useState({
     options: {
       chart: {
