@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useContext } from "react";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import ErrorMessage from "../components/ErrorMessage";
@@ -10,14 +10,20 @@ import {
   username_validation,
   password_validation,
 } from "../utils/inputValidations";
+import { AuthenticationContext } from "../contexts/AuthenticationContext";
 
 const Login = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
   const [errorMessage, setErrorMessage] = useState("");
+  const { isAuthenticated, isAdmin, isLoadingAuth, login } = useContext(AuthenticationContext);
 
   useEffect(() => {
-    if (localStorage.getItem("isAuthenticated") === "true") {
+    if (isAuthenticated && isAdmin) {
+      navigate("/admin/home");
+    }
+
+    if (isAuthenticated && !isAdmin) {
       navigate("/");
     }
 
@@ -29,34 +35,20 @@ const Login = () => {
     }
 
     return () => clearTimeout(timer);
-  }, [errorMessage]);
+  }, [errorMessage, isAuthenticated]);
 
   const onSubmit = (data) => {
-    // Send data to backend
-    fetch("http://localhost:4000/api/login", {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          localStorage.setItem("isAuthenticated", true);
+    login(data)
+      .then( () => {
+        if (isAuthenticated && isAdmin) {
+          navigate("/admin/home");
+        }
+        if (isAuthenticated && !isAdmin) {
           navigate("/");
-          return response.json();
-        } else {
-          return response.json();
         }
       })
-      .then((data) => {
-        setErrorMessage(data.message); // The message to be displayed to the user
-      })
-      .catch(() => {
-        setErrorMessage(
-          "Unable to connect to the server. Please ensure you're connected to the internet and try again."
-        ); // If the server is down
+      .catch((error) => {
+        setErrorMessage(error.message);
       });
   };
   
@@ -67,6 +59,10 @@ const Login = () => {
   const onForgotPasswordClick = useCallback(() => {
     navigate("/forgot-password");
   }, [navigate]);
+
+  if (isLoadingAuth) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={styles.page}>

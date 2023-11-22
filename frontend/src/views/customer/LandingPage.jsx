@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Countdown from "../../components/CountdownTimer.jsx";
 import NavBar from "../../components/NavBar.jsx";
 import Menu from "../../components/Menu.jsx";
 import Section from "../../components/customer/Section.jsx";
 import ErrorMessage from "../../components/ErrorMessage.jsx";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 const LandingPage = () => {
   const [saleData, setSaleData] = useState(null);
@@ -12,6 +13,7 @@ const LandingPage = () => {
   const [mostDiscounted, setMostDiscounted] = useState(false);
   const [mostSold, setMostSold] = useState(false);
   const [newestProducts, setNewestProducts] = useState(false);
+  const {isAuthenticated, isAdmin} = useContext(AuthenticationContext);
 
   useEffect(() => {
     const fetchData = async () => {
