@@ -12,11 +12,11 @@ const CARD_CONTAINER_HEIGHT = CARD_HEIGHT + 30;
 const MARGIN = 20;
 
 import ProductModal from "./ProductModal";
+import Loader from "../Loader";
 
-const Section = ({ title, category, products }) => {
+const Section = ({ title, category, products, isLoading }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  // const [isLoading, setIsLoading] = useState(true);
 
   function checkCategory(product) {
     return product.category.includes(category)
@@ -44,9 +44,9 @@ const Section = ({ title, category, products }) => {
     setIsOpen(true);
   };
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <section className="">

@@ -6,7 +6,6 @@ import Section from "../../components/customer/Section.jsx";
 import SearchBar from "../../components/customer/customerSearch.jsx";
 import Loader from "../../components/Loader.jsx";
 
-
 import ErrorMessage from "../../components/ErrorMessage.jsx";
 import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
@@ -23,10 +22,7 @@ const LandingPage = () => {
     const fetchData = async () => {
       try {
         const data = await getSaleData();
-
         setSaleData(data);
-        // setIsLoading(false);
-
       } catch (error) {
         console.log(error);
         setIsLoading(false);
@@ -36,10 +32,8 @@ const LandingPage = () => {
     const fetchMostDiscounted = async () => {
       try {
         const data = await getMostDiscounted();
-  
         setMostDiscounted(data)
-        // setIsLoading(false);
-        
+
       } catch (error) {
         console.error('Error fetching sales: ', error);
       }
@@ -48,10 +42,7 @@ const LandingPage = () => {
     const fetchMostSold = async () => {
       try {
         const data = await getMostSold();
-  
         setMostSold(data)
-        // setIsLoading(false);
-        
       } catch (error) {
         console.error('Error fetching sales: ', error);
       }
@@ -60,20 +51,16 @@ const LandingPage = () => {
     const fetchNewestProducts = async () => {
       try {
         const data = await getNewestProducts();
-  
         setNewestProducts(data)
         setIsLoading(false);
-        
       } catch (error) {
         console.error('Error fetching sales: ', error);
       }
     }
-    
     fetchData();
     fetchMostDiscounted();
     fetchMostSold();
     fetchNewestProducts();
-
     let timer;
     if (errorMessage) {
       timer = setTimeout(() => {
@@ -135,7 +122,7 @@ const LandingPage = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (<Loader />);
   }
 
   return (
@@ -154,9 +141,9 @@ const LandingPage = () => {
           <Countdown saleData={saleData} />
           <section className="overflow-auto ">
             <SearchBar />
-            <Section title="Big Discounts!" category="mostDiscounted" products = {mostDiscounted}/>
-            <Section title="Top Sales!" category="mostSold" products = {mostSold}/>
-            <Section title="Newest Products!" category="newestProducts" products = {newestProducts}/>
+            <Section title="Big Discounts!" category="mostDiscounted" products = {mostDiscounted} isLoading={isLoading} />
+            <Section title="Top Sales!" category="mostSold" products = {mostSold} isLoading={isLoading} />
+            <Section title="Newest Products!" category="newestProducts" products = {newestProducts} isLoading={isLoading} />
           </section>
         </div>
       ) : (

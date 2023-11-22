@@ -4,6 +4,7 @@ import ProductsTable from "../../components/admin/productsTable.jsx";
 import AddProduct from "../../components/admin/addProduct.jsx";
 import MultiSelect from "../../components/admin/multiSelect.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
+import Loader from "../../components/Loader.jsx";
 
 // CONTEXTS
 import { ProductsProvider } from "../../contexts/ProductsContext.jsx";
@@ -63,7 +64,7 @@ function AdminProductPage() {
   ];
 
   if (isLoadingAuth) {
-    return <div>Loading...</div>;
+    return (<Loader />);
   }
 
   if (!isAuthenticated || !isAdmin) {
