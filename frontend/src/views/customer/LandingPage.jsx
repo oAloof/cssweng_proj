@@ -4,7 +4,7 @@ import NavBar from "../../components/NavBar.jsx";
 import Menu from "../../components/Menu.jsx";
 import Section from "../../components/customer/Section.jsx";
 import SearchBar from "../../components/customer/customerSearch.jsx";
-import Loader from "../Loader.jsx";
+import Loader from "../../components/Loader.jsx";
 
 
 import ErrorMessage from "../../components/ErrorMessage.jsx";
@@ -82,7 +82,7 @@ const LandingPage = () => {
     }
 
     return () => clearTimeout(timer);
-  }, [errorMessage]);
+  }, [errorMessage, isLoading]);
 
   const getSaleData = async () => {
     try {
@@ -153,6 +153,7 @@ const LandingPage = () => {
         <div className="mt-[7vh] pb-[15vh]">
           <Countdown saleData={saleData} />
           <section className="overflow-auto ">
+            <SearchBar />
             <Section title="Big Discounts!" category="mostDiscounted" products = {mostDiscounted}/>
             <Section title="Top Sales!" category="mostSold" products = {mostSold}/>
             <Section title="Newest Products!" category="newestProducts" products = {newestProducts}/>

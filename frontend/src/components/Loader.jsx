@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const Loader = () => {
   return (
-    <div className="grid place-content-center bg-violet-600 px-4 py-24">
+    <div className="grid place-content-center bg-violet-600 px-4 py-24 h-screen w-screen z-100 absolute">
       <BarLoader />
     </div>
   );
