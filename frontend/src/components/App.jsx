@@ -39,7 +39,6 @@ import AdminOrdersPage from "../views/admin/adminOrdersPage.jsx";
 
 // TESTING
 import TestAdminComponent from "./admin/testAdminComponent.jsx";
-import CategoryPage from "../views/customer/CategoryPage.jsx";
 
 library.add(faHome, faList, faShoppingCart, faUser);
 

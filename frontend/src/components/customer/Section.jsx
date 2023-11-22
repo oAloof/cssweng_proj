@@ -139,8 +139,6 @@ const Card = ({
 
 export default Section;
 
-import { useState } from "react";
-
 const Button = ({ type, category}) => {
   const [isClicked, setIsClicked] = useState(false);
 
