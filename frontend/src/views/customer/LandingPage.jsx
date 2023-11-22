@@ -153,9 +153,9 @@ const LandingPage = () => {
         <div className="mt-[7vh] pb-[15vh]">
           <Countdown saleData={saleData} />
           <section className="overflow-auto ">
-            <Section title="Big Discounts!" category="Highest Discounts" products = {mostDiscounted}/>
-            <Section title="Top Sales!" category="Most Sold" products = {mostSold}/>
-            <Section title="Newest Products!" category="Newest Products" products = {newestProducts}/>
+            <Section title="Big Discounts!" category="mostDiscounted" products = {mostDiscounted}/>
+            <Section title="Top Sales!" category="mostSold" products = {mostSold}/>
+            <Section title="Newest Products!" category="newestProducts" products = {newestProducts}/>
           </section>
         </div>
       ) : (
