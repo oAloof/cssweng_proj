@@ -4,19 +4,23 @@ import NavBar from "../../components/NavBar.jsx";
 import Menu from "../../components/Menu.jsx";
 import Section from "../../components/customer/Section.jsx";
 import SearchBar from "../../components/customer/customerSearch.jsx";
+import Loader from "../Loader.jsx";
 
 const LandingPage = () => {
   const [saleData, setSaleData] = useState(null);
   const [ProductsListed, setProductsListed] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getSaleData();
         setSaleData(data.sale);
-        setProductsListed(data.sale.some((product) => product.listed)); // TODO: CHECK IF ANY PRODUCTS ARE LISTED
+        setProductsListed(data.sale.some((product) => product.listed));
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -38,7 +42,9 @@ const LandingPage = () => {
     <div className="bg-slate-100 min-h-screen flex flex-col">
       <Menu />
       <div className="flex-grow mt-[7vh] pb-[15vh]">
-        {ProductsListed ? (
+        {isLoading ? (
+          <Loader />
+        ) : ProductsListed ? (
           <>
             <Countdown saleData={saleData} />
             <section className="overflow-auto">
