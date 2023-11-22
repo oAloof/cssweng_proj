@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { FiMenu, FiArrowRight, FiSearch } from "react-icons/fi";
 import Logo from "../Logo.jsx";
 import { useNavigate } from "react-router-dom";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 const adminNavbar = () => {
   return (
@@ -108,9 +109,37 @@ const NavLink = ({ text, children, ...props }) => {
 
 const NavRight = () => {
   const navigate = useNavigate();
+  const { setIsAuthenticated, setIsAdmin } = useContext(AuthenticationContext);
 
-  const handleLogout = () => {
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/logout", 
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      if (!response.ok) {
+        const responseData = await response.json();
+        if (responseData.message === "User is not logged in.") {
+          setIsAuthenticated(false);
+          setIsAdmin(false);
+          navigate("/login");
+          return;
+        }
+        console.log("Error logging out: ", response.status);
+        return;
+      }
+      const responseData = await response.json();
+      setIsAuthenticated(false);
+      setIsAdmin(false);
+      navigate("/login");
+      console.log(responseData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
