@@ -166,10 +166,10 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                   <InputField {...productName_validation} />
                   <div className="flex flex-row justify-between gap-4 items-start">
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...productOriginalPrice_validation} />
+                      <InputField {...productOriginalPrice_validation} {...methods.register("originalPrice")} />
                     </div>
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...discountPercentage_validation} />
+                      <InputField {...discountPercentage_validation} {...methods.register("discountPercentage")} />
                       <p className="font-Nunito font-medium mb-0">
                         Sale Price: {formattedSalePrice}
                       </p>

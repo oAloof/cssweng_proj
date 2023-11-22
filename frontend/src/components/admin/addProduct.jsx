@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import InputField from "./InputField.jsx";
 import {
   productName_validation,
@@ -46,7 +46,7 @@ const AddProduct = ({ title }) => {
   );
 };
 
-const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjects, handleImageChange, title,  }) => {
+const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjects, handleImageChange, title }) => {
   const methods = useForm({ mode: "onSubmit" });
   const { handleSubmit, watch } = methods;
   const originalPrice = watch("originalPrice", 0);
@@ -55,6 +55,12 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
   const formattedSalePrice = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
   }).format(discountedPrice);
+
+  useEffect(() => {
+    console.log("originalPrice: ", originalPrice);
+    console.log("discountPercentage: ", discountPercentage);
+    console.log("discountedPrice: ", discountedPrice);
+  }, [originalPrice, discountPercentage, discountedPrice]);
 
   const { setProductChanged, setIsLoading } = useContext(ProductsContext);
 
@@ -145,10 +151,10 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
                   <InputField {...productName_validation} />
                   <div className="flex flex-row justify-between gap-4 items-start">
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...productOriginalPrice_validation} />
+                      <InputField {...productOriginalPrice_validation} {...methods.register("originalPrice")} />
                     </div>
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...discountPercentage_validation} />
+                      <InputField {...discountPercentage_validation} {...methods.register("discountPercentage")} />
                       <p className="font-Nunito font-medium mb-0">
                         Sale Price: ₱{formattedSalePrice}
                       </p>
