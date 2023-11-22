@@ -1,11 +1,12 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useState , useContext } from "react";
 import InputField from "./InputField.jsx";
 import { saleName_validation } from "../../utils/inputValidations.jsx"; // SALE DATE VALIDATION
 import { useForm, FormProvider, Controller} from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { SalesContext } from "../../contexts/SalesContext.jsx";
 
 const AddSale = ({ title }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +27,8 @@ const AddSale = ({ title }) => {
 const Modal = ({ isOpen, setIsOpen, title }) => {
   const methods = useForm({ mode: "onSubmit" });
   const past = (date) => new Date() < date;
+
+  const { setSaleChanged , setIsLoading } = useContext(SalesContext);
 
   const onSubmit = (data) => {
     setIsOpen(false);
@@ -52,6 +55,8 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
         return;
       }
       const responseData = await response.json();
+      setIsLoading(true);
+      setSaleChanged(true); 
       // console.log(responseData);
     } catch (error) {
       console.error(error);

@@ -70,7 +70,6 @@ const Nav = ({ isOpen, setIsOpen }) => {
   var categories = []
   for (var i = 0 ; i < ProductCategories.length; i++) {
     categories.push({ text: capitalizeFirstLetter(ProductCategories[i]), path: "/" +  ProductCategories[i]})
-    console.log(ProductCategories[i])
   }
 
   return (

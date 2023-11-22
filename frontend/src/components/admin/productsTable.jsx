@@ -121,7 +121,7 @@ const TableRows = ({ product, onEditClick }) => {
 
       <td className="p-4 font-medium">{product.availableQuantity}</td>
 
-      <td className="p-4 font-medium">{product.sales}</td>
+      <td className="p-4 font-medium">{product.quantitySold}</td>
 
       <td className="p-4 font-medium">
         ₱{product.originalPrice.toLocaleString()}
