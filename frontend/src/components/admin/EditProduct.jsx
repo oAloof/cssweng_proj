@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputField from "./InputField";
 import {
   productName_validation,
@@ -11,23 +11,61 @@ import {
 import { useForm, FormProvider } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
 
-const Modal = ({ isOpen, setIsOpen, title }) => {
+const Modal = ({ isOpen, setIsOpen, title, product }) => {
   const [images, setImages] = useState([]);
-  const methods = useForm({ mode: "onSubmit" });
-  const { handleSubmit, watch } = methods;
 
-  const originalPrice = watch("originalPrice", 0);
-  const discountPercentage = watch("discountPercentage", 0);
-  const salePrice = originalPrice - (originalPrice * discountPercentage) / 100;
-  const formattedSalePrice = new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 2,
-  }).format(salePrice);
+  const preFilledBrands = product?.brand
+    ? [{ value: product.brand, label: product.brand }]
+    : [];
+
+  const preFilledCategories =
+    product?.category.map((cat) => ({ value: cat, label: cat })) || [];
+
+  const methods = useForm({
+    mode: "onSubmit",
+    defaultValues: {
+      name: product?.name || "",
+      originalPrice: product?.originalPrice || 0,
+      discountPercentage: product?.discountPercentage || 0,
+      availableQuantity: product?.quantity || 0,
+      description: product?.description || "",
+      category: preFilledCategories,
+      brand: preFilledBrands,
+    },
+  });
+
+  const { handleSubmit, watch, setValue } = methods;
+
   const onSubmit = (data) => {
     console.log(data);
     // Add any additional submission logic here !!!
     // Close the modal after successful form submission
     setIsOpen(false);
   };
+  const [liveSalePrice, setLiveSalePrice] = useState(0);
+
+  // Watch for changes in originalPrice and discountPercentage
+  const originalPrice = watch("originalPrice");
+  const discountPercentage = watch("discountPercentage");
+
+  // Update liveSalePrice whenever originalPrice or discountPercentage changes
+  useEffect(() => {
+    console.log("Original Price:", originalPrice);
+    console.log("Discount Percentage:", discountPercentage);
+
+    if (originalPrice && discountPercentage) {
+      const salePrice =
+        originalPrice - (originalPrice * discountPercentage) / 100;
+      console.log("Calculated Sale Price:", salePrice);
+      setLiveSalePrice(salePrice);
+    }
+  }, [originalPrice, discountPercentage]);
+
+  const formattedSalePrice = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "PHP",
+    minimumFractionDigits: 2,
+  }).format(liveSalePrice);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -82,7 +120,7 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                     <div className="flex flex-col gap-1 items-end w-1/2">
                       <InputField {...discountPercentage_validation} />
                       <p className="font-Nunito font-medium mb-0">
-                        Sale Price: ₱{formattedSalePrice}
+                        Sale Price: {formattedSalePrice}
                       </p>
                     </div>
                   </div>
@@ -95,12 +133,14 @@ const Modal = ({ isOpen, setIsOpen, title }) => {
                     name={"Category"}
                     selectOptions={categoryOptions}
                     isUserInputAllowed={true}
+                    preFilledValues={preFilledCategories}
                   />
 
                   <MultiSelect
                     name={"Brand"}
                     selectOptions={brandOptions}
                     isUserInputAllowed={true}
+                    preFilledValues={preFilledBrands}
                   />
 
                   <div className="flex flex-row gap-4">

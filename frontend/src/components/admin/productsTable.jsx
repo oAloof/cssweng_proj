@@ -23,22 +23,25 @@ const Table = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/admin/products/getProducts", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "http://localhost:4000/api/admin/products/getProducts",
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         console.error("Failed to fetch products: ", response.status);
       }
       return await response.json();
     } catch (error) {
-      console.error('Error fetching products: ', error);
+      console.error("Error fetching products: ", error);
     }
-  }
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -48,7 +51,7 @@ const Table = () => {
         setIsLoading(false);
         console.log(fetchedProducts.products);
       } catch (error) {
-        console.error('Error fetching products: ', error);
+        console.error("Error fetching products: ", error);
       }
     };
     // loadData();
@@ -154,6 +157,9 @@ const productData = [
     originalPrice: 100,
     discountedPrice: 80,
     status: "In Stock",
+    description: "i like chicken nuggets",
+    discountPercentage: 1,
+    category: ["Electronics", "Home Appliances", "Entertainment"],
   },
   {
     id: 2,
@@ -165,6 +171,9 @@ const productData = [
     originalPrice: 200,
     discountedPrice: 150,
     status: "In Stock",
+    description: "i like chicken nuggets",
+    discountPercentage: 1,
+    category: ["Gaming", "PC Accessories", "Software"],
   },
   {
     id: 3,
@@ -176,6 +185,9 @@ const productData = [
     originalPrice: 50,
     discountedPrice: 40,
     status: "Out of Stock",
+    description: "i like chicken nuggets",
+    discountPercentage: 1,
+    category: ["Clothing", "Men's Fashion", "Accessories"],
   },
   {
     id: 4,
@@ -187,6 +199,9 @@ const productData = [
     originalPrice: 300,
     discountedPrice: 250,
     status: "Out of Stock",
+    description: "i like chicken nuggets",
+    discountPercentage: 1,
+    category: ["Sports", "Outdoor", "Fitness Equipment"],
   },
 ];
 

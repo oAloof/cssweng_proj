@@ -43,7 +43,15 @@ const AddProduct = ({ title }) => {
   );
 };
 
-const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, title, setImages }) => {
+const Modal = ({
+  isOpen,
+  setIsOpen,
+  images,
+  fileObjects,
+  handleImageChange,
+  title,
+  setImages,
+}) => {
   const methods = useForm({ mode: "onSubmit" });
 
   const { handleSubmit, watch } = methods;
@@ -63,29 +71,33 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
   };
 
   const addProduct = async (data) => {
-
     const formData = new FormData();
     // Append existing form data
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
 
-    // Calculate discounted price 
+    // Calculate discounted price
     if (data.originalPrice && data.discountPercentage) {
-      const discountedPrice = data.originalPrice - (data.originalPrice * data.discountPercentage / 100);
-      formData.append('discountedPrice', discountedPrice.toString());
+      const discountedPrice =
+        data.originalPrice -
+        (data.originalPrice * data.discountPercentage) / 100;
+      formData.append("discountedPrice", discountedPrice.toString());
     }
-    // Append images 
+    // Append images
     fileObjects.forEach((file) => {
       formData.append("images", file);
     });
 
     try {
-      const response = await fetch("http://localhost:4000/api/admin/products/addProduct", {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:4000/api/admin/products/addProduct",
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
       if (!response.ok) {
         console.error("Failed to add product: ", response.status);
         return;
@@ -96,7 +108,6 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
       console.error(error);
       return;
     }
-
   };
 
   const categoryOptions = [
@@ -180,7 +191,7 @@ const Modal = ({ isOpen, setIsOpen, images, fileObjects, handleImageChange, titl
                       />
                     )}
                   />
-                
+
                   <div className="flex flex-row gap-4">
                     <div className="flex flex-col gap-2">
                       <label htmlFor="images" className="text-lg font-medium">

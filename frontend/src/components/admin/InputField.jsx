@@ -2,6 +2,7 @@ import { findInputError, isFormInvalid } from "../../utils";
 import { useFormContext } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdError } from "react-icons/md";
+import { useEffect } from "react";
 
 const InputField = ({
   label,
