@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AdminNavbar from "../../components/admin/adminNavbar.jsx";
 import OrdersTable from "../../components/admin/ordersTable.jsx";
 import MultiSelect from "../../components/admin/multiSelect.jsx";
@@ -6,7 +6,11 @@ import { FiSearch } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+// CONTEXTS
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
+
 function AdminOrdersPage() {
+  const { isAuthenticated, isAdmin, isLoadingAuth } = useContext(AuthenticationContext);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const status = [
@@ -15,6 +19,14 @@ function AdminOrdersPage() {
     { value: "Shipped Out", label: "Shipped Out" },
     { value: "Completed", label: "Completed" },
   ];
+
+  if (isLoadingAuth) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated || !isAdmin) {
+    return <div>404 Page Not Found</div>;
+  }
 
   return (
     <div className="flex h-screen bg-gray-200">

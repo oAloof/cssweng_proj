@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AdminNavbar from "../../components/admin/adminNavbar.jsx";
 import SalesTable from "../../components/admin/salesTable.jsx";
 import AddSale from "../../components/admin/addSale.jsx";
@@ -6,9 +6,13 @@ import MultiSelect from "../../components/admin/multiSelect.jsx";
 import { FiSearch } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+// CONTEXTS
 import { SalesProvider } from "../../contexts/SalesContext.jsx";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 function AdminSalesPage() {
+  const { isAuthenticated, isAdmin, isLoadingAuth } = useContext(AuthenticationContext);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const status = [
@@ -16,6 +20,14 @@ function AdminSalesPage() {
     { value: "ongoing", label: "Ongoing" },
     { value: "competed", label: "Completed" },
   ];
+
+  if (isLoadingAuth) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated || !isAdmin) {
+    return <div>404 Page Not Found</div>;
+  }
 
   return (
     <SalesProvider>

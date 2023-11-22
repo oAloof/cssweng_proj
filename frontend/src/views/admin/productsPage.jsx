@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AdminNavbar from "../../components/admin/adminNavbar.jsx";
 import ProductsTable from "../../components/admin/productsTable.jsx";
 import AddProduct from "../../components/admin/addProduct.jsx";
 import MultiSelect from "../../components/admin/multiSelect.jsx";
 import { FiSearch } from "react-icons/fi";
+
+// CONTEXTS
 import { ProductsProvider } from "../../contexts/ProductsContext.jsx";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 function AdminProductPage() {
   const [showCategories, setShowCategories] = useState(true);
   const [showBrands, setShowBrands] = useState(true);
   const categories = ["Category 1", "Category 2", "Category 3"];
   const brands = ["Brand 1", "Brand 2", "Brand 3"];
+  const { isAuthenticated, isAdmin, isLoadingAuth } = useContext(AuthenticationContext);
   
   const FilterItems = ({ title, items, showItems, setShowItems }) => {
     return (
@@ -57,6 +61,14 @@ function AdminProductPage() {
     { value: "listed", label: "Listed" },
     { value: "unlisted", label: "Unlisted" },
   ];
+
+  if (isLoadingAuth) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated || !isAdmin) {
+    return <div>404 Page Not Found</div>;
+  }
 
   return (
     <ProductsProvider>
