@@ -249,6 +249,7 @@ const AddToCartBtn = ({ type, isDisabled }) => {
       <span>{clickedText}</span>
     </button>
   );
+  };
 };
 
 export default ProductModal;

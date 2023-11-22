@@ -29,6 +29,7 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
     mode: "onSubmit",
     defaultValues: {
       name: product.name,
+      description: product.description,
       originalPrice: product.originalPrice,
       discountPercentage: product.discountPercentage,
       availableQuantity: product.availableQuantity,
@@ -42,9 +43,6 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
   const originalPrice = watch("originalPrice", product.originalPrice);
   const discountPercentage = watch("discountPercentage", product.discountPercentage);
   const discountedPrice = originalPrice - (originalPrice * discountPercentage) / 100;
-  const formattedSalePrice = new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 2,
-  }).format(discountedPrice);
 
   const onSubmit = (data) => {
     editProduct(data);
@@ -53,10 +51,6 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
     setIsOpen(false);
   };
   const [liveSalePrice, setLiveSalePrice] = useState(0);
-
-  // Watch for changes in originalPrice and discountPercentage
-  const originalPrice = watch("originalPrice");
-  const discountPercentage = watch("discountPercentage");
 
   // Update liveSalePrice whenever originalPrice or discountPercentage changes
   useEffect(() => {

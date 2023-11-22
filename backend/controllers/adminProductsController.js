@@ -20,7 +20,7 @@ const addProduct = async (req, res) => {
         const { 
             name, 
             brand,
-            // description, // ! add description field
+            description, 
             availableQuantity, 
             originalPrice, 
             discountPercentage, 
@@ -52,7 +52,7 @@ const addProduct = async (req, res) => {
             const product = await Product.create({
                 name: name,
                 brand: brand,
-                // description: description,
+                description: description,
                 images: imageIDs,
                 availableQuantity: availableQuantity,
                 originalPrice: originalPrice,
@@ -83,7 +83,7 @@ const editProduct = async (req, res) => {
             productId,
             name,
             brand,
-            // description, // ! add description field
+            description, 
             availableQuantity, 
             originalPrice, 
             discountPercentage, 
@@ -139,7 +139,7 @@ const editProduct = async (req, res) => {
         try {
             product.name = name
             product.brand = brand
-            // product.description = description
+            product.description = description
             product.availableQuantity = availableQuantity
             product.originalPrice = originalPrice
             product.discountPercentage = discountPercentage
