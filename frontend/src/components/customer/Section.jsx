@@ -98,16 +98,17 @@ const Card = ({
   description,
   onClick,
   images,
+  quantitySold,
 }) => {
   const navigate = useNavigate();
 
   return (
     <div
-      className="relative shrink-0 cursor-pointer rounded-2xl bg-white shadow-md transition-all hover:scale-[1.015] hover:shadow-xl p-4"
-      style={{ width: CARD_WIDTH, height: CARD_HEIGHT, ...style }}
+      className="relative shrink-0 cursor-pointer rounded-2xl bg-white shadow-md transition-all hover:scale-[1.015] hover:shadow-xl p-4 flex flex-col m-2"
+      style={{ width: "CARD_WIDTH", height: "CARD_HEIGHT" }}
       onClick={onClick}
     >
-      <div className="relative">
+      <div className="relative w-full" style={{ height: "50%" }}>
         <img
           src={`https://drive.google.com/uc?export=view&id=${images[0]}`}
           // src="/Product Photo Placeholder.png"
@@ -118,20 +119,27 @@ const Card = ({
           {discountPercentage}% OFF!
         </div>
       </div>
-      <div className="rounded-2xl text-slate-500">
-        <div className="flex items-start gap-2 flex-row justify-between">
+      <div className="flex-1 flex flex-col justify-between">
+        <div>
           <span className="text-sm font-semibold uppercase text-violet-300">
             {brand}
           </span>
+          <p className="mb-2 text-xl font-bold">{name}</p>
+          <span className="text-sm font-semibold text-slate-400">
+            {quantitySold} sold
+          </span>
         </div>
-        <p className="my-2 text-xl font-bold">{name}</p>
-        <h2 className="text-indigo-500 font-Nunito font-bold text-4xl">
-          ₱{discountedPrice}
-        </h2>
-        <p className="text-lg text-slate-400 font-Nunito">
-          from ₱{originalPrice}
-        </p>
-        <Button type={"cart"} />
+        <div className="flex justify-between flex-col items-start">
+          <h2 className="mb-0 text-indigo-500 font-Nunito font-bold text-4xl">
+            ₱{discountedPrice}
+          </h2>
+          <p className="text-lg text-slate-400 font-Nunito m-0">
+            from ₱{originalPrice}
+          </p>
+        </div>
+      </div>
+      <div className="mt-2">
+        <Button type={"cart"} className="w-full py-2" />
       </div>
     </div>
   );
