@@ -41,6 +41,7 @@ app.use((req, res, next) => {
 
 // API ROUTES 
 // Login and Register API
+app.get('/api/auth/status', authenticate, userController.getAuthData)
 app.post('/api/login', authenticate, userController.loginUser)
 app.post('/api/register', authenticate, userController.registerUser)
 app.post('/api/logout', authenticate, userController.logoutUser)

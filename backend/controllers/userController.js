@@ -3,6 +3,33 @@ const bcrypt = require('bcrypt')
 
 const User = require('../models/userModel')
 
+const getAuthData = async (req, res) => {
+    if (!req.user) {
+        res.status(200).send({
+            message: 'Authentication data found.',
+            isAuthenticated: false,
+        })
+        return
+    }
+    const { _id } = req.user
+    // Check if user exists in the database
+    const user = await User.findOne({_id})
+
+    if (!user) {
+        res.status(404).send({
+            message: 'User not found.',
+            isAuthenticated: false,
+        })
+        return
+    }
+
+    res.status(200).send({
+        message: 'Authentication data found.',
+        isAuthenticated: true,
+        userType: user.userType,
+    })
+}   
+
 const loginUser = async (req, res) => {
     // Check if user is already logged in
     console.log(req.user)
@@ -95,6 +122,7 @@ const logoutUser = (req, res) => {
 }
 
 module.exports = { 
+    getAuthData,
     loginUser,
     registerUser,
     logoutUser
