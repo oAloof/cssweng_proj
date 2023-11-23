@@ -22,7 +22,7 @@ const LandingPage = () => {
     const fetchData = async () => {
       try {
         const data = await getSaleData();
-        setSaleData(data);
+        return data;
       } catch (error) {
         console.log(error);
         setIsLoading(false);
@@ -32,8 +32,7 @@ const LandingPage = () => {
     const fetchMostDiscounted = async () => {
       try {
         const data = await getMostDiscounted();
-        setMostDiscounted(data)
-
+        return data;
       } catch (error) {
         console.error('Error fetching sales: ', error);
       }
@@ -42,7 +41,7 @@ const LandingPage = () => {
     const fetchMostSold = async () => {
       try {
         const data = await getMostSold();
-        setMostSold(data)
+        return data;
       } catch (error) {
         console.error('Error fetching sales: ', error);
       }
@@ -51,16 +50,26 @@ const LandingPage = () => {
     const fetchNewestProducts = async () => {
       try {
         const data = await getNewestProducts();
-        setNewestProducts(data)
-        setIsLoading(false);
+        return data;
       } catch (error) {
         console.error('Error fetching sales: ', error);
       }
     }
-    fetchData();
-    fetchMostDiscounted();
-    fetchMostSold();
-    fetchNewestProducts();
+
+    Promise.all([fetchData(), fetchMostDiscounted(), fetchMostSold(), fetchNewestProducts()])
+    .then(([saleData, mostDiscounted, mostSold, newestProducts]) => {
+        setSaleData(saleData);
+        setMostDiscounted(mostDiscounted);
+        setMostSold(mostSold);
+        setNewestProducts(newestProducts);
+        setIsLoading(false);
+    })
+    .catch((error) => {
+        // Handle errors here if any of the requests failed
+        setErrorMessage("An error occurred while fetching data");
+        console.error('Error during fetch:', error);
+    });
+
     let timer;
     if (errorMessage) {
       timer = setTimeout(() => {
