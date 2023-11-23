@@ -65,7 +65,7 @@ const Section = ({ title, category, products, isLoading }) => {
               {title}
             </p>
             <div>
-              <Button type="viewAll" category={category} />
+              <Button type="viewAll" category={category} products={products} title={title}/>
             </div>
           </div>
           <div
@@ -175,7 +175,7 @@ const Card = ({
 
 export default Section;
 
-const Button = ({ type, category }) => {
+const Button = ({ type, category, products, title}) => {
   const [isClicked, setIsClicked] = useState(false);
 
   {
@@ -213,7 +213,7 @@ const Button = ({ type, category }) => {
   const navigate = useNavigate();
 
   const handleNavigation = () => {
-    navigate(`/products/category`);
+    navigate(`/products/category`, {state: {title: title, category: category, products: products}});
     console.log("View all button clicked");
   };
 
