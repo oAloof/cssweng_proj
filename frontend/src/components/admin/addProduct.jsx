@@ -70,7 +70,7 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
     });
     
     // Append discounted price 
-    formData.append('discountedPrice', discountedPrice.toString());
+    formData.append('discountedPrice', parseFloat(discountedPrice.toFixed(2)).toString());
     
     // Append images 
     fileObjects.forEach((file) => {

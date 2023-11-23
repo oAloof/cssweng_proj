@@ -46,7 +46,19 @@ const userSchema = new Schema({
     zip: {
         type: Number,
         required: false
-    }
+    },
+    cartItems: [{
+        product: {
+            type: Schema.Types.ObjectId,
+            ref: 'Product',
+            required: true
+        },
+        quantity: {
+            type: Number,
+            required: true,
+            min: 1
+        }
+    }]
 })
 
 module.exports = mongoose.model('User', userSchema)

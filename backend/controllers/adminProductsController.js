@@ -47,6 +47,7 @@ const addProduct = async (req, res) => {
             res.status(500).send({message: 'Server error: failed to upload images'})
             return
         }
+        
         // Save new product to the database
         try {
             const product = await Product.create({
