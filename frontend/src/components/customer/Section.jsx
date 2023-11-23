@@ -106,7 +106,7 @@ const Card = ({
   description,
   onClick,
   images,
-  sales,
+  quantitySold,
 }) => {
   const navigate = useNavigate();
 
@@ -156,9 +156,9 @@ const Card = ({
                 }).format(originalPrice)}
               </p>
               <span className="text-sm font-semibold text-slate-400">
-                {sales && sales !== "0" && (
+                {quantitySold > 0 && (
                   <span className="text-sm font-semibold text-slate-400">
-                    {sales} sold
+                    {quantitySold} sold
                   </span>
                 )}
               </span>
