@@ -10,7 +10,6 @@ import {
 } from "../../utils/inputValidations.jsx";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
-import ErrorMessage from "../ErrorMessage.jsx";
 
 // CONTEXTS
 import { ProductsContext } from "../../contexts/ProductsContext.jsx";
@@ -110,13 +109,6 @@ const Modal = ({
           body: formData,
         }
       );
-      const responseData = await response.json();
-      if (!response.ok) {
-        console.error("Failed to add product: ", response.status);
-        setErrorMessage(responseData.message);
-        setIsLoading(false);
-        return;
-      }
       const responseData = await response.json();
       setIsOpen(false); // close modal
       setImages([]); // reset images
