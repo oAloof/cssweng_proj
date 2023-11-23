@@ -61,6 +61,15 @@ const MultiSelect = ({
     }
   };
 
+  useEffect(() => {
+    if (selectedValues.length > 0 && error) {
+      setError(name, {
+        type: "manual",
+        message: "",
+      });
+    }
+  }, [selectedValues, error, setError, name]);
+
   const handleCreate = (inputValue) => {
     if (!isUserInputAllowed) {
       return;
