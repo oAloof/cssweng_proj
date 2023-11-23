@@ -1,8 +1,3 @@
-import { useState, useEffect } from "react";
-import Countdown from "../../components/CountdownTimer.jsx";
-import NavBar from "../../components/NavBar.jsx";
-import Menu from "../../components/Menu.jsx";
-import SearchBar from "../../components/customer/customerSearch.jsx";
 import ProductModal from "../../components/customer/ProductModal.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,22 +6,85 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
+import { useState, useEffect, useContext } from "react";
+import Countdown from "../../components/CountdownTimer.jsx";
+import NavBar from "../../components/NavBar.jsx";
+import Menu from "../../components/Menu.jsx";
+import SearchBar from "../../components/customer/customerSearch.jsx";
+import Loader from "../../components/Loader.jsx";
+
+import ErrorMessage from "../../components/ErrorMessage.jsx";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
+
 const CategoryPage = () => {
   const [saleData, setSaleData] = useState(null);
-  const [ProductsListed, setProductsListed] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [mostDiscounted, setMostDiscounted] = useState(false);
+  const [mostSold, setMostSold] = useState(false);
+  const [newestProducts, setNewestProducts] = useState(false);
+  const { isAuthenticated, isAdmin } = useContext(AuthenticationContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getSaleData();
-        setSaleData(data.sale);
-        setProductsListed(data.sale.some((product) => product.listed)); // TODO: CHECK IF ANY PRODUCTS ARE LISTED
+
+        setSaleData(data);
+        // setIsLoading(false);
       } catch (error) {
         console.log(error);
+        setIsLoading(false);
       }
     };
+
+    const fetchMostDiscounted = async () => {
+      try {
+        const data = await getMostDiscounted();
+
+        setMostDiscounted(data);
+        // setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching sales: ", error);
+      }
+    };
+
+    const fetchMostSold = async () => {
+      try {
+        const data = await getMostSold();
+
+        setMostSold(data);
+        // setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching sales: ", error);
+      }
+    };
+
+    const fetchNewestProducts = async () => {
+      try {
+        const data = await getNewestProducts();
+
+        setNewestProducts(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching sales: ", error);
+      }
+    };
+
     fetchData();
-  }, []);
+    fetchMostDiscounted();
+    fetchMostSold();
+    fetchNewestProducts();
+
+    let timer;
+    if (errorMessage) {
+      timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+    }
+
+    return () => clearTimeout(timer);
+  }, [errorMessage, isLoading]);
 
   const getSaleData = async () => {
     try {
@@ -40,133 +98,90 @@ const CategoryPage = () => {
     }
   };
 
+  const getMostDiscounted = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/mostDiscounted");
+
+      if (!response.ok) {
+        console.error("Failed to fetch products: ", response.status);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getMostSold = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/mostSold");
+
+      if (!response.ok) {
+        console.error("Failed to fetch products: ", response.status);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getNewestProducts = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/newest");
+      if (!response.ok) {
+        console.error("Failed to fetch products: ", response.status);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="bg-slate-100 min-h-screen flex flex-col">
-      <Menu />
-      <div className="flex-grow mt-[7vh] pb-[15vh]">
-        <Countdown saleData={saleData} />
-        <section className="overflow-auto">
-          <SearchBar />
-          <Section title="Big Discounts!" category="Energy Efficient" />
-        </section>
-      </div>
+    <div className="bg-slate-100 min-h-screen min">
+      {errorMessage && (
+        <ErrorMessage
+          message={errorMessage}
+          onClose={() => setErrorMessage("")}
+        />
+      )}
+
+      <Menu setErrorMessage={setErrorMessage} />
+
+      {mostDiscounted ? (
+        <div className="mt-[7vh] pb-[15vh]">
+          <Countdown saleData={saleData} />
+          <section className="overflow-auto ">
+            <SearchBar />
+            <Section
+              title="Big Discounts!"
+              category="mostDiscounted"
+              products={mostDiscounted}
+            />
+            <Section
+              title="Top Sales!"
+              category="mostSold"
+              products={mostSold}
+            />
+            <Section
+              title="Newest Products!"
+              category="newestProducts"
+              products={newestProducts}
+            />
+          </section>
+        </div>
+      ) : (
+        <NoProductsView saleData={saleData} />
+      )}
       <NavBar />
     </div>
   );
 };
 
 export default CategoryPage;
-
-const products = [
-  {
-    id: 1,
-    url: "/Product Photo Placeholder.png",
-    brand: "Union",
-    name: "Union Aircon",
-    salePrice: "1000",
-    originalPrice: "1000",
-    discount: "40",
-    description:
-      "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
-    categories: [
-      "Home Appliances",
-      "Air Conditioning",
-      "Energy Efficient",
-      "Electronics",
-      "Summer Essentials",
-    ],
-  },
-  {
-    id: 2,
-    url: "/Product Photo Placeholder.png",
-    brand: "Hitachi",
-    name: "Union Aircon",
-    salePrice: "1000",
-    originalPrice: "1000",
-    discount: "40",
-    description:
-      "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
-    categories: [
-      "Home Appliances",
-      "Air Conditioning",
-      "Energy Efficient",
-      "Electronics",
-      "Summer Essentials",
-    ],
-  },
-  {
-    id: 3,
-    url: "/Product Photo Placeholder.png",
-    brand: "Union",
-    name: "Union Aircon",
-    salePrice: "1000",
-    originalPrice: "1000",
-    discount: "40",
-    description:
-      "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
-    categories: [
-      "Home Appliances",
-      "Air Conditioning",
-      "Energy Efficient",
-      "Electronics",
-      "Summer Essentials",
-    ],
-  },
-  {
-    id: 4,
-    url: "/Product Photo Placeholder.png",
-    brand: "Hitachi",
-    name: "Union Aircon",
-    salePrice: "1000",
-    originalPrice: "1000",
-    discount: "40",
-    description:
-      "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
-    categories: [
-      "Home Appliances",
-      "Air Conditioning",
-      "Energy Efficient",
-      "Electronics",
-      "Summer Essentials",
-    ],
-  },
-  {
-    id: 5,
-    url: "/Product Photo Placeholder.png",
-    brand: "Union",
-    name: "Union Aircon",
-    salePrice: "1000",
-    originalPrice: "1000",
-    discount: "40",
-    description:
-      "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
-    categories: [
-      "Home Appliances",
-      "Air Conditioning",
-      "Energy Efficient",
-      "Electronics",
-      "Summer Essentials",
-    ],
-  },
-  {
-    id: 6,
-    url: "/Product Photo Placeholder.png",
-    brand: "Hitachi",
-    name: "Union Aircon",
-    salePrice: "1000",
-    originalPrice: "1000",
-    discount: "40",
-    description:
-      "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second. Hello? Barry? Adam? Can you believe this is happening? I can't. I'll pick you up. Looking sharp. Use the stairs, Your father paid good money for those.",
-    categories: [
-      "Home Appliances",
-      "Air Conditioning",
-      "Energy Efficient",
-      "Electronics",
-      "Summer Essentials",
-    ],
-  },
-];
 
 const Button = ({ type }) => {
   const [isClicked, setIsClicked] = useState(false);
@@ -268,22 +283,23 @@ const Section = ({ title, category }) => {
             <p className="text-3xl text-slate-700 font-Proxima font-bold m-0">
               {title}
             </p>
-            <div></div>
+            <div>
+              <Button type="viewAll" category={category} />
+            </div>
           </div>
           <div
-            className="flex flex-wrap justify-start overflow-hidden"
+            className="flex overflow-x-auto overflow-y-hidden w-auto"
             style={{
-              height: "auto",
-              padding: "0 10px",
-              margin: "0 auto",
+              scrollSnapType: "x mandatory",
+              height: CARD_CONTAINER_HEIGHT,
             }}
           >
             {filteredProducts.map((product) => (
               <Card
-                key={product.id}
+                key={product._id}
                 {...product}
                 onClick={() => handleCardClick(product)}
-                style={{ margin: MARGIN }} // Apply margin to all sides for spacing
+                style={{ marginRight: MARGIN }}
               />
             ))}
             <ProductModal
@@ -314,7 +330,7 @@ const Card = ({
   return (
     <div
       className="relative shrink-0 cursor-pointer rounded-2xl bg-white shadow-md transition-all hover:scale-[1.015] hover:shadow-xl p-4"
-      style={{ width: CARD_WIDTH, margin: "10px" }} // Set a fixed width and margin
+      style={{ width: CARD_WIDTH, margin: "10px" }}
       onClick={onClick}
     >
       <div className="relative">

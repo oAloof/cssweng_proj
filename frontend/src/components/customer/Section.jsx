@@ -4,7 +4,7 @@ import {
   faArrowRight,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const CARD_WIDTH = 300;
 const CARD_HEIGHT = 440;
@@ -14,30 +14,38 @@ const MARGIN = 20;
 import ProductModal from "./ProductModal";
 
 const Section = ({ title, category, products }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
   // const [isLoading, setIsLoading] = useState(true);
 
   function checkCategory(product) {
-    return product.category.includes(category)
+    return product.category.includes(category);
   }
 
-  var existingCategory = false 
+  var existingCategory = false;
 
-  for (let i = 0; i < products.length; i ++){
-    if (products[i].category.includes(category)){
-      existingCategory = true
+  for (let i = 0; i < products.length; i++) {
+    if (products[i].category.includes(category)) {
+      existingCategory = true;
     }
   }
 
-  var filteredProducts = []
-  if (existingCategory){
+  var filteredProducts = [];
+  if (existingCategory) {
     filteredProducts = products.filter(checkCategory);
+
     // setIsLoading(false)
   } else {
-    filteredProducts = products
+    filteredProducts = products;
     // setIsLoading(false)
   }
+
+  useEffect(() => {
+    console.log("Modal open state:", isOpen);
+    if (isOpen) {
+      console.log("Selected product details:", selectedProduct);
+    }
+  }, [isOpen]);
 
   const handleCardClick = (product) => {
     setSelectedProduct(product);
@@ -57,7 +65,7 @@ const Section = ({ title, category, products }) => {
               {title}
             </p>
             <div>
-              <Button type="viewAll" category = {category}/>
+              <Button type="viewAll" category={category} />
             </div>
           </div>
           <div
@@ -98,40 +106,68 @@ const Card = ({
   description,
   onClick,
   images,
+  sales,
 }) => {
   const navigate = useNavigate();
 
   return (
     <div
-      className="relative shrink-0 cursor-pointer rounded-2xl bg-white shadow-md transition-all hover:scale-[1.015] hover:shadow-xl p-4"
-      style={{ width: CARD_WIDTH, height: CARD_HEIGHT, ...style }}
+      className="relative shrink-0 cursor-pointer rounded-2xl bg-white shadow-md transition-all hover:scale-[1.015] hover:shadow-xl p-4 flex flex-col m-2"
+      style={{
+        width: CARD_WIDTH,
+        height: CARD_HEIGHT,
+        boxSizing: "border-box",
+      }}
       onClick={onClick}
     >
-      <div className="relative">
+      <div className="relative w-full mb-2" style={{ height: "40%" }}>
         <img
           src={`https://drive.google.com/uc?export=view&id=${images[0]}`}
-          // src="/Product Photo Placeholder.png"
           alt="Product Image"
-          className="rounded-2xl w-full h-2/5 object-contain object-center"
+          className="rounded-2xl w-full h-full object-cover object-center"
         />
-        <div className="absolute bottom-[-10px] right-[-10px] bg-rose-400 rounded-lg font-Nunito text-white font-bold text-lg px-2 py-1">
+        <div className="absolute bottom-[-10px] right-[-10px] bg-rose-400 rounded-lg font-Nunito text-white font-bold text-lg px-2 py-1 shadow-md">
           {discountPercentage}% OFF!
         </div>
       </div>
       <div className="rounded-2xl text-slate-500">
-        <div className="flex items-start gap-2 flex-row justify-between">
-          <span className="text-sm font-semibold uppercase text-violet-300">
-            {brand}
-          </span>
+        <div className="flex-grow">
+          <div className="flex flex-col justify-between">
+            <div className="flex flex-col justify-between break-all">
+              <span className="text-sm font-semibold uppercase text-violet-300">
+                {brand}
+              </span>
+            </div>
+            <p className="mb-2 text-xl font-bold font-Proxima">{name}</p>
+
+            <h2 className="text-indigo-500 font-Nunito font-bold text-3xl break-all ">
+              ₱
+              {new Intl.NumberFormat("en-US", {
+                style: "decimal",
+                maximumFractionDigits: 2,
+              }).format(discountedPrice)}
+            </h2>
+            <div className="flex flex-row justify-between m-0">
+              <p className="text-m text-slate-400 font-Nunito break-all">
+                from ₱
+                {new Intl.NumberFormat("en-US", {
+                  style: "decimal",
+                  maximumFractionDigits: 2,
+                }).format(originalPrice)}
+              </p>
+              <span className="text-sm font-semibold text-slate-400">
+                {sales && sales !== "0" && (
+                  <span className="text-sm font-semibold text-slate-400">
+                    {sales} sold
+                  </span>
+                )}
+              </span>
+            </div>
+          </div>
+          <div className="absolute bottom-4 left-0 w-full px-4 break-all">
+            <Button type={"cart"} />
+          </div>
         </div>
-        <p className="my-2 text-xl font-bold">{name}</p>
-        <h2 className="text-indigo-500 font-Nunito font-bold text-4xl">
-          ₱{discountedPrice}
-        </h2>
-        <p className="text-lg text-slate-400 font-Nunito">
-          from ₱{originalPrice}
-        </p>
-        <Button type={"cart"} />
       </div>
     </div>
   );
@@ -139,7 +175,7 @@ const Card = ({
 
 export default Section;
 
-const Button = ({ type, category}) => {
+const Button = ({ type, category }) => {
   const [isClicked, setIsClicked] = useState(false);
 
   {
@@ -178,7 +214,7 @@ const Button = ({ type, category}) => {
 
   const handleNavigation = () => {
     navigate(`/products/category`);
-    console.log('View all button clicked')
+    console.log("View all button clicked");
   };
 
   if (type === "cart") {

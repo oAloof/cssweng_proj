@@ -24,7 +24,7 @@ import Register2 from "../views/registerPage2";
 import AccountPage from "../views/customer/accountPage";
 import ForgotPassword from "../views/ForgotPasswordPage";
 import ProductsPage from "../views/customer/productsPage";
-import CategoryPage from "../views/customer/productsPage";
+import CategoryPage from "../views/customer/CategoryPage.jsx";
 import LandingPage from "../views/customer/LandingPage";
 import CartPage from "../views/customer/cartPage";
 import OrderConfirmation from "../views/customer/orderConfirmation.jsx";
@@ -58,7 +58,7 @@ function App() {
           <Route path="/billing" element={<Billing />} />
           <Route path="/confirm-order" element={<OrderConfirmation />} />
           <Route path="/invoice" element={<Invoice />} />
-            
+
           <Route path="/register" element={<RegistrationProvider />}>
             <Route index element={<Navigate to="/register/1" />} />
             <Route path="1" element={<Register1 />} />
