@@ -5,6 +5,7 @@ import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import EditProduct from "./EditProduct";
 import { AnimatePresence } from "framer-motion";
 import { ProductsContext } from "../../contexts/ProductsContext";
+import Loader from "../Loader";
 
 const ProductsTable = () => {
   return <Table />;

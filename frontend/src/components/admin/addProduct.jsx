@@ -46,7 +46,7 @@ const AddProduct = ({ title }) => {
   );
 };
 
-const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjects, handleImageChange, title,  }) => {
+const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjects, handleImageChange, title }) => {
   const methods = useForm({ mode: "onSubmit" });
   const { handleSubmit, watch } = methods;
   const originalPrice = watch("originalPrice", 0);
@@ -70,13 +70,14 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
     });
     
     // Append discounted price 
-    formData.append('discountedPrice', discountedPrice.toString());
+    formData.append('discountedPrice', parseFloat(discountedPrice.toFixed(2)).toString());
     
     // Append images 
     fileObjects.forEach((file) => {
       formData.append("images", file);
     });
     
+
     try {
       const response = await fetch("http://localhost:4000/api/admin/products/addProduct", 
       {
@@ -145,10 +146,10 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
                   <InputField {...productName_validation} />
                   <div className="flex flex-row justify-between gap-4 items-start">
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...productOriginalPrice_validation} />
+                      <InputField {...productOriginalPrice_validation} {...methods.register("originalPrice")} />
                     </div>
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...discountPercentage_validation} />
+                      <InputField {...discountPercentage_validation} {...methods.register("discountPercentage")} />
                       <p className="font-Nunito font-medium mb-0">
                         Sale Price: ₱{formattedSalePrice}
                       </p>

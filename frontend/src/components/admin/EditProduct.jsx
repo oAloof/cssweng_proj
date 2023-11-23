@@ -43,6 +43,9 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
   const originalPrice = watch("originalPrice", product.originalPrice);
   const discountPercentage = watch("discountPercentage", product.discountPercentage);
   const discountedPrice = originalPrice - (originalPrice * discountPercentage) / 100;
+  const formattedSalePrice = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 2,
+  }).format(discountedPrice);
 
   const onSubmit = (data) => {
     editProduct(data);
@@ -50,26 +53,6 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
     // Close the modal after successful form submission
     setIsOpen(false);
   };
-  const [liveSalePrice, setLiveSalePrice] = useState(0);
-
-  // Update liveSalePrice whenever originalPrice or discountPercentage changes
-  useEffect(() => {
-    console.log("Original Price:", originalPrice);
-    console.log("Discount Percentage:", discountPercentage);
-
-    if (originalPrice && discountPercentage) {
-      const salePrice =
-        originalPrice - (originalPrice * discountPercentage) / 100;
-      console.log("Calculated Sale Price:", salePrice);
-      setLiveSalePrice(salePrice);
-    }
-  }, [originalPrice, discountPercentage]);
-
-  const formattedSalePrice = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "PHP",
-    minimumFractionDigits: 2,
-  }).format(liveSalePrice);
 
   const editProduct = async (data) => {
     const formData = new FormData();
@@ -78,7 +61,7 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
       formData.append(key, data[key]);
     });
     // append discounted price
-    formData.append("discountedPrice", discountedPrice.toString());
+    formData.append("discountedPrice", parseFloat(discountedPrice.toFixed(2)).toString());
     // append images
     fileObjects.forEach((file) => {
       formData.append("images", file);
@@ -166,12 +149,12 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                   <InputField {...productName_validation} />
                   <div className="flex flex-row justify-between gap-4 items-start">
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...productOriginalPrice_validation} />
+                      <InputField {...productOriginalPrice_validation} {...methods.register("originalPrice")} />
                     </div>
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...discountPercentage_validation} />
+                      <InputField {...discountPercentage_validation} {...methods.register("discountPercentage")} />
                       <p className="font-Nunito font-medium mb-0">
-                        Sale Price: {formattedSalePrice}
+                        Sale Price: ₱{formattedSalePrice}
                       </p>
                     </div>
                   </div>
