@@ -4,10 +4,9 @@ import {
   faArrowRight,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useLocation} from "react-router-dom";
 
 import { useState, useEffect, useContext } from "react";
-import Countdown from "../../components/CountdownTimer.jsx";
 import NavBar from "../../components/NavBar.jsx";
 import Menu from "../../components/Menu.jsx";
 import SearchBar from "../../components/customer/customerSearch.jsx";
@@ -17,64 +16,30 @@ import ErrorMessage from "../../components/ErrorMessage.jsx";
 import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 const CategoryPage = () => {
+  const {state} = useLocation();
   const [saleData, setSaleData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [mostDiscounted, setMostDiscounted] = useState(false);
-  const [mostSold, setMostSold] = useState(false);
-  const [newestProducts, setNewestProducts] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("")
   const { isAuthenticated, isAdmin } = useContext(AuthenticationContext);
 
+  if (state.category == "mostDiscounted"){
+
+  }
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchSale = async () => {
       try {
         const data = await getSaleData();
 
         setSaleData(data);
-        // setIsLoading(false);
+        setIsLoading(false);
+
       } catch (error) {
         console.log(error);
-        setIsLoading(false);
       }
     };
 
-    const fetchMostDiscounted = async () => {
-      try {
-        const data = await getMostDiscounted();
-
-        setMostDiscounted(data);
-        // setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching sales: ", error);
-      }
-    };
-
-    const fetchMostSold = async () => {
-      try {
-        const data = await getMostSold();
-
-        setMostSold(data);
-        // setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching sales: ", error);
-      }
-    };
-
-    const fetchNewestProducts = async () => {
-      try {
-        const data = await getNewestProducts();
-
-        setNewestProducts(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching sales: ", error);
-      }
-    };
-
-    fetchData();
-    fetchMostDiscounted();
-    fetchMostSold();
-    fetchNewestProducts();
+    fetchSale();
 
     let timer;
     if (errorMessage) {
@@ -98,43 +63,6 @@ const CategoryPage = () => {
     }
   };
 
-  const getMostDiscounted = async () => {
-    try {
-      const response = await fetch("http://localhost:4000/api/mostDiscounted");
-
-      if (!response.ok) {
-        console.error("Failed to fetch products: ", response.status);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const getMostSold = async () => {
-    try {
-      const response = await fetch("http://localhost:4000/api/mostSold");
-
-      if (!response.ok) {
-        console.error("Failed to fetch products: ", response.status);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const getNewestProducts = async () => {
-    try {
-      const response = await fetch("http://localhost:4000/api/newest");
-      if (!response.ok) {
-        console.error("Failed to fetch products: ", response.status);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -151,25 +79,14 @@ const CategoryPage = () => {
 
       <Menu setErrorMessage={setErrorMessage} />
 
-      {mostDiscounted ? (
+      {state.products ? (
         <div className="mt-[7vh] pb-[15vh]">
-          <Countdown saleData={saleData} />
           <section className="overflow-auto ">
             <SearchBar />
             <Section
-              title="Big Discounts!"
-              category="mostDiscounted"
-              products={mostDiscounted}
-            />
-            <Section
-              title="Top Sales!"
-              category="mostSold"
-              products={mostSold}
-            />
-            <Section
-              title="Newest Products!"
-              category="newestProducts"
-              products={newestProducts}
+              title= {state.title}
+              category= {state.category}
+              products={state.products}
             />
           </section>
         </div>
@@ -262,13 +179,39 @@ const CARD_HEIGHT = 440;
 const CARD_CONTAINER_HEIGHT = CARD_HEIGHT + 30;
 const MARGIN = 20;
 
-const Section = ({ title, category }) => {
+const Section = ({ title, category, products}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const filteredProducts = products.filter((product) =>
-    product.categories.includes(category)
-  );
+  function checkCategory(product) {
+    return product.category.includes(category);
+  }
+
+  var existingCategory = false;
+
+  for (let i = 0; i < products.length; i++) {
+    if (products[i].category.includes(category)) {
+      existingCategory = true;
+    }
+  }
+
+  var filteredProducts = [];
+  if (existingCategory) {
+    filteredProducts = products.filter(checkCategory);
+
+    // setIsLoading(false)
+  } else {
+    filteredProducts = products;
+    // setIsLoading(false)
+  }
+
+  useEffect(() => {
+    console.log("Modal open state:", isOpen);
+    if (isOpen) {
+      console.log("Selected product details:", selectedProduct);
+    }
+  }, [isOpen]);
+
 
   const handleCardClick = (product) => {
     setSelectedProduct(product);
@@ -283,9 +226,6 @@ const Section = ({ title, category }) => {
             <p className="text-3xl text-slate-700 font-Proxima font-bold m-0">
               {title}
             </p>
-            <div>
-              <Button type="viewAll" category={category} />
-            </div>
           </div>
           <div
             className="flex overflow-x-auto overflow-y-hidden w-auto"
@@ -318,45 +258,75 @@ const Card = ({
   url,
   brand,
   name,
-  salePrice,
+  discountedPrice,
   originalPrice,
-  discount,
+  discountPercentage,
   style,
   description,
   onClick,
+  images,
+  sales,
 }) => {
   const navigate = useNavigate();
 
   return (
     <div
-      className="relative shrink-0 cursor-pointer rounded-2xl bg-white shadow-md transition-all hover:scale-[1.015] hover:shadow-xl p-4"
-      style={{ width: CARD_WIDTH, margin: "10px" }}
+      className="relative shrink-0 cursor-pointer rounded-2xl bg-white shadow-md transition-all hover:scale-[1.015] hover:shadow-xl p-4 flex flex-col m-2"
+      style={{
+        width: CARD_WIDTH,
+        height: CARD_HEIGHT,
+        boxSizing: "border-box",
+      }}
       onClick={onClick}
     >
-      <div className="relative">
+      <div className="relative w-full mb-2" style={{ height: "40%" }}>
         <img
-          src={url}
-          alt={name}
-          className="rounded-2xl w-full h-2/5 object-contain object-center"
+          src={`https://drive.google.com/uc?export=view&id=${images[0]}`}
+          alt="Product Image"
+          className="rounded-2xl w-full h-full object-cover object-center"
         />
-        <div className="absolute bottom-[-10px] right-[-10px] bg-rose-400 rounded-lg font-Nunito text-white font-bold text-lg px-2 py-1">
-          {discount}% OFF!
+        <div className="absolute bottom-[-10px] right-[-10px] bg-rose-400 rounded-lg font-Nunito text-white font-bold text-lg px-2 py-1 shadow-md">
+          {discountPercentage}% OFF!
         </div>
       </div>
       <div className="rounded-2xl text-slate-500">
-        <div className="flex items-start gap-2 flex-row justify-between">
-          <span className="text-sm font-semibold uppercase text-violet-300">
-            {brand}
-          </span>
+        <div className="flex-grow">
+          <div className="flex flex-col justify-between">
+            <div className="flex flex-col justify-between break-all">
+              <span className="text-sm font-semibold uppercase text-violet-300">
+                {brand}
+              </span>
+            </div>
+            <p className="mb-2 text-xl font-bold font-Proxima">{name}</p>
+
+            <h2 className="text-indigo-500 font-Nunito font-bold text-3xl break-all ">
+              ₱
+              {new Intl.NumberFormat("en-US", {
+                style: "decimal",
+                maximumFractionDigits: 2,
+              }).format(discountedPrice)}
+            </h2>
+            <div className="flex flex-row justify-between m-0">
+              <p className="text-m text-slate-400 font-Nunito break-all">
+                from ₱
+                {new Intl.NumberFormat("en-US", {
+                  style: "decimal",
+                  maximumFractionDigits: 2,
+                }).format(originalPrice)}
+              </p>
+              <span className="text-sm font-semibold text-slate-400">
+                {sales && sales !== "0" && (
+                  <span className="text-sm font-semibold text-slate-400">
+                    {sales} sold
+                  </span>
+                )}
+              </span>
+            </div>
+          </div>
+          <div className="absolute bottom-4 left-0 w-full px-4 break-all">
+            <Button type={"cart"} />
+          </div>
         </div>
-        <p className="my-2 text-xl font-bold">{name}</p>
-        <h2 className="text-indigo-500 font-Nunito font-bold text-4xl">
-          ₱{salePrice}
-        </h2>
-        <p className="text-lg text-slate-400 font-Nunito">
-          from ₱{originalPrice}
-        </p>
-        <Button type={"cart"} />
       </div>
     </div>
   );

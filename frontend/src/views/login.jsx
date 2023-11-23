@@ -48,6 +48,7 @@ const Login = () => {
         }
       })
       .catch((error) => {
+        console.log(error);
         setErrorMessage(error.message);
       });
   };

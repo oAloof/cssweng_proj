@@ -10,10 +10,13 @@ import {
 } from "../../utils/inputValidations.jsx";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
+import ErrorMessage from "../ErrorMessage.jsx";
+
+// CONTEXTS
 import { ProductsContext } from "../../contexts/ProductsContext.jsx";
 import ErrorMessage from "../ErrorMessage.jsx";
 
-const AddProduct = ({ title }) => {
+const AddProduct = ({ title, setErrorMessage }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [images, setImages] = useState([]);
   const [fileObjects, setFileObjects] = useState([]);
@@ -97,6 +100,8 @@ const Modal = ({
     });
 
     try {
+      setIsLoading(true);
+      setIsOpen(false); // close modal
       const response = await fetch(
         "http://localhost:4000/api/admin/products/addProduct",
         {
@@ -105,8 +110,11 @@ const Modal = ({
           body: formData,
         }
       );
+      const responseData = await response.json();
       if (!response.ok) {
         console.error("Failed to add product: ", response.status);
+        setErrorMessage(responseData.message);
+        setIsLoading(false);
         return;
       }
       const responseData = await response.json();
@@ -114,7 +122,6 @@ const Modal = ({
       setImages([]); // reset images
       setFileObjects([]); // reset file objects
       methods.reset(); // reset form
-      setIsLoading(true);
       setProductChanged(true); // trigger useEffect in ProductsContext to fetch products again
       console.log(responseData);
       return;

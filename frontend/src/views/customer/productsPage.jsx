@@ -106,8 +106,8 @@ const ProductsPage = () => {
 
       {mostSold ? (
         <div className="mt-[7vh] pb-[15vh]">
-          {/* <Countdown saleData={saleData} /> */}
           <section className="overflow-auto ">
+          <SearchBar />
             {ProductCategories && ProductCategories.map((productCategory) => {
               return <Section title= {capitalizeFirstLetter(productCategory)} category= {productCategory} products = {mostSold}/>
             })}

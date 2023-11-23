@@ -29,6 +29,7 @@ const capitalizeFirstLetter = (string) => {
 const Nav = ({ isOpen, setIsOpen }) => {
   const navigate = useNavigate();
   const [ProductCategories, setProductCategories] = useState(false);
+  const [mostSold, setMostSold] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -38,6 +39,17 @@ const Nav = ({ isOpen, setIsOpen }) => {
         const data = await getProductCategories();
   
         setProductCategories(data)
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+
+    const fetchMostSold = async () => {
+      try {
+        const data = await getMostSold();
+  
+        setMostSold(data)
         setIsLoading(false);
         
       } catch (error) {
@@ -45,6 +57,7 @@ const Nav = ({ isOpen, setIsOpen }) => {
       }
     }
     
+    fetchMostSold();
     fetchProductCategories();
   }, []);
 
@@ -67,9 +80,26 @@ const Nav = ({ isOpen, setIsOpen }) => {
     }
   };
 
+  const getMostSold = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/mostSold");
+  
+        if (!response.ok) {
+          console.error("Failed to fetch products: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   var categories = []
   for (var i = 0 ; i < ProductCategories.length; i++) {
     categories.push({ text: capitalizeFirstLetter(ProductCategories[i]), path: "/" +  ProductCategories[i]})
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
   return (
@@ -92,17 +122,17 @@ const Nav = ({ isOpen, setIsOpen }) => {
         className="flex flex-col gap-2 absolute bottom-8 left-8"
       >
         {categories.map((link, index) => (
-          <NavLink key={index} text={link.text} url={link.path} />
+          <NavLink key={index} text={link.text} products={mostSold}/>
         ))}
       </motion.div>
     </motion.nav>
   );
 };
 
-const NavLink = ({ text, url }) => {
+const NavLink = ({ text, products}) => {
   const navigate = useNavigate();
   const OnLinkClick = useCallback(() => {
-    navigate({ url });
+    navigate(`/products/category`, {state: {title: text, category: text, products: products}});
   }, [navigate]);
 
   return (

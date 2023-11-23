@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import AdminNavbar from "../../components/admin/adminNavbar.jsx";
 import ProductsTable from "../../components/admin/productsTable.jsx";
 import AddProduct from "../../components/admin/addProduct.jsx";
 import MultiSelect from "../../components/admin/multiSelect.jsx";
 import SearchBar from "../../components/SearchBar.jsx";
 import Loader from "../../components/Loader.jsx";
+import ErrorMessage from "../../components/ErrorMessage.jsx";
 
 // CONTEXTS
 import { ProductsProvider } from "../../contexts/ProductsContext.jsx";
@@ -15,9 +16,21 @@ function AdminProductPage() {
   const [showBrands, setShowBrands] = useState(true);
   const categories = ["Category 1", "Category 2", "Category 3"];
   const brands = ["Brand 1", "Brand 2", "Brand 3"];
+  const [errorMessage, setErrorMessage] = useState("");
   const { isAuthenticated, isAdmin, isLoadingAuth } = useContext(
     AuthenticationContext
   );
+
+  useEffect(() => {
+    let timer;
+    if (errorMessage) {
+      timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+    }
+
+    return () => clearTimeout(timer);
+  }, [errorMessage]);
 
   const FilterItems = ({ title, items, showItems, setShowItems }) => {
     return (
@@ -75,6 +88,12 @@ function AdminProductPage() {
 
   return (
     <ProductsProvider>
+      {errorMessage && (
+        <ErrorMessage
+          message={errorMessage}
+          onClose={() => setErrorMessage("")}
+        />
+      )}
       <div className="flex h-screen bg-gray-200">
         <div className="flex-1 flex flex-col overflow-hidden">
           <AdminNavbar />
@@ -94,7 +113,10 @@ function AdminProductPage() {
                     isUserInputAllowed={false}
                   />
                 </div>
-                <AddProduct title="Add a Product" />
+                <AddProduct
+                  title="Add a Product"
+                  setErrorMessage={setErrorMessage}
+                />
               </div>
               <div className="flex">
                 <div className="w-1/4">
