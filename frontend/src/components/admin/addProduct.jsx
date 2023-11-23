@@ -10,9 +10,12 @@ import {
 } from "../../utils/inputValidations.jsx";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
+import ErrorMessage from "../ErrorMessage.jsx";
+
+// CONTEXTS
 import { ProductsContext } from "../../contexts/ProductsContext.jsx";
 
-const AddProduct = ({ title }) => {
+const AddProduct = ({ title, setErrorMessage }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [images, setImages] = useState([]);
   const [fileObjects, setFileObjects] = useState([]);
@@ -40,13 +43,13 @@ const AddProduct = ({ title }) => {
         fileObjects={fileObjects}
         setFileObjects={setFileObjects}
         handleImageChange={handleImageChange}
-        
+        setErrorMessage={setErrorMessage}
       />
     </div>
   );
 };
 
-const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjects, handleImageChange, title }) => {
+const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjects, handleImageChange, title, setErrorMessage }) => {
   const methods = useForm({ mode: "onSubmit" });
   const { handleSubmit, watch } = methods;
   const originalPrice = watch("originalPrice", 0);
@@ -77,24 +80,25 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
       formData.append("images", file);
     });
     
-
     try {
+      setIsLoading(true);
+      setIsOpen(false); // close modal
       const response = await fetch("http://localhost:4000/api/admin/products/addProduct", 
       {
         method: "POST",
         credentials: "include",
         body: formData,
       });
+      const responseData = await response.json();
       if (!response.ok) {
         console.error("Failed to add product: ", response.status);
+        setErrorMessage(responseData.message);
+        setIsLoading(false);
         return;
       }
-      const responseData = await response.json();
-      setIsOpen(false); // close modal
       setImages([]);  // reset images
       setFileObjects([]); // reset file objects
       methods.reset(); // reset form
-      setIsLoading(true);
       setProductChanged(true); // trigger useEffect in ProductsContext to fetch products again
       console.log(responseData);
       return

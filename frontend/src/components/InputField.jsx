@@ -30,7 +30,6 @@ const InputField = ({
   const isInvalid = isFormInvalid(inputErrors);
 
   const handleChange = (e) => {
-    console.log(`InputField ${name} changed:`, e.target.value);
     if (onChange) {
       onChange(e);
     }

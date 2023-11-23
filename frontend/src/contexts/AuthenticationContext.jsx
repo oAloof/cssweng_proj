@@ -18,7 +18,7 @@ export const AuthenticationProvider = ({ children }) => {
                 },
             });
             if (!response.ok) {
-                throw new Error("User not found. ", response.status)
+                throw new Error("User not found.")
             }
             const responseData = await response.json();
             if (!responseData.isAuthenticated) {
@@ -54,7 +54,7 @@ export const AuthenticationProvider = ({ children }) => {
             });
             const responseData = await response.json();
             if (!response.ok) {
-                throw new Error(responseData);
+                throw new Error(responseData.message);
             }
             setIsAuthenticated(true);
             if (responseData.userType === "Admin") {
