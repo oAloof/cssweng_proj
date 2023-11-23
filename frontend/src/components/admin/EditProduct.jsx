@@ -11,21 +11,22 @@ import {
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
 import { ProductsContext } from "../../contexts/ProductsContext.jsx";
+import ErrorMessage from "../ErrorMessage.jsx";
 
 const Modal = ({ isOpen, setIsOpen, title, product }) => {
   const constructImageUrl = (imageId) => {
     return `https://drive.google.com/uc?export=view&id=${imageId}`;
-  }
+  };
 
   const [existingImages, setExistingImages] = useState(
     product.images ? product.images.map(constructImageUrl) : []
-  ); 
-  const [deletedImages, setDeletedImages] = useState([]); 
+  );
+  const [deletedImages, setDeletedImages] = useState([]);
   const [images, setImages] = useState([]);
   const [fileObjects, setFileObjects] = useState([]);
   const { setProductChanged, setIsLoading } = useContext(ProductsContext);
 
-  const methods = useForm({ 
+  const methods = useForm({
     mode: "onSubmit",
     defaultValues: {
       name: product.name,
@@ -36,13 +37,21 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
       category: product.category,
       brand: product.brand,
       listProduct: product.listProduct,
-    }, 
+    },
   });
-  const { handleSubmit, watch } = methods;
-  
+  const {
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = methods;
+
   const originalPrice = watch("originalPrice", product.originalPrice);
-  const discountPercentage = watch("discountPercentage", product.discountPercentage);
-  const discountedPrice = originalPrice - (originalPrice * discountPercentage) / 100;
+  const discountPercentage = watch(
+    "discountPercentage",
+    product.discountPercentage
+  );
+  const discountedPrice =
+    originalPrice - (originalPrice * discountPercentage) / 100;
   const formattedSalePrice = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
   }).format(discountedPrice);
@@ -57,11 +66,14 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
   const editProduct = async (data) => {
     const formData = new FormData();
     // Append existing form data
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
     // append discounted price
-    formData.append("discountedPrice", parseFloat(discountedPrice.toFixed(2)).toString());
+    formData.append(
+      "discountedPrice",
+      parseFloat(discountedPrice.toFixed(2)).toString()
+    );
     // append images
     fileObjects.forEach((file) => {
       formData.append("images", file);
@@ -72,11 +84,14 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
     formData.append("productId", product._id);
 
     try {
-      const response = await fetch("http://localhost:4000/api/admin/products/editProduct", {
-        method: "PATCH",
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:4000/api/admin/products/editProduct",
+        {
+          method: "PATCH",
+          credentials: "include",
+          body: formData,
+        }
+      );
       if (!response.ok) {
         console.error("Failed to edit product: ", response.status);
         return;
@@ -86,10 +101,10 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
       setIsLoading(true);
       setProductChanged(true); // trigger useEffect in ProductsContext to fetch products again
       console.log(responseData);
-      return
+      return;
     } catch (error) {
       console.log(error);
-      return
+      return;
     }
   };
 
@@ -103,9 +118,9 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
   const handleOldImageDelete = (imageUrl) => {
     const url = new URL(imageUrl);
     const imageId = url.searchParams.get("id");
-    setDeletedImages((prevImages) => prevImages.concat(imageId))
+    setDeletedImages((prevImages) => prevImages.concat(imageId));
     setExistingImages(existingImages.filter((img) => img !== imageUrl));
-  }
+  };
 
   const categoryOptions = [
     { value: "appliances", label: "Appliances" },
@@ -149,10 +164,16 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                   <InputField {...productName_validation} />
                   <div className="flex flex-row justify-between gap-4 items-start">
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...productOriginalPrice_validation} {...methods.register("originalPrice")} />
+                      <InputField
+                        {...productOriginalPrice_validation}
+                        {...methods.register("originalPrice")}
+                      />
                     </div>
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...discountPercentage_validation} {...methods.register("discountPercentage")} />
+                      <InputField
+                        {...discountPercentage_validation}
+                        {...methods.register("discountPercentage")}
+                      />
                       <p className="font-Nunito font-medium mb-0">
                         Sale Price: ₱{formattedSalePrice}
                       </p>
@@ -166,12 +187,15 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                   <Controller
                     name="category"
                     control={methods.control}
-                    render={({ field }) => (
+                    rules={{ required: "Category is required" }}
+                    render={({ field, fieldState }) => (
                       <MultiSelect
-                        field={field}
-                        name={"category"}
+                        {...field}
                         selectOptions={categoryOptions}
                         isUserInputAllowed={true}
+                        error={fieldState.error}
+                        setError={methods.setError}
+                        isMulti={true}
                       />
                     )}
                   />
@@ -179,12 +203,15 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                   <Controller
                     name="brand"
                     control={methods.control}
-                    render={({ field }) => (
+                    rules={{ required: "Brand is required" }}
+                    render={({ field, fieldState }) => (
                       <MultiSelect
-                        field={field}
-                        name={"brand"}
+                        {...field}
                         selectOptions={brandOptions}
                         isUserInputAllowed={true}
+                        error={fieldState.error}
+                        setError={methods.setError}
+                        isMulti={false}
                       />
                     )}
                   />
@@ -195,6 +222,11 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                         Upload Images ({images.length + existingImages.length})
                       </label>
                       <div className="relative">
+                        <div className="flex flex-row justify-end">
+                          {errors.images && (
+                            <ErrorMessage message={errors.images.message} />
+                          )}
+                        </div>
                         <input
                           type="file"
                           id="images"
@@ -203,6 +235,11 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                           multiple
                           onChange={handleImageChange}
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          {...methods.register("images", {
+                            required: "Images are required",
+                            validate: (files) =>
+                              files.length > 0 || "Images are required",
+                          })}
                           required
                         />
 
@@ -234,7 +271,7 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                     </div>
                   </div>
                   {/* Image Div */}
-                  <div className="flex flex-row gap-4 overflow-x-auto"> 
+                  <div className="flex flex-row gap-4 overflow-x-auto">
                     {/* render existing images */}
                     {existingImages.map((image, index) => (
                       <div key={image} className="relative">

@@ -3,6 +3,7 @@ import styles from "../styles/ErrorMessage.module.css";
 import { MdError } from "react-icons/md";
 
 const ErrorMessage = ({ message, onClose }) => {
+  if (!message) return null;
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.p

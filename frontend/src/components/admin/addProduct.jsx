@@ -60,7 +60,6 @@ const Modal = ({
   title,
 }) => {
   const methods = useForm({ mode: "onSubmit" });
-  const { clearErrors } = useForm();
   const {
     handleSubmit,
     watch,
@@ -193,6 +192,7 @@ const Modal = ({
                         isUserInputAllowed={true}
                         error={fieldState.error}
                         setError={methods.setError}
+                        isMulti={true}
                       />
                     )}
                   />
@@ -208,6 +208,7 @@ const Modal = ({
                         isUserInputAllowed={true}
                         error={fieldState.error}
                         setError={methods.setError}
+                        isMulti={false}
                       />
                     )}
                   />
