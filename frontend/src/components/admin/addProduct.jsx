@@ -11,6 +11,7 @@ import {
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
 import { ProductsContext } from "../../contexts/ProductsContext.jsx";
+import ErrorMessage from "../ErrorMessage.jsx";
 
 const AddProduct = ({ title }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,18 +41,33 @@ const AddProduct = ({ title }) => {
         fileObjects={fileObjects}
         setFileObjects={setFileObjects}
         handleImageChange={handleImageChange}
-        
+        title={title}
       />
     </div>
   );
 };
 
-const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjects, handleImageChange, title }) => {
+const Modal = ({
+  isOpen,
+  setIsOpen,
+  images,
+  setImages,
+  fileObjects,
+  setFileObjects,
+  handleImageChange,
+  title,
+}) => {
   const methods = useForm({ mode: "onSubmit" });
-  const { handleSubmit, watch } = methods;
+  const { clearErrors } = useForm();
+  const {
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = methods;
   const originalPrice = watch("originalPrice", 0);
   const discountPercentage = watch("discountPercentage", 0);
-  const discountedPrice = originalPrice - (originalPrice * discountPercentage) / 100;
+  const discountedPrice =
+    originalPrice - (originalPrice * discountPercentage) / 100;
   const formattedSalePrice = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
   }).format(discountedPrice);
@@ -68,36 +84,40 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
     Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
-    
-    // Append discounted price 
-    formData.append('discountedPrice', parseFloat(discountedPrice.toFixed(2)).toString());
-    
-    // Append images 
+
+    // Append discounted price
+    formData.append(
+      "discountedPrice",
+      parseFloat(discountedPrice.toFixed(2)).toString()
+    );
+
+    // Append images
     fileObjects.forEach((file) => {
       formData.append("images", file);
     });
-    
 
     try {
-      const response = await fetch("http://localhost:4000/api/admin/products/addProduct", 
-      {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:4000/api/admin/products/addProduct",
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
       if (!response.ok) {
         console.error("Failed to add product: ", response.status);
         return;
       }
       const responseData = await response.json();
       setIsOpen(false); // close modal
-      setImages([]);  // reset images
+      setImages([]); // reset images
       setFileObjects([]); // reset file objects
       methods.reset(); // reset form
       setIsLoading(true);
       setProductChanged(true); // trigger useEffect in ProductsContext to fetch products again
       console.log(responseData);
-      return
+      return;
     } catch (error) {
       console.error(error);
       return;
@@ -146,29 +166,34 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
                   <InputField {...productName_validation} />
                   <div className="flex flex-row justify-between gap-4 items-start">
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...productOriginalPrice_validation} {...methods.register("originalPrice")} />
+                      <InputField
+                        {...productOriginalPrice_validation}
+                        {...methods.register("originalPrice")}
+                      />
                     </div>
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...discountPercentage_validation} {...methods.register("discountPercentage")} />
+                      <InputField
+                        {...discountPercentage_validation}
+                        {...methods.register("discountPercentage")}
+                      />
                       <p className="font-Nunito font-medium mb-0">
                         Sale Price: ₱{formattedSalePrice}
                       </p>
                     </div>
                   </div>
-
                   <InputField {...availableQuantity_validation} />
-
                   <InputField {...desc_validation} />
-
                   <Controller
                     name="category"
                     control={methods.control}
-                    render={({ field }) => (
+                    rules={{ required: "Category is required" }}
+                    render={({ field, fieldState }) => (
                       <MultiSelect
-                        field={field}
-                        name={"category"}
+                        {...field}
                         selectOptions={categoryOptions}
                         isUserInputAllowed={true}
+                        error={fieldState.error}
+                        setError={methods.setError}
                       />
                     )}
                   />
@@ -176,22 +201,28 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
                   <Controller
                     name="brand"
                     control={methods.control}
-                    render={({ field }) => (
+                    rules={{ required: "Brand is required" }}
+                    render={({ field, fieldState }) => (
                       <MultiSelect
-                        field={field}
-                        name="brand"
+                        {...field}
                         selectOptions={brandOptions}
                         isUserInputAllowed={true}
+                        error={fieldState.error}
+                        setError={methods.setError}
                       />
                     )}
                   />
-
                   <div className="flex flex-row gap-4">
                     <div className="flex flex-col gap-2">
                       <label htmlFor="images" className="text-lg font-medium">
                         Upload Images ({images.length})
                       </label>
                       <div className="relative">
+                        <div className="flex flex-row justify-end">
+                          {errors.images && (
+                            <ErrorMessage message={errors.images.message} />
+                          )}
+                        </div>
                         <input
                           type="file"
                           id="images"
@@ -200,6 +231,11 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
                           multiple
                           onChange={handleImageChange}
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          {...methods.register("images", {
+                            required: "Images are required",
+                            validate: (files) =>
+                              files.length > 0 || "Images are required",
+                          })}
                           required
                         />
 

@@ -15,7 +15,7 @@ import ProductModal from "./ProductModal";
 import Loader from "../Loader";
 
 const Section = ({ title, category, products, isLoading }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   function checkCategory(product) {
@@ -39,13 +39,6 @@ const Section = ({ title, category, products, isLoading }) => {
     filteredProducts = products;
     // setIsLoading(false)
   }
-
-  useEffect(() => {
-    console.log("Modal open state:", isOpen);
-    if (isOpen) {
-      console.log("Selected product details:", selectedProduct);
-    }
-  }, [isOpen]);
 
   const handleCardClick = (product) => {
     setSelectedProduct(product);

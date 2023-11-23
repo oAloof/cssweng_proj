@@ -15,11 +15,13 @@ const InputField = ({
   defaultValue,
 }) => {
   const {
+    control,
     register,
     formState: { errors },
     setValue,
   } = useFormContext();
 
+  const fieldError = errors[name];
   useEffect(() => {
     if (defaultValue) {
       setValue(name, defaultValue); // Set the default value using setValue
