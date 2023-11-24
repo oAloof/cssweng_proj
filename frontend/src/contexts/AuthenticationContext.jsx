@@ -40,7 +40,7 @@ export const AuthenticationProvider = ({ children }) => {
             return
         }
     }
-
+    
     const login = async (data) => {
         try {
             const response = await fetch("http://localhost:4000/api/login", 
