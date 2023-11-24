@@ -6,6 +6,15 @@ export const ShoppingCartProvider = ({ children }) => {
     const [shoppingCart, setShoppingCart] = useState(
         localStorage?.getItem("shoppingCart") || []
         );
-
-
+    
+    const contextValue = {
+        shoppingCart,
+        setShoppingCart,
+    };
+    
+    return (
+        <ShoppingCartContext.Provider value={contextValue}>
+            {children}
+        </ShoppingCartContext.Provider>
+    )
 }
