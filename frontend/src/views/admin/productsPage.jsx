@@ -17,7 +17,9 @@ function AdminProductPage() {
   const categories = ["Category 1", "Category 2", "Category 3"];
   const brands = ["Brand 1", "Brand 2", "Brand 3"];
   const [errorMessage, setErrorMessage] = useState("");
-  const { isAuthenticated, isAdmin, isLoadingAuth } = useContext(AuthenticationContext);
+  const { isAuthenticated, isAdmin, isLoadingAuth } = useContext(
+    AuthenticationContext
+  );
 
   useEffect(() => {
     let timer;
@@ -77,7 +79,7 @@ function AdminProductPage() {
   ];
 
   if (isLoadingAuth) {
-    return (<Loader />);
+    return <Loader />;
   }
 
   if (!isAuthenticated || !isAdmin) {
@@ -111,14 +113,19 @@ function AdminProductPage() {
                     isUserInputAllowed={false}
                   />
                 </div>
-                <AddProduct title="Add a Product" setErrorMessage={setErrorMessage} />
+                <AddProduct
+                  title="Add a Product"
+                  setErrorMessage={setErrorMessage}
+                />
               </div>
               <div className="flex">
                 <div className="w-1/4">
                   <div className="bg-white rounded-lg shadow-md px-4 pt-4 pb-1 space-y-6 flex-col">
                     <div className="flex place-items-center justify-start space-x-2 mb-3">
                       <i className="fas fa-filter text-gray-400 mr-2"></i>
-                      <h4 className="text-gray-700 font-medium mb-0">Filters</h4>
+                      <h4 className="text-gray-700 font-medium mb-0">
+                        Filters
+                      </h4>
                     </div>
                     <FilterItems
                       title="Categories"

@@ -3,16 +3,17 @@ import styles from "../styles/ErrorMessage.module.css";
 import { MdError } from "react-icons/md";
 
 const ErrorMessage = ({ message, onClose }) => {
+  if (!message) return null;
   return (
-    <motion.p
-      className="inline-flex items-center w-auto px-2 relative ml-auto font-semibold text-xs text-rose-700 bg-[rgb(255,201,201)] rounded-md box-border mb-[0.2rem] mt-1"
-      {...framer_error}
-    >
-      <button onClick={onClose}>
-        <MdError />
-      </button>
-      {message}
-    </motion.p>
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.p
+        className="inline-flex items-center w-auto px-2 relative ml-auto font-semibold text-xs text-rose-700 bg-[rgb(255,201,201)] rounded-md box-border mb-[0.2rem] mt-1 py-1"
+        {...framer_error}
+      >
+        <MdError className="mr-1" />
+        {message}
+      </motion.p>
+    </AnimatePresence>
   );
 };
 
