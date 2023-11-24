@@ -20,7 +20,7 @@ import { RegistrationContext } from "../contexts/RegistrationContext";
 const RegisterPage2 = () => {
   const navigate = useNavigate();
   const methods = useForm({ mode: "onSubmit" });
-  const { registrationData2, setRegistrationData2, isPageOneComplete } = useContext(RegistrationContext);
+  const { registrationData1, registrationData2, setRegistrationData2, isPageOneComplete } = useContext(RegistrationContext);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -50,10 +50,11 @@ const RegisterPage2 = () => {
   const onSubmit = (data) => {
     // Send data to backend
     const requestData = {
-      ...registrationData,
+      ...registrationData1,
       ...data,
       registrationStep: 2,
     };
+    console.log(requestData);
     fetch("http://localhost:4000/api/register", {
       method: "POST",
       body: JSON.stringify(requestData),

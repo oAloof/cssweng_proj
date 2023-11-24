@@ -128,6 +128,7 @@ const NavRight = () => {
           setIsAuthenticated(false);
           setIsAdmin(false);
           navigate("/login");
+          localStorage.clear();
           return;
         }
         console.log("Error logging out: ", response.status);
@@ -137,6 +138,7 @@ const NavRight = () => {
       setIsAuthenticated(false);
       setIsAdmin(false);
       navigate("/login");
+      localStorage.clear();
       console.log(responseData);
     } catch (error) {
       console.log(error);

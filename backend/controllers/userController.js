@@ -52,7 +52,7 @@ const loginUser = async (req, res) => {
             return
         }
 
-        const token = jwt.sign({_id: user._id}, process.env.JWTSECRET, {expiresIn: '3h'})
+        const token = jwt.sign({_id: user._id, userType: user.userType}, process.env.JWTSECRET, {expiresIn: '3h'})
         res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 3600000 });
         res.status(200).send({
             message: 'User found.',
@@ -124,9 +124,28 @@ const logoutUser = (req, res) => {
     res.status(200).send({message: 'User logged out.'})
 }
 
+const getCart = async (req, res) => {
+    // Check if user is logged in
+    if (!req.user) {
+        res.status(400).send({message: 'User is not logged in.'})
+        return
+    }
+
+    const { _id } = req.user
+    // Check if user exists in the database
+    const user = await User.findOne({_id})
+    if (!user) {
+        res.status(404).send({ message: 'User not found.' })
+        return
+    }
+    const cart = user.cart
+    res.status(200).send({ cart })
+}
+
 module.exports = { 
     getAuthData,
     loginUser,
     registerUser,
-    logoutUser
+    logoutUser,
+    getCart
 }

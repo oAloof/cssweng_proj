@@ -46,6 +46,9 @@ app.post('/api/login', authenticate, userController.loginUser)
 app.post('/api/register', authenticate, userController.registerUser)
 app.post('/api/logout', authenticate, userController.logoutUser)
 
+// Shopping Cart API
+app.get('/api/cart', authenticate, userController.getCart)
+
 // Customer API
 app.use('/api/sales', customerSalesRoutes) 
 app.use('/api/', customerGeneralRoutes)

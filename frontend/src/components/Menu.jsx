@@ -57,13 +57,16 @@ const NavRight = ({ setErrorMessage }) => {
         if (responseData.message === "User is not logged in.") {
           setIsAuthenticated(false);
           setErrorMessage("You are not logged in.");
+          localStorage.clear();
           return;
         }
         console.log("Error logging out: ", response.status);
+        localStorage.clear();
         return;
       }
       const responseData = await response.json();
       setIsAuthenticated(false);
+      localStorage.clear();
       console.log(responseData);
     } catch (error) {
       console.log(error);
