@@ -16,6 +16,7 @@ import {
 // CONTEXTS
 import { RegistrationProvider } from "../contexts/RegistrationContext";
 import { AuthenticationProvider } from "../contexts/AuthenticationContext";
+import { ShoppingCartProvider } from "../contexts/ShoppingCartContext.jsx";
 
 // USER PAGES
 import Login from "../views/login";
@@ -46,6 +47,7 @@ function App() {
   return (
     <Router>
       <AuthenticationProvider>
+      <ShoppingCartProvider>
         <Routes>
           {/* USER */}
           <Route path="/" element={<LandingPage />} />
@@ -68,7 +70,7 @@ function App() {
           <Route path="/searchtest" element={<TestAdminComponent />} />
           {/* CATEGORY */}
           <Route path="/categorytest" element={<CategoryPage />} />
-
+          
           {/* ADMIN PAGES */}
           <Route path="/admin">
           <Route index element={<Navigate to="/admin/home" />} />
@@ -79,6 +81,7 @@ function App() {
           </Route>
           <Route path="*" element={<div>Error 404 Page Not Found</div>} />
         </Routes>
+      </ShoppingCartProvider>
       </AuthenticationProvider>
     </Router>
   );

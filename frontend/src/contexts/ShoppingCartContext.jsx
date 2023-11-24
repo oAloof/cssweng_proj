@@ -6,10 +6,14 @@ export const ShoppingCartProvider = ({ children }) => {
     const [shoppingCart, setShoppingCart] = useState(
         localStorage?.getItem("shoppingCart") || []
         );
-    
+    const [isLoadingCart, setIsLoadingCart] = useState(true);
+
+
     const contextValue = {
         shoppingCart,
         setShoppingCart,
+        isLoadingCart,
+        setIsLoadingCart,
     };
     
     return (
