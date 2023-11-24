@@ -45,6 +45,15 @@ const MultiSelect = ({
     transformFieldValue(field?.value) || []
   );
 
+  useEffect(() => {
+    if (Array.isArray(selectedValues) && selectedValues.length > 0 && error) {
+      setError(name, {
+        type: "manual",
+        message: "",
+      });
+    }
+  }, [selectedValues, error, setError, name]);
+
   const handleChange = (newValue, actionMeta) => {
     // Handle change in selection
     setSelectedValues(newValue);
@@ -61,22 +70,30 @@ const MultiSelect = ({
     }
   };
 
-  useEffect(() => {
-    if (selectedValues.length > 0 && error) {
-      setError(name, {
-        type: "manual",
-        message: "",
-      });
-    }
-  }, [selectedValues, error, setError, name]);
-
   const handleCreate = (inputValue) => {
     if (!isUserInputAllowed) {
       return;
     }
     const newOption = { value: inputValue, label: inputValue };
-    setOptions([...options, newOption]); // Add new option to options list
-    handleChange([...selectedValues, newOption], { action: "create-option" }); // Select the new option
+    setOptions((currentOptions) => [...currentOptions, newOption]);
+
+    // Make sure selectedValues is always an array before spreading it
+    setSelectedValues((currentSelectedValues) => {
+      const updatedSelectedValues = Array.isArray(currentSelectedValues)
+        ? [...currentSelectedValues, newOption]
+        : [newOption];
+      if (field && field.onChange) {
+        // Pass the new value in the correct format expected by react-hook-form
+        field.onChange(updatedSelectedValues.map((item) => item.value));
+      }
+      if (error && setError) {
+        setError(name, {
+          type: "manual",
+          message: "",
+        });
+      }
+      return updatedSelectedValues;
+    });
   };
 
   return (
