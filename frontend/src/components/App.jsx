@@ -71,11 +71,13 @@ function App() {
 
           {/* ADMIN PAGES */}
           <Route path="/admin">
+          <Route index element={<Navigate to="/admin/home" />} />
             <Route path="home" element={<AdminDashboard />} />
             <Route path="products" element={<AdminProductPage />} />
             <Route path="sales" element={<AdminSalesPage />} />
             <Route path="orders" element={<AdminOrdersPage />} />
           </Route>
+          <Route path="*" element={<div>Error 404 Page Not Found</div>} />
         </Routes>
       </AuthenticationProvider>
     </Router>
