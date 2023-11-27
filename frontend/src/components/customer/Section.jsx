@@ -4,7 +4,11 @@ import {
   faArrowRight,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+
+// CONTEXTS
+import { ShoppingCartContext } from "../../contexts/ShoppingCartContext";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext";
 
 const CARD_WIDTH = 300;
 const CARD_HEIGHT = 440;
@@ -169,12 +173,20 @@ const Card = ({
 export default Section;
 
 const Button = ({ type, category, products, title}) => {
+  const { shoppingCart, setShoppingCart } = useContext(ShoppingCartContext);
+  const { isAuthenticated } = useContext(AuthenticationContext);
+
   const [isClicked, setIsClicked] = useState(false);
 
   {
     /* TODO: ADD THE ITEM TO THE USER'S CART */
   }
   const handleClick = (e) => {
+    if (!isAuthenticated) {
+      alert("Please login to add items to your cart.");
+      e.stopPropagation();
+      return;
+    }
     setIsClicked(true);
     setTimeout(() => {
       setIsClicked(false);

@@ -17,7 +17,7 @@ export const ShoppingCartProvider = ({ children }) => {
             fetchCartData();
             setIsLoadingCart(false);
         }
-    }), [isAuthenticated]
+    }), [isAuthenticated, cartItemChanged, isLoadingCart]
 
     const fetchCartData = async () => {
         try {
@@ -47,6 +47,8 @@ export const ShoppingCartProvider = ({ children }) => {
     const contextValue = {
         shoppingCart,
         setShoppingCart,
+        cartItemChanged,
+        setCartItemChanged,
         isLoadingCart,
         setIsLoadingCart,
     };

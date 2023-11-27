@@ -58,7 +58,6 @@ app.use('/api/admin/sales', adminSalesRoutes) // routes related to sales
 app.use('/api/admin/products', adminProductRoutes) // routes related to products
 // app.use('/admin/orders', adminOrdersRoutes) // routes related to orders
 
-
 // connect to the mongoDB database
 mongoose.connect(process.env.MONGODB_URI)
     .then (() => {
