@@ -48,6 +48,7 @@ app.post('/api/logout', authenticate, userController.logoutUser)
 
 // Shopping Cart API
 app.get('/api/cart', authenticate, userController.getCart)
+app.post('/api/cart/update', authenticate, userController.updateCart)
 
 // Customer API
 app.use('/api/sales', customerSalesRoutes) 

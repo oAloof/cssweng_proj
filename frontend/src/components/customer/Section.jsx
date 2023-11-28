@@ -94,6 +94,7 @@ const Section = ({ title, category, products, isLoading }) => {
 
 const Card = ({
   url,
+  _id,
   brand,
   name,
   discountedPrice,
@@ -162,7 +163,7 @@ const Card = ({
             </div>
           </div>
           <div className="absolute bottom-4 left-0 w-full px-4 break-all">
-            <Button type={"cart"} />
+            <Button type={"cart"} productId={_id} />
           </div>
         </div>
       </div>
@@ -172,8 +173,8 @@ const Card = ({
 
 export default Section;
 
-const Button = ({ type, category, products, title}) => {
-  const { shoppingCart, setShoppingCart } = useContext(ShoppingCartContext);
+const Button = ({ type, category, products, title, productId}) => {
+  const { addToCart } = useContext(ShoppingCartContext);
   const { isAuthenticated } = useContext(AuthenticationContext);
 
   const [isClicked, setIsClicked] = useState(false);
@@ -188,6 +189,7 @@ const Button = ({ type, category, products, title}) => {
       return;
     }
     setIsClicked(true);
+    addToCart(productId, 1);
     setTimeout(() => {
       setIsClicked(false);
     }, 2000);
