@@ -46,27 +46,18 @@ const MultiSelect = ({
   );
 
   useEffect(() => {
-    if (Array.isArray(selectedValues) && selectedValues.length > 0 && error) {
-      setError(name, {
-        type: "manual",
-        message: "",
-      });
+    if (Array.isArray(selectedValues) && selectedValues.length > 0) {
+      setError(name, null); // Clear the error for this field
     }
-  }, [selectedValues, error, setError, name]);
+  }, [selectedValues, setError, name]);
 
   const handleChange = (newValue, actionMeta) => {
-    // Handle change in selection
+    const value = isMulti ? newValue.map((item) => item.value) : newValue.value;
     setSelectedValues(newValue);
-    // Check if field is defined
-    if (field && field.onChange) {
-      field.onChange(newValue.map((item) => item.value));
-    }
+    field.onChange(value); // Communicate to react-hook-form
 
     if (error && setError) {
-      setError(name, {
-        type: "manual",
-        message: "",
-      });
+      setError(name, null); // Clear the error if there's a valid selection
     }
   };
 
@@ -77,13 +68,11 @@ const MultiSelect = ({
     const newOption = { value: inputValue, label: inputValue };
     setOptions((currentOptions) => [...currentOptions, newOption]);
 
-    // Make sure selectedValues is always an array before spreading it
     setSelectedValues((currentSelectedValues) => {
       const updatedSelectedValues = Array.isArray(currentSelectedValues)
         ? [...currentSelectedValues, newOption]
         : [newOption];
       if (field && field.onChange) {
-        // Pass the new value in the correct format expected by react-hook-form
         field.onChange(updatedSelectedValues.map((item) => item.value));
       }
       if (error && setError) {
@@ -94,6 +83,7 @@ const MultiSelect = ({
       }
       return updatedSelectedValues;
     });
+    setError(name, null);
   };
 
   return (
