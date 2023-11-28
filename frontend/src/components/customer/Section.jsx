@@ -4,7 +4,11 @@ import {
   faArrowRight,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+
+// CONTEXTS
+import { ShoppingCartContext } from "../../contexts/ShoppingCartContext";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext";
 
 const CARD_WIDTH = 300;
 const CARD_HEIGHT = 440;
@@ -90,6 +94,7 @@ const Section = ({ title, category, products, isLoading }) => {
 
 const Card = ({
   url,
+  _id,
   brand,
   name,
   discountedPrice,
@@ -158,7 +163,7 @@ const Card = ({
             </div>
           </div>
           <div className="absolute bottom-4 left-0 w-full px-4 break-all">
-            <Button type={"cart"} />
+            <Button type={"cart"} productId={_id} />
           </div>
         </div>
       </div>
@@ -168,14 +173,23 @@ const Card = ({
 
 export default Section;
 
-const Button = ({ type, category, products, title}) => {
+const Button = ({ type, category, products, title, productId}) => {
+  const { addToCart } = useContext(ShoppingCartContext);
+  const { isAuthenticated } = useContext(AuthenticationContext);
+
   const [isClicked, setIsClicked] = useState(false);
 
   {
     /* TODO: ADD THE ITEM TO THE USER'S CART */
   }
   const handleClick = (e) => {
+    if (!isAuthenticated) {
+      alert("Please login to add items to your cart.");
+      e.stopPropagation();
+      return;
+    }
     setIsClicked(true);
+    addToCart(productId, 1);
     setTimeout(() => {
       setIsClicked(false);
     }, 2000);

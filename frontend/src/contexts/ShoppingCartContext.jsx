@@ -12,12 +12,17 @@ export const ShoppingCartProvider = ({ children }) => {
     
     useEffect(() => {
         // Initialize shopping cart
-        if (isAuthenticated) {
+        if (isAuthenticated && isLoadingCart) {
             // Fetch shopping cart data from backend
             fetchCartData();
             setIsLoadingCart(false);
+            setCartItemChanged(false);
         }
-    }), [isAuthenticated]
+    }), [isAuthenticated, cartItemChanged]
+
+    useEffect(() => {
+        console.log(shoppingCart);
+    }, [shoppingCart])
 
     const fetchCartData = async () => {
         try {
@@ -34,7 +39,6 @@ export const ShoppingCartProvider = ({ children }) => {
                 return
             }
             const responseData = await response.json();
-            console.log(responseData);
             setShoppingCart(responseData.cart);
             // console.log(`Fetching cart data: ${shoppingCart}`); // ! Remove this
             return
@@ -44,11 +48,46 @@ export const ShoppingCartProvider = ({ children }) => {
         }
     }
 
+    const addToCart = async (productId, quantity) => {
+        if (!isAuthenticated) {
+            alert("Please login to add items to your cart.");
+            return;
+        }
+
+        const dataToSend = { productId, quantity };
+
+        try {
+            const response = await fetch("http://localhost:4000/api/cart/update", 
+            {
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify(dataToSend),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                },
+            });
+            const responseData = await response.json();
+            if (!response.ok) {
+                throw new Error(responseData.message);
+            }
+            setCartItemChanged(true);
+            setIsLoadingCart(true);
+            console.log(`Message: ${responseData.message}`);
+            return
+        } catch (error) {
+            console.error('Error adding item to cart: ', error);
+            return
+        }
+    }
+
     const contextValue = {
         shoppingCart,
         setShoppingCart,
+        cartItemChanged,
+        setCartItemChanged,
         isLoadingCart,
         setIsLoadingCart,
+        addToCart
     };
     
     return (

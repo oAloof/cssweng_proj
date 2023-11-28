@@ -138,8 +138,37 @@ const getCart = async (req, res) => {
         res.status(404).send({ message: 'User not found.' })
         return
     }
-    const cart = user.cart
+    const cart = user.cartItems
     res.status(200).send({ cart })
+}
+
+const updateCart = async (req, res) => {
+    // Check if user is logged in
+    if (!req.user) {
+        res.status(400).send({message: 'User is not logged in.'})
+        return
+    }
+
+    const { _id } = req.user
+    const { productId, quantity } = req.body
+    // Check if user exists in the database
+    const user = await User.findOne({_id})
+    if (!user) {
+        res.status(404).send({ message: 'User not found.' })
+        return
+    }
+
+    const cartIndex = user.cartItems.findIndex(item => item.product.toString() === productId);
+
+    if (cartIndex > -1) {
+        // Update quantity if product exists
+        user.cartItems[cartIndex].quantity += quantity;
+    } else {
+    // Add new item if product does not exist
+    user.cartItems.push({ product: productId, quantity });
+    }
+    await user.save();
+    res.status(200).send({ message: 'Cart updated.' })
 }
 
 module.exports = { 
@@ -147,5 +176,6 @@ module.exports = {
     loginUser,
     registerUser,
     logoutUser,
-    getCart
+    getCart,
+    updateCart
 }

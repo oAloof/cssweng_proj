@@ -48,6 +48,7 @@ app.post('/api/logout', authenticate, userController.logoutUser)
 
 // Shopping Cart API
 app.get('/api/cart', authenticate, userController.getCart)
+app.post('/api/cart/update', authenticate, userController.updateCart)
 
 // Customer API
 app.use('/api/sales', customerSalesRoutes) 
@@ -57,7 +58,6 @@ app.use('/api/', customerGeneralRoutes)
 app.use('/api/admin/sales', adminSalesRoutes) // routes related to sales
 app.use('/api/admin/products', adminProductRoutes) // routes related to products
 // app.use('/admin/orders', adminOrdersRoutes) // routes related to orders
-
 
 // connect to the mongoDB database
 mongoose.connect(process.env.MONGODB_URI)
