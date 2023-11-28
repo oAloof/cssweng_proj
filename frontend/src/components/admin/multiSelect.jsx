@@ -1,34 +1,26 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import ErrorMessage from "../ErrorMessage";
 
-/**
-   @TODO: Implement logic to accept additional user input
-   @TODO: Implement logic to retrieve user selections for backend and pass them to filters
-**/
-
 const MultiSelect = ({
+  onChange, // This is part of the 'field' object from react-hook-form
+  value, // This is also part of the 'field' object from react-hook-form
   name,
   selectOptions,
   isUserInputAllowed = true,
-  field,
   isMulti,
   error,
-  setError,
 }) => {
   const transformFieldValue = (value) => {
-    // Function to capitalize the first letter of a string
     const capitalizeFirstLetter = (string) => {
       if (!string) return string;
       return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
-    // If value is a string, transform it into an object and return as a single element array
     if (typeof value === "string") {
       return [{ value, label: capitalizeFirstLetter(value) }];
     }
 
-    // If value is an array, map each string to an object
     if (Array.isArray(value)) {
       return value.map((val) => ({
         value: val,
@@ -36,61 +28,40 @@ const MultiSelect = ({
       }));
     }
 
-    // If value is neither a string nor an array, return an empty array
     return [];
   };
 
+  // Initialize the selectedValues state from the field.value
   const [options, setOptions] = useState(selectOptions);
   const [selectedValues, setSelectedValues] = useState(
-    transformFieldValue(field?.value) || []
+    transformFieldValue(value)
   );
 
-  useEffect(() => {
-    if (Array.isArray(selectedValues) && selectedValues.length > 0) {
-      setError(name, null); // Clear the error for this field
-    }
-  }, [selectedValues, setError, name]);
-
-  const handleChange = (newValue, actionMeta) => {
-    const value = isMulti ? newValue.map((item) => item.value) : newValue.value;
+  const handleChange = (newValue) => {
+    // Update the internal state
     setSelectedValues(newValue);
-    field.onChange(value); // Communicate to react-hook-form
 
-    if (error && setError) {
-      setError(name, null); // Clear the error if there's a valid selection
-    }
+    // Communicate the change to react-hook-form
+    onChange(isMulti ? newValue.map((item) => item.value) : newValue?.value);
   };
 
   const handleCreate = (inputValue) => {
-    if (!isUserInputAllowed) {
-      return;
-    }
-    const newOption = { value: inputValue, label: inputValue };
-    setOptions((currentOptions) => [...currentOptions, newOption]);
+    if (!isUserInputAllowed) return;
 
-    setSelectedValues((currentSelectedValues) => {
-      const updatedSelectedValues = Array.isArray(currentSelectedValues)
-        ? [...currentSelectedValues, newOption]
-        : [newOption];
-      if (field && field.onChange) {
-        field.onChange(updatedSelectedValues.map((item) => item.value));
-      }
-      if (error && setError) {
-        setError(name, {
-          type: "manual",
-          message: "",
-        });
-      }
-      return updatedSelectedValues;
-    });
-    setError(name, null);
+    const newOption = { value: inputValue.toLowerCase(), label: inputValue };
+    setOptions((currentOptions) => [...currentOptions, newOption]);
+    // Update the selected values state
+    const updatedSelectedValues = isMulti
+      ? [...selectedValues, newOption]
+      : [newOption];
+    setSelectedValues(updatedSelectedValues);
+    // Communicate the change to react-hook-form
+    field.onChange(updatedSelectedValues.map((item) => item.value));
   };
 
   return (
     <div className="container p-0 h-full w-full font-Nunito">
-      <div className="flex flex-row justify-end">
-        {error && <ErrorMessage message={error.message} />}
-      </div>
+      {error && <ErrorMessage message={error.message} />}
       <CreatableSelect
         isMulti={isMulti}
         name={name}
