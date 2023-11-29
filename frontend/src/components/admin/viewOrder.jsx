@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FiAlertCircle, FiEye } from "react-icons/fi";
 import { useState } from "react";
 
-const ViewOrder = ({order}) => {
+const ViewOrder = ({ order }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="">
@@ -34,7 +34,20 @@ const Modal = ({ isOpen, setIsOpen, order }) => {
           >
             <FiAlertCircle className="text-white/10 rotate-12 text-[250px] absolute z-0 -top-24 -left-24" />
             <div className="relative z-10">
-              <div className="text-sm text-slate-600">Order Number: {order.orderNumber}</div>
+              <div className="text-sm text-slate-600 font-Nunito">
+                <h2 className="font-Proxima uppercase">
+                  Order #{order.referenceNumber}
+                </h2>
+                <p>Status: {order.status}</p>
+                <p>Total Cost: ₱{order.totalCost}</p>
+                <p>Full Name: {order.personReceiving}</p>
+                <p>Phone Number: {order.personRecievingNum}</p>
+                <p>Email: {order.personRecievingEmail}</p>
+                <p>Delivery Address: {order.deliveryAddress}</p>
+                {order.order.map((item, index) => (
+                  <CartItem key={item.product._id} item={item} />
+                ))}
+              </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => setIsOpen(false)}
@@ -48,6 +61,46 @@ const Modal = ({ isOpen, setIsOpen, order }) => {
         </motion.div>
       )}
     </AnimatePresence>
+  );
+};
+
+const CartItem = ({ item }) => {
+  const product = item.product;
+
+  return (
+    <div className="flex flex-grow items-center justify-between border-b border-gray-200 py-3">
+      <div className="flex items-center w-full flex-grow">
+        {/* <img
+          className="h-full w-32 object-contain mr-4"
+          src={`https://drive.google.com/uc?export=view&id=${product.images[0]}`}
+          alt={product.name}
+        /> */}
+        <div className="flex flex-col flex-grow">
+          <div className="flex justify-between w-full">
+            <div className="flex flex-col">
+              <p className="text-xl font-semibold font-Proxima m-0">
+                {product.name}
+              </p>
+              <p className="text-s text-indigo-400 font-Proxima mb-4">
+                {product.brand}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center justify-start">
+            <p className="text-lg text-gray-600 font-Nunito font-bold m-0">
+              Qty: {item.quantity}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="flex items-end">
+        <div className="flex flex-col justify-center items-end h-20">
+          <p className="font-Nunito font-bold m-0 text-2xl">
+            ₱{product.discountedPrice}
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };
 
