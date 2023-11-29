@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TopNav from "../../components/Menu";
 import { FiTrash2 } from "react-icons/fi";
@@ -6,18 +6,54 @@ import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "../../components/NavBar.jsx";
 import Progress from "../../components/Progress.jsx";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/Loader.jsx";
+
+// CONTEXTS 
+import { AuthenticationContext } from "../../contexts/AuthenticationContext";
+import { ShoppingCartContext } from "../../contexts/ShoppingCartContext.jsx";
 
 const CartItem = ({ item, onDelete, onQuantityChange }) => {
   const [quantity, setQuantity] = useState(item.quantity);
+  const [timer, setTimer] = useState(null);
+
+  // Clears the timer when the component unmounts or the quantity changes
+  useEffect(() => {
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [timer, quantity]);
+
+  const delayedQuantityChange = (newQuantity) => {
+    // Clear any existing timer
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    // Set a new timer
+    const newTimer = setTimeout(() => {
+      onQuantityChange(item.id, newQuantity);
+    }, 3000); // 3 seconds delay
+
+    setTimer(newTimer);
+  };
 
   const handleQuantityChange = (newQuantity) => {
-    setQuantity(newQuantity);
-    onQuantityChange(item.id, newQuantity);
+    if (newQuantity > item.availableQuantity) {
+      setQuantity(item.availableQuantity);
+      delayedQuantityChange(item.availableQuantity);
+    } else {
+      setQuantity(newQuantity);
+      delayedQuantityChange(newQuantity);
+    }
   };
 
   const handleIncrement = () => {
     const newQuantity = quantity + 1;
-    handleQuantityChange(newQuantity);
+    if (newQuantity <= item.availableQuantity) {
+      handleQuantityChange(newQuantity);
+    }
   };
 
   const handleDecrement = () => {
@@ -36,7 +72,7 @@ const CartItem = ({ item, onDelete, onQuantityChange }) => {
       <div className="flex items-center w-full flex-grow">
         <img
           className="h-full w-32 object-contain mr-4"
-          src={item.image}
+          src={`https://drive.google.com/uc?export=view&id=${item.image}`}
           alt={item.name}
         />
         <div className="flex flex-col flex-grow">
@@ -82,7 +118,7 @@ const CartItem = ({ item, onDelete, onQuantityChange }) => {
       <div className="flex items-end">
         <div className="flex flex-col justify-between items-end h-20">
           <p className="font-Nunito font-bold m-0 text-1xl">
-            ₱{(item.price * quantity).toFixed(2)}
+            ₱{(item.discountedPrice * quantity).toFixed(2)}
           </p>
 
           <button
@@ -96,127 +132,44 @@ const CartItem = ({ item, onDelete, onQuantityChange }) => {
     </div>
   );
 };
-const CartPage = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Product 1",
-      brand: "Union",
-      quantity: 2,
-      price: 15.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 3,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 4,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 5,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 6,
-      name: "Product 3",
-      brand: "Union",
-      quantity: 2,
-      price: 19.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 7,
-      name: "Product 4",
-      brand: "Union",
-      quantity: 1,
-      price: 14.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 8,
-      name: "Product 5",
-      brand: "Union",
-      quantity: 3,
-      price: 24.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 9,
-      name: "Product 6",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 10,
-      name: "Product 7",
-      brand: "Union",
-      quantity: 2,
-      price: 19.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 11,
-      name: "Product 8",
-      brand: "Union",
-      quantity: 1,
-      price: 14.99,
-      image: "/Product Photo Placeholder.png",
-    },
-  ]);
 
-  const totalPrice = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+const CartPage = () => {
+  const { shoppingCart, isLoadingCart, removeFromCart, updateItemQuantity } = useContext(ShoppingCartContext);
+  const { isAuthenticated } = useContext(AuthenticationContext);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
+
+  const totalPrice = shoppingCart.reduce(
+    (acc, item) => acc + item.originalPrice * item.quantity,
+    0
+  );
+
+  const totalDiscountedPrice = shoppingCart.reduce(
+    (acc, item) => acc + item.discountedPrice * item.quantity,
     0
   );
 
   const subtotal = totalPrice.toFixed(2);
-  const totalSaved = "10.00";
-  const shippingFee = "5.00";
+  const totalSaved = (totalPrice - totalDiscountedPrice).toFixed(2);
+  const shippingFee = "5.00"; // ! To change
 
-  // TODO: implement item deletion
   const handleDeleteItem = (itemId) => {
-    const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
-    setCartItems(updatedCartItems);
+    removeFromCart(itemId);
   };
 
   // TODO: implement item qty. change
   const handleQuantityChange = (itemId, newQuantity) => {
-    const updatedCartItems = cartItems.map((item) => {
-      if (item.id === itemId) {
-        return { ...item, quantity: newQuantity };
-      }
-      return item;
-    });
+    updateItemQuantity(itemId, newQuantity);
     setButtonState({
       text: "UPDATE CART",
       color: "bg-gray-300 text-gray-600",
       secondaryColor: "bg-gray-200 hover:text-gray-600",
     });
-    setCartItems(updatedCartItems);
   };
 
   const [buttonState, setButtonState] = useState({
@@ -224,8 +177,6 @@ const CartPage = () => {
     color: "bg-indigo-500 text-indigo-100",
     secondaryColor: "bg-indigo-300 hover:text-white",
   });
-
-  const navigate = useNavigate();
 
   const handleButtonClick = () => {
     if (buttonState.text === "CHECK OUT") {
@@ -241,6 +192,10 @@ const CartPage = () => {
     }
   };
 
+  if (isLoadingCart) {
+    return <Loader />;
+  }
+
   return (
     <div className="flex flex-col pt-[9vh] bg-slate-200 pb-[15vh] gap-4">
       <Progress stepsComplete="1" />
@@ -249,7 +204,7 @@ const CartPage = () => {
         <div className="p-4 rounded-xl border-[1px] bg-white border-slate-300 md:w-3/4 shadow-xl">
           <h2 className="font-Proxima font-bold text-3xl mb-3">Your Cart</h2>
           <div className="bg-white ">
-            {cartItems.map((item) => (
+            {shoppingCart.map((item) => (
               <CartItem
                 key={item.id}
                 item={item}
@@ -278,7 +233,7 @@ const CartPage = () => {
               <p className="text-3xl font-bold font-Proxima text-indigo-400">
                 Total: ₱
                 {(
-                  parseFloat(subtotal) +
+                  parseFloat(subtotal) -
                   parseFloat(totalSaved) +
                   parseFloat(shippingFee)
                 ).toFixed(2)}
