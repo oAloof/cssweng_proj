@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import TopNav from "../../components/Menu";
 import Navbar from "../../components/NavBar.jsx";
 import Progress from "../../components/Progress.jsx";
@@ -9,6 +9,11 @@ import InputField from "../../components/InputField.jsx";
 import Dropdown from "../../components/CitySelect.jsx";
 import { motion } from "framer-motion";
 import { MdError } from "react-icons/md";
+import Loader from "../../components/Loader.jsx";
+
+// CONTEXTS 
+import { AuthenticationContext } from "../../contexts/AuthenticationContext";
+import { ShoppingCartContext } from "../../contexts/ShoppingCartContext.jsx";
 
 import { useForm, FormProvider } from "react-hook-form";
 import {
@@ -28,7 +33,7 @@ const CartItem = ({ item }) => {
       <div className="flex items-center w-full flex-grow">
         <img
           className="h-full w-32 object-contain mr-4"
-          src={item.image}
+          src={`https://drive.google.com/uc?export=view&id=${item.image}`}
           alt={item.name}
         />
         <div className="flex flex-col flex-grow">
@@ -51,133 +56,108 @@ const CartItem = ({ item }) => {
       </div>
       <div className="flex items-end">
         <div className="flex flex-col justify-center items-end h-20">
-          <p className="font-Nunito font-bold m-0 text-2xl">₱{item.price}</p>
+          <p className="font-Nunito font-bold m-0 text-2xl">₱{item.discountedPrice}</p>
         </div>
       </div>
     </div>
   );
 };
 const OrderConfirmationPage = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Product 1",
-      brand: "Union",
-      quantity: 2,
-      price: 15.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 3,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 4,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 5,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 6,
-      name: "Product 3",
-      brand: "Union",
-      quantity: 2,
-      price: 19.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 7,
-      name: "Product 4",
-      brand: "Union",
-      quantity: 1,
-      price: 14.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 8,
-      name: "Product 5",
-      brand: "Union",
-      quantity: 3,
-      price: 24.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 9,
-      name: "Product 6",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 10,
-      name: "Product 7",
-      brand: "Union",
-      quantity: 2,
-      price: 19.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 11,
-      name: "Product 8",
-      brand: "Union",
-      quantity: 1,
-      price: 14.99,
-      image: "/Product Photo Placeholder.png",
-    },
-  ]);
+  const { shoppingCart, isLoadingCart } = useContext(ShoppingCartContext);
+  const { isAuthenticated } = useContext(AuthenticationContext);
+  const [user, setUser] = useState({});
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
+
+  const methods = useForm({ mode: "onSubmit",
+    defaultValues: {
+      username: user.username,
+      firstname: user.firstName,
+      lastname: user.lastName,
+      email: user.email,
+      contactNumber: user.contactNumber,
+      streetAddress: user.streetAddress,
+      city: user.city,
+      zip: user.zip,
+    }, 
+  });
+
+  useEffect(() => {
+    getUserInformation();
+  }, [isAuthenticated, isLoadingUser, methods.reset]);
+
+  const getUserInformation = async () => {
+    if (!isAuthenticated) return;
+    
+    try {
+      const response = await fetch("http://localhost:4000/api/auth/user", 
+      {
+          method: "GET",
+          credentials: "include",
+          headers: {
+              "Content-Type": "application/json",
+          },
+      });
+      if (!response.ok) {
+          console.log("User not found.")
+          return
+      }
+      const responseData = await response.json();
+      setUser(responseData.user);
+       // Reset form with fetched user data
+      methods.reset({
+        username: responseData.user.username,
+        firstName: responseData.user.firstName,
+        lastName: responseData.user.lastName,
+        email: responseData.user.email,
+        contactNumber: responseData.user.contactNumber,
+        streetAddress: responseData.user.streetAddress,
+        city: responseData.user.city,
+        zip: responseData.user.zip,
+      });
+      setIsLoadingUser(false);
+      return
+    } catch (error) {
+      console.error('Error fetching user data: ', error);
+    }
+  }
 
   const location = "Manila";
 
-  const cartCount = cartItems.length;
-
-  const totalPrice = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  const cartCount = shoppingCart.length;
 
   const [isOrderSummaryOpen, setOrderSummaryOpen] = useState(true);
   const [isCartOpen, setCartOpen] = useState(false);
 
-  const subtotal = totalPrice.toFixed(2);
-  const totalSaved = "10.00";
-  const shippingFee = "5.00";
+  const totalPrice = shoppingCart.reduce(
+    (acc, item) => acc + item.originalPrice * item.quantity,
+    0
+  );
 
-  const navigate = useNavigate();
+  const totalDiscountedPrice = shoppingCart.reduce(
+    (acc, item) => acc + item.discountedPrice * item.quantity,
+    0
+  );
+
+  const subtotal = totalPrice.toFixed(2);
+  const totalSaved = (totalPrice - totalDiscountedPrice).toFixed(2);
+  const shippingFee = "5.00"; // ! To change
 
   const onUpdateClick = () => {
     navigate("/cart");
   };
 
   const total = (
-    parseFloat(subtotal) +
+    parseFloat(subtotal) -
     parseFloat(totalSaved) +
     parseFloat(shippingFee)
   ).toFixed(2);
-
-  const [loggedIn, setLoggedIn] = useState(true); // Delete later, for testing only
 
   const OnLoginClick = useCallback(() => {
     navigate("/login");
@@ -187,14 +167,17 @@ const OrderConfirmationPage = () => {
     navigate("/login");
   }, [navigate]);
 
-  const OnProceedClick = useCallback(() => {
-    navigate("/billing");
+  const onSubmit = useCallback((data) => {
+    // Navigate to the billing page, passing the form data
+    navigate('/billing', { state: { data } });;
   }, [navigate]);
 
   // TODO: VALIDATE IF USER'S CITY MATCHES THE SALE'S SET CITY
   const [dropdownError, setdropdownError] = useState(false);
 
-  const methods = useForm({ mode: "onSubmit" });
+  if (isLoadingCart || isLoadingUser) {
+    return <Loader />;
+  } 
 
   return (
     <div className="flex flex-col pt-[9vh] min-h-screen bg-slate-200 pb-[15vh] gap-4">
@@ -203,13 +186,14 @@ const OrderConfirmationPage = () => {
         <TopNav />
         <div className="md:w-2/3">
           <FormProvider {...methods}>
-            <form className="p-4 rounded-xl border-[1px] bg-white border-slate-300  shadow-xl">
+            <form className="p-4 rounded-xl border-[1px] bg-white border-slate-300  shadow-xl"
+              onSubmit={methods.handleSubmit(onSubmit)}>
               <h2 className="font-Proxima font-bold text-3xl mb-3">
                 Order Confirmation
               </h2>
               <div className="bg-white">
                 {/* TODO: PRE-FILL THESE FIELDS WITH THE USER'S DATA, PREVENT CITY DROPDOWN*/}
-                {loggedIn ? (
+                {isAuthenticated ? (
                   <div className="flex flex-col w-full gap-4">
                     <InputField {...username_validation} />
                     <div className="flex-row flex justify-stretch gap-4">
@@ -230,6 +214,7 @@ const OrderConfirmationPage = () => {
                           name="city"
                           {...city_validation}
                           onClick={() => setdropdownError(true)}
+                          defaultValue={user.city}
                         />
                         <div className="relative b-0 right-0 mt-2">
                           <DropdownError
@@ -245,7 +230,7 @@ const OrderConfirmationPage = () => {
 
                     <Button
                       text={"PROCEED TO PAYMENT"}
-                      onClick={OnProceedClick}
+                      // onClick={OnProceedClick}
                       type={"submit"}
                     />
                   </div>
@@ -292,7 +277,7 @@ const OrderConfirmationPage = () => {
             onToggle={() => setCartOpen(!isCartOpen)}
           >
             <div className="bg-white ">
-              {cartItems.map((item) => (
+              {shoppingCart.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
               <div className="flex justify-center mt-8">

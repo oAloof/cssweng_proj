@@ -3,6 +3,25 @@ const bcrypt = require('bcrypt')
 
 const User = require('../models/userModel')
 
+const getUserData = async (req, res) => {
+    // Check if user is logged in
+    if (!req.user) {
+        res.status(400).send({message: 'User is not logged in.'})
+        return
+    }
+
+    const { _id } = req.user
+    // Check if user exists in the database
+    const user = await User.findOne({_id})
+    if (!user) {
+        res.status(404).send({ message: 'User not found.' })
+        return
+    }
+    // Remove password from user object
+    user.password = undefined
+    res.status(200).send({ user })
+}
+
 const getAuthData = async (req, res) => {
     if (!req.user) {
         res.status(200).send({
@@ -244,5 +263,6 @@ module.exports = {
     getCart,
     updateCart,
     deleteCartItem,
-    updateCartItemQuantity
+    updateCartItemQuantity,
+    getUserData
 }
