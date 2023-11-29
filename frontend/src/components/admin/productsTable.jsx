@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState, useEffect, useContext,React } from "react";
+import { useState, useEffect, useContext, React } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import EditProduct from "./EditProduct";
@@ -14,15 +14,20 @@ const ProductsTable = () => {
 const Table = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const { products, isLoading } = useContext(ProductsContext);
-  
+  const { filteredProducts, isLoading } = useContext(ProductsContext);
+  console.log("Filtered products:", filteredProducts);
+
   const handleEditClick = (product) => {
     setSelectedProduct(product);
     setIsEditModalOpen(true);
-  }
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (filteredProducts.length === 0) {
+    return <div>No products found.</div>;
   }
 
   return (
@@ -41,7 +46,7 @@ const Table = () => {
           </thead>
 
           <tbody>
-            {products.map((product) => {
+            {filteredProducts.map((product) => {
               return (
                 <TableRows
                   key={product._id}
@@ -76,14 +81,16 @@ const TableRows = ({ product, onEditClick }) => {
       const dataToSend = {
         id: product._id,
       };
-      const response = await fetch("http://localhost:4000/api/admin/products/delete",
+      const response = await fetch(
+        "http://localhost:4000/api/admin/products/delete",
         {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(dataToSend),
-        });
+        }
+      );
       if (!response.ok) {
         console.error("Failed to delete product: ", response.status);
         return;
@@ -100,7 +107,7 @@ const TableRows = ({ product, onEditClick }) => {
 
   const handleDeleteClick = (product) => {
     deleteProduct(product);
-  }
+  };
 
   return (
     <motion.tr
