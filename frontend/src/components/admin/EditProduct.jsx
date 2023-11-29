@@ -214,18 +214,13 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                       />
                     )}
                   />
-
                   <div className="flex flex-row gap-4">
                     <div className="flex flex-col gap-2">
                       <label htmlFor="images" className="text-lg font-medium">
                         Upload Images ({images.length + existingImages.length})
                       </label>
                       <div className="relative">
-                        <div className="flex flex-row justify-end">
-                          {errors.images && (
-                            <ErrorMessage message={errors.images.message} />
-                          )}
-                        </div>
+                        <div className="flex flex-row justify-end"></div>
                         <input
                           type="file"
                           id="images"
@@ -234,11 +229,6 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                           multiple
                           onChange={handleImageChange}
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                          {...methods.register("images", {
-                            required: "Images are required",
-                            validate: (files) =>
-                              files.length > 0 || "Images are required",
-                          })}
                           required
                         />
 

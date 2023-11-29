@@ -9,18 +9,21 @@ import ErrorMessage from "../../components/ErrorMessage.jsx";
 
 // CONTEXTS
 import { ProductsProvider } from "../../contexts/ProductsContext.jsx";
+import { ProductsContext } from "../../contexts/ProductsContext.jsx";
 import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 function AdminProductPage() {
   const [showCategories, setShowCategories] = useState(true);
   const [showBrands, setShowBrands] = useState(true);
-  const brands = ["Brand 1", "Brand 2", "Brand 3"];
   const [errorMessage, setErrorMessage] = useState("");
-  const [ProductCategories, setProductCategories] = useState(false);
-  const [BrandCategories, setBrandCategories] = useState(false);
+  const [ProductCategories, setProductCategories] = useState([]);
+  const [BrandCategories, setBrandCategories] = useState([]);
+
   const { isAuthenticated, isAdmin, isLoadingAuth } = useContext(
     AuthenticationContext
   );
+
+  const { setFilters } = useContext(ProductsContext);
 
   useEffect(() => {
     let timer;
@@ -33,24 +36,22 @@ function AdminProductPage() {
     const fetchProductCategories = async () => {
       try {
         const data = await getProductCategories();
-  
-        setProductCategories(data)
-        
+
+        setProductCategories(data);
       } catch (error) {
-        console.error('Error fetching sales: ', error);
+        console.error("Error fetching sales: ", error);
       }
-    }
+    };
 
     const fetchBrandCategories = async () => {
       try {
         const data = await getBrandCategories();
-  
-        setBrandCategories(data)
-        
+
+        setBrandCategories(data);
       } catch (error) {
-        console.error('Error fetching sales: ', error);
+        console.error("Error fetching sales: ", error);
       }
-    }
+    };
 
     fetchProductCategories();
     fetchBrandCategories();
@@ -58,13 +59,29 @@ function AdminProductPage() {
     return () => clearTimeout(timer);
   }, [errorMessage]);
 
+  const handleFilterChange = (filterType, value, isChecked) => {
+    setFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters };
+      if (isChecked) {
+        if (!updatedFilters[filterType].includes(value)) {
+          updatedFilters[filterType].push(value);
+        }
+      } else {
+        updatedFilters[filterType] = updatedFilters[filterType].filter(
+          (item) => item !== value
+        );
+      }
+      return updatedFilters;
+    });
+  };
+
   const getProductCategories = async () => {
     try {
       const response = await fetch("http://localhost:4000/api/categories");
-  
-        if (!response.ok) {
-          console.error("Failed to fetch product Categories: ", response.status);
-        }
+
+      if (!response.ok) {
+        console.error("Failed to fetch product Categories: ", response.status);
+      }
       return await response.json();
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -74,10 +91,10 @@ function AdminProductPage() {
   const getBrandCategories = async () => {
     try {
       const response = await fetch("http://localhost:4000/api/brands");
-  
-        if (!response.ok) {
-          console.error("Failed to fetch brand Categories: ", response.status);
-        }
+
+      if (!response.ok) {
+        console.error("Failed to fetch brand Categories: ", response.status);
+      }
       return await response.json();
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -89,7 +106,31 @@ function AdminProductPage() {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  const FilterItems = ({ title, items, showItems, setShowItems }) => {
+  const FilterItems = ({
+    title,
+    items,
+    showItems,
+    setShowItems,
+    onFilterChange,
+    filterType,
+  }) => {
+    const initialCheckboxState = items.reduce((state, item) => {
+      state[item] = false;
+      return state;
+    }, {});
+
+    const [checkboxStates, setCheckboxStates] = useState(initialCheckboxState);
+
+    const handleCheckboxChange = (e) => {
+      const { name, checked } = e.target;
+
+      // Set local checkbox state
+      setCheckboxStates((prevStates) => ({ ...prevStates, [name]: checked }));
+
+      // Update context filters
+      onFilterChange(filterType, name, checked);
+    };
+
     return (
       <div>
         <div
@@ -117,6 +158,8 @@ function AdminProductPage() {
                   className="form-checkbox h-5 w-5 text-gray-600"
                   id={item}
                   name={item}
+                  checked={checkboxStates[item]}
+                  onChange={handleCheckboxChange}
                   style={{ cursor: "pointer" }}
                 />
                 <label htmlFor={item} className="ml-2 text-gray-700">
@@ -188,6 +231,8 @@ function AdminProductPage() {
                       title="Categories"
                       items={ProductCategories}
                       showItems={showCategories}
+                      onFilterChange={handleFilterChange}
+                      filterType="categories"
                       setShowItems={setShowCategories}
                     />
                     <hr className="my-2" />
@@ -195,6 +240,8 @@ function AdminProductPage() {
                       title="Brands"
                       items={BrandCategories}
                       showItems={showBrands}
+                      onFilterChange={handleFilterChange}
+                      filterType="brands"
                       setShowItems={setShowBrands}
                     />
                   </div>

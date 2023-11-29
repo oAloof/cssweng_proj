@@ -17,6 +17,7 @@ import {
 import { RegistrationProvider } from "../contexts/RegistrationContext";
 import { AuthenticationProvider } from "../contexts/AuthenticationContext";
 import { ShoppingCartProvider } from "../contexts/ShoppingCartContext.jsx";
+import { ProductsProvider } from "../contexts/ProductsContext";
 
 // USER PAGES
 import Login from "../views/login";
@@ -47,41 +48,45 @@ function App() {
   return (
     <Router>
       <AuthenticationProvider>
-      <ShoppingCartProvider>
-        <Routes>
-          {/* USER */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/products/category" element={<CategoryPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/billing" element={<Billing />} />
-          <Route path="/confirm-order" element={<OrderConfirmation />} />
-          <Route path="/invoice" element={<Invoice />} />
+        <ShoppingCartProvider>
+          <ProductsProvider>
+            <Routes>
+              {/* USER */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/category" element={<CategoryPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/account" element={<AccountPage />} />
+              <Route path="/billing" element={<Billing />} />
+              <Route path="/confirm-order" element={<OrderConfirmation />} />
+              <Route path="/invoice" element={<Invoice />} />
 
-          <Route path="/register" element={<RegistrationProvider />}>
-            <Route index element={<Navigate to="/register/1" />} />
-            <Route path="1" element={<Register1 />} />
-            <Route path="2" element={<Register2 />} />
-          </Route>
+              <Route path="/register" element={<RegistrationProvider />}>
+                <Route index element={<Navigate to="/register/1" />} />
+                <Route path="1" element={<Register1 />} />
+                <Route path="2" element={<Register2 />} />
+              </Route>
 
-          <Route path="/searchtest" element={<TestAdminComponent />} />
-          {/* CATEGORY */}
-          <Route path="/categorytest" element={<CategoryPage />} />
-          
-          {/* ADMIN PAGES */}
-          <Route path="/admin">
-          <Route index element={<Navigate to="/admin/home" />} />
-            <Route path="home" element={<AdminDashboard />} />
-            <Route path="products" element={<AdminProductPage />} />
-            <Route path="sales" element={<AdminSalesPage />} />
-            <Route path="orders" element={<AdminOrdersPage />} />
-          </Route>
-          <Route path="*" element={<div>Error 404 Page Not Found</div>} />
-        </Routes>
-      </ShoppingCartProvider>
+              <Route path="/searchtest" element={<TestAdminComponent />} />
+              {/* CATEGORY */}
+              <Route path="/categorytest" element={<CategoryPage />} />
+
+              {/* ADMIN PAGES */}
+              <Route path="/admin">
+                <Route index element={<Navigate to="/admin/home" />} />
+                <Route path="home" element={<AdminDashboard />} />
+
+                <Route path="products" element={<AdminProductPage />} />
+
+                <Route path="sales" element={<AdminSalesPage />} />
+                <Route path="orders" element={<AdminOrdersPage />} />
+              </Route>
+              <Route path="*" element={<div>Error 404 Page Not Found</div>} />
+            </Routes>
+          </ProductsProvider>
+        </ShoppingCartProvider>
       </AuthenticationProvider>
     </Router>
   );
