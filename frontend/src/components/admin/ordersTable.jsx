@@ -17,18 +17,19 @@ const Table = () => {
 
         setOrderData(data);
         setIsLoading(false);
-
       } catch (error) {
         console.log(error);
       }
     };
-    
+
     fetchOrders();
   }, []);
 
   const getOrderData = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/admin/orders/getOrders");
+      const response = await fetch(
+        "http://localhost:4000/api/admin/orders/getOrders"
+      );
       if (!response.ok) {
         console.log("Error fetching data");
       }
@@ -83,18 +84,19 @@ const TableRows = ({ order }) => {
 
         setUserData(data);
         setIsLoading(false);
-
       } catch (error) {
         console.log(error);
       }
     };
-    
+
     fetchUser();
   }, []);
 
   const getUserData = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/admin/orders/user/" + order.customer);
+      const response = await fetch(
+        "http://localhost:4000/api/admin/orders/user/" + order.customer
+      );
       if (!response.ok) {
         console.log("Error fetching data");
       }
@@ -144,7 +146,9 @@ const TableRows = ({ order }) => {
       <td className="p-4 flex items-center gap-3 overflow-hidden">
         <div>
           <span className="block mb-1 font-medium">{`Order #${order.orderNumber}`}</span>
-          <span className="block text-xs text-slate-500">{user.username}</span>
+          <span className="block text-xs text-slate-500">
+            {user.firstName} {user.lastName}
+          </span>
         </div>
       </td>
 
@@ -168,11 +172,10 @@ const TableRows = ({ order }) => {
         />
       </td>
       <td className="p-4">
-        <ViewOrder order = {order}/>
+        <ViewOrder order={order} />
       </td>
     </motion.tr>
   );
 };
-
 
 export default ordersTable;
