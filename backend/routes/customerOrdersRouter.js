@@ -3,7 +3,7 @@ const router = express.Router()
 const { authenticate } = require('../middlewares/authenticate')
 const upload = require('../middlewares/fileUpload')
 
-const orderController = require('../controllers/adminOrdersController')
+const orderController = require('../controllers/customerOrdersController')
 
 // POST new order
 router.post('/checkout', authenticate, upload.uploadImage.any(), orderController.addOrder)

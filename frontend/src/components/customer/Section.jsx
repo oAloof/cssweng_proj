@@ -156,8 +156,13 @@ const Card = ({
               </p>
               <span className="text-sm font-semibold text-slate-400">
                 {quantitySold > 0 && (
+                  <span className="text-sm font-semibold text-slate-400 ">
+                    {quantitySold} sold 
+                  </span>
+                )}
+                {availableQuantity < 1 && quantitySold > 0 && (
                   <span className="text-sm font-semibold text-slate-400">
-                    {quantitySold} sold
+                    {' '} / {' '}
                   </span>
                 )}
                 {availableQuantity < 1 && (

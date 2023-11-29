@@ -2,19 +2,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FiAlertCircle, FiEye } from "react-icons/fi";
 import { useState } from "react";
 
-const ViewOrder = () => {
+const ViewOrder = ({order}) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="">
       <button onClick={() => setIsOpen(true)}>
         <FiEye />
       </button>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen} order={order} />
     </div>
   );
 };
 
-const Modal = ({ isOpen, setIsOpen }) => {
+const Modal = ({ isOpen, setIsOpen, order }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -34,19 +34,13 @@ const Modal = ({ isOpen, setIsOpen }) => {
           >
             <FiAlertCircle className="text-white/10 rotate-12 text-[250px] absolute z-0 -top-24 -left-24" />
             <div className="relative z-10">
-              <div className="text-sm text-slate-600">order details here</div>
+              <div className="text-sm text-slate-600">Order Number: {order.orderNumber}</div>
               <div className="flex gap-2">
                 <button
                   onClick={() => setIsOpen(false)}
                   className="bg-transparent hover:bg-indigo-200/10 transition-colors text-slate-600 font-semibold w-full py-2 rounded"
                 >
-                  Nah, go back
-                </button>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="bg-white hover:opacity-90 transition-opacity text-indigo-600 font-semibold w-full py-2 rounded"
-                >
-                  Understood!
+                  Back
                 </button>
               </div>
             </div>
