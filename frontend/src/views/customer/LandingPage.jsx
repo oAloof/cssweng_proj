@@ -112,7 +112,7 @@ const LandingPage = () => {
 
   const getMostSold = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/mostSold");
+      const response = await fetch("http://localhost:4000/api/mostSoldHomepage");
 
       if (!response.ok) {
         console.error("Failed to fetch products: ", response.status);

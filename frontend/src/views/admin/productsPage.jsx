@@ -14,9 +14,10 @@ import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx"
 function AdminProductPage() {
   const [showCategories, setShowCategories] = useState(true);
   const [showBrands, setShowBrands] = useState(true);
-  const categories = ["Category 1", "Category 2", "Category 3"];
   const brands = ["Brand 1", "Brand 2", "Brand 3"];
   const [errorMessage, setErrorMessage] = useState("");
+  const [ProductCategories, setProductCategories] = useState(false);
+  const [BrandCategories, setBrandCategories] = useState(false);
   const { isAuthenticated, isAdmin, isLoadingAuth } = useContext(
     AuthenticationContext
   );
@@ -29,8 +30,64 @@ function AdminProductPage() {
       }, 5000);
     }
 
+    const fetchProductCategories = async () => {
+      try {
+        const data = await getProductCategories();
+  
+        setProductCategories(data)
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+
+    const fetchBrandCategories = async () => {
+      try {
+        const data = await getBrandCategories();
+  
+        setBrandCategories(data)
+        
+      } catch (error) {
+        console.error('Error fetching sales: ', error);
+      }
+    }
+
+    fetchProductCategories();
+    fetchBrandCategories();
+
     return () => clearTimeout(timer);
   }, [errorMessage]);
+
+  const getProductCategories = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/categories");
+  
+        if (!response.ok) {
+          console.error("Failed to fetch product Categories: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getBrandCategories = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/brands");
+  
+        if (!response.ok) {
+          console.error("Failed to fetch brand Categories: ", response.status);
+        }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    if (!string) return string;
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 
   const FilterItems = ({ title, items, showItems, setShowItems }) => {
     return (
@@ -63,7 +120,7 @@ function AdminProductPage() {
                   style={{ cursor: "pointer" }}
                 />
                 <label htmlFor={item} className="ml-2 text-gray-700">
-                  {item}
+                  {capitalizeFirstLetter(item)}
                 </label>
               </div>
             ))}
@@ -129,14 +186,14 @@ function AdminProductPage() {
                     </div>
                     <FilterItems
                       title="Categories"
-                      items={categories}
+                      items={ProductCategories}
                       showItems={showCategories}
                       setShowItems={setShowCategories}
                     />
                     <hr className="my-2" />
                     <FilterItems
                       title="Brands"
-                      items={brands}
+                      items={BrandCategories}
                       showItems={showBrands}
                       setShowItems={setShowBrands}
                     />

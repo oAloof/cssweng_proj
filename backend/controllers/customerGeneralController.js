@@ -21,9 +21,28 @@ const getProductCategories = async (req, res) => {
     }
 }
 
+const getBrandCategories = async (req, res) => {
+    try {
+        const products = await Products.find({})
+        var brands = []
+        for (var i = 0 ; i < products.length; i++) {
+            brands.push(products[i].brand)
+        }
+
+        let unique = brands.filter((item, i, ar) => ar.indexOf(item) === i);
+        
+        res.status(200).json(unique)
+    return
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({message: 'Server error'})
+        return
+    }
+}
+
 const getMostDiscounted = async (req, res) => {
     try {
-        const products = await Products.find({listProduct: true}).sort({discountPercentage: -1})
+        const products = await Products.find({listProduct: true, discountPercentage: { $gte: 20} }).sort({discountPercentage: -1})
         res.status(200).json(products)
     return
     } catch (error) {
@@ -45,9 +64,21 @@ const getMostSold = async (req, res) => {
     }
 }
 
+const getMostSoldHomepage = async (req, res) => {
+    try {
+        const products = await Products.find({listProduct: true, quantitySold: {$gte: 1}}).sort({quantitySold: -1})
+        res.status(200).json(products)
+    return
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({message: 'Server error'})
+        return
+    }
+}
+
 const getNewestProducts = async (req, res) => {
     try {
-        const products = await Products.find({listProduct: true}).sort({createdAt: -1})
+        const products = await Products.find({listProduct: true}).sort({createdAt: -1}).limit(10)
         res.status(200).json(products)
     return
     } catch (error) {
@@ -61,5 +92,7 @@ module.exports = {
     getProductCategories, 
     getMostDiscounted, 
     getMostSold,
-    getNewestProducts
+    getNewestProducts,
+    getMostSoldHomepage,
+    getBrandCategories
 }
