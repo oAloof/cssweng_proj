@@ -2,33 +2,48 @@ import { findInputError, isFormInvalid } from "../../utils";
 import { useFormContext } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdError } from "react-icons/md";
-import { useEffect } from "react";
+import { useEffect, forwardRef } from "react";
 
-const InputField = ({
+const InputField = forwardRef(({
+  multiline,
   label,
   placeholder,
   id,
   type,
   validation,
   name,
-  multiline,
-  value,
   onChange,
-}) => {
+  defaultValue,
+  ...rest
+}, ref) => {
   const {
+    control,
     register,
     formState: { errors },
+    setValue,
   } = useFormContext();
+
+  const fieldError = errors[name];
+  useEffect(() => {
+    if (defaultValue) {
+      setValue(name, defaultValue); // Set the default value using setValue
+    }
+  }, [name, defaultValue, setValue]);
 
   const inputErrors = findInputError(errors, name);
   const isInvalid = isFormInvalid(inputErrors);
 
+  const handleChange = (e) => {
+    if (onChange) {
+      onChange(e);
+    }
+    register(name).onChange(e);
+  };
+
   return (
-    <div className="flex flex-col items-start justify-between w-full">
+    <div className="flex flex-col items-start justify-between">
       <div className="flex justify-between items-end pb-[0.1rem] w-full">
-        <label htmlFor={id} className="font-bold  font-Nunito text-sm">
-          {label}
-        </label>
+        <h6 htmlFor={id}>{label}</h6>
         <AnimatePresence mode="wait" initial={false}>
           {isInvalid && (
             <InputError
@@ -40,25 +55,29 @@ const InputField = ({
       </div>
       {multiline ? (
         <textarea
+          ref={ref} 
           id={id}
-          className="border-2 border-violet-300 font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black w-full resize-none"
+          className="border-2 border-violet-300 font-semibold font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black"
           placeholder={placeholder}
           {...register(name, validation)}
+          onChange={handleChange}
+          {...rest} 
         />
       ) : (
         <input
+          ref={ref} 
           id={id}
           type={type}
-          className="border-2 border-violet-300 font-semibold font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black w-full"
+          className="border-2 border-violet-300 font-semibold font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black"
           placeholder={placeholder}
           {...register(name, validation)}
-          value={value}
-          onChange={onChange}
+          onChange={handleChange}
+          {...rest} 
         />
       )}
     </div>
   );
-};
+});
 
 const InputError = ({ message }) => {
   return (

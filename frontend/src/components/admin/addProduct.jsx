@@ -21,6 +21,7 @@ const AddProduct = ({ title, setErrorMessage }) => {
   const [fileObjects, setFileObjects] = useState([]);
 
   const handleImageChange = (e) => {
+    console.log("add image clicked");
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
       console.log("Selected files:", filesArray);
@@ -160,26 +161,26 @@ const Modal = ({
                   noValidate
                   className="flex flex-col gap-4"
                 >
-                  <InputField {...productName_validation} />
+                  <InputField {...productName_validation} {...methods.register(productName_validation.name)} />
                   <div className="flex flex-row justify-between gap-4 items-start">
                     <div className="flex flex-col gap-1 items-end w-1/2">
                       <InputField
                         {...productOriginalPrice_validation}
-                        {...methods.register("originalPrice")}
+                        {...methods.register(productOriginalPrice_validation.name)}
                       />
                     </div>
                     <div className="flex flex-col gap-1 items-end w-1/2">
                       <InputField
                         {...discountPercentage_validation}
-                        {...methods.register("discountPercentage")}
+                        {...methods.register(discountPercentage_validation.name)}
                       />
                       <p className="font-Nunito font-medium mb-0">
                         Sale Price: ₱{formattedSalePrice}
                       </p>
                     </div>
                   </div>
-                  <InputField {...availableQuantity_validation} />
-                  <InputField {...desc_validation} />
+                  <InputField {...availableQuantity_validation} {...methods.register(availableQuantity_validation.name)} />
+                  <InputField {...desc_validation} {...methods.register(desc_validation.name)} multiline />
                   <Controller
                     name="category"
                     control={methods.control}
@@ -221,6 +222,7 @@ const Modal = ({
                             <ErrorMessage message={errors.images.message} />
                           )}
                         </div>
+                        
                         <input
                           type="file"
                           id="images"
@@ -229,10 +231,7 @@ const Modal = ({
                           multiple
                           onChange={handleImageChange}
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                          {...methods.register("images", {
-                            validate: (files) =>
-                              files.length > 0 || "Images are required",
-                          })}
+                          required
                         />
 
                         <button className="bg-white hover:bg-indigo-200 text-indigo-600 font-semibold py-2 px-4 rounded-lg flex items-center gap-2">
