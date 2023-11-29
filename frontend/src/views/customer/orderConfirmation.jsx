@@ -109,7 +109,6 @@ const OrderConfirmationPage = () => {
           return
       }
       const responseData = await response.json();
-      console.log(responseData.user);
       setUser(responseData.user);
        // Reset form with fetched user data
       methods.reset({
@@ -168,8 +167,9 @@ const OrderConfirmationPage = () => {
     navigate("/login");
   }, [navigate]);
 
-  const OnProceedClick = useCallback(() => {
-    navigate("/billing");
+  const onSubmit = useCallback((data) => {
+    // Navigate to the billing page, passing the form data
+    navigate('/billing', { state: { data } });;
   }, [navigate]);
 
   // TODO: VALIDATE IF USER'S CITY MATCHES THE SALE'S SET CITY
@@ -186,7 +186,8 @@ const OrderConfirmationPage = () => {
         <TopNav />
         <div className="md:w-2/3">
           <FormProvider {...methods}>
-            <form className="p-4 rounded-xl border-[1px] bg-white border-slate-300  shadow-xl">
+            <form className="p-4 rounded-xl border-[1px] bg-white border-slate-300  shadow-xl"
+              onSubmit={methods.handleSubmit(onSubmit)}>
               <h2 className="font-Proxima font-bold text-3xl mb-3">
                 Order Confirmation
               </h2>
@@ -229,7 +230,7 @@ const OrderConfirmationPage = () => {
 
                     <Button
                       text={"PROCEED TO PAYMENT"}
-                      onClick={OnProceedClick}
+                      // onClick={OnProceedClick}
                       type={"submit"}
                     />
                   </div>
