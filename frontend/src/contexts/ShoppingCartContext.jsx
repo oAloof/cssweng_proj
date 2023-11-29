@@ -80,6 +80,38 @@ export const ShoppingCartProvider = ({ children }) => {
         }
     }
 
+    const removeFromCart = async (productId) => {
+        if (!isAuthenticated) {
+            alert("Please login to add items to your cart.");
+            return;
+        }
+
+        const dataToSend = { productId };
+
+        try {
+            const response = await fetch("http://localhost:4000/api/cart/delete", 
+            {
+                method: "DELETE",
+                credentials: "include",
+                body: JSON.stringify(dataToSend),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                },
+            });
+            const responseData = await response.json();
+            if (!response.ok) {
+                throw new Error(responseData.message);
+            }
+            setCartItemChanged(true);
+            setIsLoadingCart(true);
+            console.log(`Message: ${responseData.message}`);
+            return
+        } catch (error) {
+            console.error('Error adding item to cart: ', error);
+            return
+        }
+    }
+
     const contextValue = {
         shoppingCart,
         setShoppingCart,
@@ -87,7 +119,8 @@ export const ShoppingCartProvider = ({ children }) => {
         setCartItemChanged,
         isLoadingCart,
         setIsLoadingCart,
-        addToCart
+        addToCart,
+        removeFromCart
     };
     
     return (

@@ -182,11 +182,35 @@ const updateCart = async (req, res) => {
     res.status(200).send({ message: 'Cart updated.' })
 }
 
+const deleteCartItem = async (req, res) => {
+    // Check if user is logged in
+    if (!req.user) {
+        res.status(400).send({message: 'User is not logged in.'})
+        return
+    }
+
+    const { _id } = req.user
+    const { productId } = req.body
+
+    // Check if user exists in the database
+    const user = await User.findOne({_id})
+    if (!user) {
+        res.status(404).send({ message: 'User not found.' })
+        return
+    }
+
+   // Remove from cart if product exists using filter
+    user.cartItems = user.cartItems.filter(item => item.product.toString() !== productId);
+    await user.save();
+    res.status(200).send({ message: 'Cart updated.' })
+}
+    
 module.exports = { 
     getAuthData,
     loginUser,
     registerUser,
     logoutUser,
     getCart,
-    updateCart
+    updateCart,
+    deleteCartItem
 }

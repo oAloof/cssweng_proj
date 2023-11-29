@@ -6,6 +6,7 @@ import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "../../components/NavBar.jsx";
 import Progress from "../../components/Progress.jsx";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/Loader.jsx";
 
 // CONTEXTS 
 import { AuthenticationContext } from "../../contexts/AuthenticationContext";
@@ -102,8 +103,7 @@ const CartItem = ({ item, onDelete, onQuantityChange }) => {
 };
 
 const CartPage = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const { shoppingCart, setShoppingCart, isLoadingCart } = useContext(ShoppingCartContext);
+  const { shoppingCart, isLoadingCart, removeFromCart } = useContext(ShoppingCartContext);
   const { isAuthenticated } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
@@ -114,23 +114,22 @@ const CartPage = () => {
   }, [isAuthenticated]);
 
   const totalPrice = shoppingCart.reduce(
-    (acc, item) => acc + item.discountedPrice * item.quantity,
-    0
-  );
-
-  const totalOriginalPrice = shoppingCart.reduce(
     (acc, item) => acc + item.originalPrice * item.quantity,
     0
   );
 
+  const totalDiscountedPrice = shoppingCart.reduce(
+    (acc, item) => acc + item.discountedPrice * item.quantity,
+    0
+  );
+
   const subtotal = totalPrice.toFixed(2);
-  const totalSaved = (totalOriginalPrice - totalPrice).toFixed(2);
+  const totalSaved = (totalPrice - totalDiscountedPrice).toFixed(2);
   const shippingFee = "5.00"; // ! To change
 
   // TODO: implement item deletion
   const handleDeleteItem = (itemId) => {
-    const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
-    setCartItems(updatedCartItems);
+    removeFromCart(itemId);
   };
 
   // TODO: implement item qty. change
@@ -171,6 +170,10 @@ const CartPage = () => {
     }
   };
 
+  if (isLoadingCart) {
+    return <Loader />;
+  }
+
   return (
     <div className="flex flex-col pt-[9vh] bg-slate-200 pb-[15vh] gap-4">
       <Progress stepsComplete="1" />
@@ -208,7 +211,8 @@ const CartPage = () => {
               <p className="text-3xl font-bold font-Proxima text-indigo-400">
                 Total: ₱
                 {(
-                  parseFloat(subtotal) +
+                  parseFloat(subtotal) -
+                  parseFloat(totalSaved) +
                   parseFloat(shippingFee)
                 ).toFixed(2)}
               </p>
