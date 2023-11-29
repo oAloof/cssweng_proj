@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TopNav from "../../components/Menu";
 import { FiTrash2 } from "react-icons/fi";
@@ -6,6 +6,10 @@ import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "../../components/NavBar.jsx";
 import Progress from "../../components/Progress.jsx";
 import { useNavigate } from "react-router-dom";
+
+// CONTEXTS 
+import { AuthenticationContext } from "../../contexts/AuthenticationContext";
+import { ShoppingCartContext } from "../../contexts/ShoppingCartContext.jsx";
 
 const CartItem = ({ item, onDelete, onQuantityChange }) => {
   const [quantity, setQuantity] = useState(item.quantity);
@@ -36,7 +40,7 @@ const CartItem = ({ item, onDelete, onQuantityChange }) => {
       <div className="flex items-center w-full flex-grow">
         <img
           className="h-full w-32 object-contain mr-4"
-          src={item.image}
+          src={`https://drive.google.com/uc?export=view&id=${item.image}`}
           alt={item.name}
         />
         <div className="flex flex-col flex-grow">
@@ -82,7 +86,7 @@ const CartItem = ({ item, onDelete, onQuantityChange }) => {
       <div className="flex items-end">
         <div className="flex flex-col justify-between items-end h-20">
           <p className="font-Nunito font-bold m-0 text-1xl">
-            ₱{(item.price * quantity).toFixed(2)}
+            ₱{(item.discountedPrice * quantity).toFixed(2)}
           </p>
 
           <button
@@ -96,106 +100,32 @@ const CartItem = ({ item, onDelete, onQuantityChange }) => {
     </div>
   );
 };
-const CartPage = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Product 1",
-      brand: "Union",
-      quantity: 2,
-      price: 15.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 3,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 4,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 5,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 6,
-      name: "Product 3",
-      brand: "Union",
-      quantity: 2,
-      price: 19.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 7,
-      name: "Product 4",
-      brand: "Union",
-      quantity: 1,
-      price: 14.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 8,
-      name: "Product 5",
-      brand: "Union",
-      quantity: 3,
-      price: 24.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 9,
-      name: "Product 6",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 10,
-      name: "Product 7",
-      brand: "Union",
-      quantity: 2,
-      price: 19.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 11,
-      name: "Product 8",
-      brand: "Union",
-      quantity: 1,
-      price: 14.99,
-      image: "/Product Photo Placeholder.png",
-    },
-  ]);
 
-  const totalPrice = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+const CartPage = () => {
+  const [cartItems, setCartItems] = useState([]);
+  const { shoppingCart, setShoppingCart, isLoadingCart } = useContext(ShoppingCartContext);
+  const { isAuthenticated } = useContext(AuthenticationContext);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
+
+  const totalPrice = shoppingCart.reduce(
+    (acc, item) => acc + item.discountedPrice * item.quantity,
+    0
+  );
+
+  const totalOriginalPrice = shoppingCart.reduce(
+    (acc, item) => acc + item.originalPrice * item.quantity,
     0
   );
 
   const subtotal = totalPrice.toFixed(2);
-  const totalSaved = "10.00";
-  const shippingFee = "5.00";
+  const totalSaved = (totalOriginalPrice - totalPrice).toFixed(2);
+  const shippingFee = "5.00"; // ! To change
 
   // TODO: implement item deletion
   const handleDeleteItem = (itemId) => {
@@ -225,7 +155,7 @@ const CartPage = () => {
     secondaryColor: "bg-indigo-300 hover:text-white",
   });
 
-  const navigate = useNavigate();
+  
 
   const handleButtonClick = () => {
     if (buttonState.text === "CHECK OUT") {
@@ -249,7 +179,7 @@ const CartPage = () => {
         <div className="p-4 rounded-xl border-[1px] bg-white border-slate-300 md:w-3/4 shadow-xl">
           <h2 className="font-Proxima font-bold text-3xl mb-3">Your Cart</h2>
           <div className="bg-white ">
-            {cartItems.map((item) => (
+            {shoppingCart.map((item) => (
               <CartItem
                 key={item.id}
                 item={item}
@@ -279,7 +209,6 @@ const CartPage = () => {
                 Total: ₱
                 {(
                   parseFloat(subtotal) +
-                  parseFloat(totalSaved) +
                   parseFloat(shippingFee)
                 ).toFixed(2)}
               </p>

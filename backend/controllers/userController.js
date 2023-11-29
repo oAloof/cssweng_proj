@@ -133,12 +133,23 @@ const getCart = async (req, res) => {
 
     const { _id } = req.user
     // Check if user exists in the database
-    const user = await User.findOne({_id})
+    const user = await User.findOne({_id}).populate('cartItems.product');
     if (!user) {
         res.status(404).send({ message: 'User not found.' })
         return
     }
-    const cart = user.cartItems
+    // For each cart item, add to array of products
+    const cart = user.cartItems.map(item => {
+        return {
+            id: item.product._id,
+            name: item.product.name,
+            brand: item.product.brand,
+            quantity: item.quantity,
+            originalPrice: item.product.originalPrice,
+            discountedPrice: item.product.discountedPrice, 
+            image: item.product.images[0] 
+        };
+    });
     res.status(200).send({ cart })
 }
 
