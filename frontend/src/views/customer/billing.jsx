@@ -44,7 +44,9 @@ const CartItem = ({ item }) => {
       </div>
       <div className="flex items-end">
         <div className="flex flex-col justify-center items-end h-20">
-          <p className="font-Nunito font-bold m-0 text-2xl">₱{item.discountedPrice}</p>
+          <p className="font-Nunito font-bold m-0 text-2xl">
+            ₱{item.discountedPrice}
+          </p>
         </div>
       </div>
     </div>
@@ -96,8 +98,6 @@ const Billing = () => {
     parseFloat(shippingFee)
   ).toFixed(2);
 
-  
-
   const methods = useForm({ mode: "onSubmit" });
 
   const [images, setImages] = useState([]);
@@ -117,7 +117,8 @@ const Billing = () => {
     { label: "Email", value: userData.email },
   ];
 
-  const onSubmit = useCallback(async (data) => {
+  const onSubmit = useCallback(
+    async (data) => {
       // Send data to backend
       try {
         const formData = new FormData();
@@ -128,22 +129,29 @@ const Billing = () => {
         formData.append("lastName", userData.lastName);
         formData.append("contactNumber", userData.contactNumber);
         formData.append("streetAddress", userData.streetAddress);
-        formData.append("city", userData.city);  
-        formData.append("order", JSON.stringify(shoppingCart))
-        formData.append("totalCost", total)  
+        formData.append("city", userData.city);
+        formData.append("order", JSON.stringify(shoppingCart));
+        formData.append("totalCost", total);
 
-        const response = await fetch("http://localhost:4000/api/orders/checkout", {
-          method: "POST",
-          credentials: "include",
-          body: formData,
-        });
+        const response = await fetch(
+          "http://localhost:4000/api/orders/checkout",
+          {
+            method: "POST",
+            credentials: "include",
+            body: formData,
+          }
+        );
+
+        navigate("/invoice");
 
         const responseData = await response.json();
       } catch (error) {
         console.error("Error confirming order: ", error);
         return;
       }
-    }, [navigate]);
+    },
+    [navigate]
+  );
 
   return (
     <div className="flex flex-col  pt-[9vh] bg-slate-200 pb-[15vh] gap-4">
@@ -162,8 +170,10 @@ const Billing = () => {
           </div>
 
           <FormProvider {...methods}>
-            <form className="p-4 rounded-xl border-[1px] bg-white border-slate-300  shadow-xl"
-              onSubmit={methods.handleSubmit(onSubmit)}>
+            <form
+              className="p-4 rounded-xl border-[1px] bg-white border-slate-300  shadow-xl"
+              onSubmit={methods.handleSubmit(onSubmit)}
+            >
               <h2 className="font-Proxima font-bold text-3xl mb-3 ">Billing</h2>
               <div className="bg-white">
                 <div className="flex flex-col w-full gap-4">
