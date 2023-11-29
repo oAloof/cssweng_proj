@@ -117,8 +117,32 @@ const Billing = () => {
     { label: "Email", value: userData.email },
   ];
 
-  const onSubmit = useCallback((data) => {
-      navigate("/invoice", { state: { userData: userData, refNo: data.referenceNumber, images: fileObjects } });
+  const onSubmit = useCallback(async (data) => {
+      // Send data to backend
+      try {
+        const formData = new FormData();
+        formData.append("referenceNumber", data.referenceNumber);
+        formData.append("images", fileObjects[0]);
+        formData.append("email", userData.email);
+        formData.append("firstName", userData.firstName);
+        formData.append("lastName", userData.lastName);
+        formData.append("contactNumber", userData.contactNumber);
+        formData.append("streetAddress", userData.streetAddress);
+        formData.append("city", userData.city);  
+        formData.append("order", JSON.stringify(shoppingCart))
+        formData.append("totalCost", total)  
+
+        const response = await fetch("http://localhost:4000/api/orders/checkout", {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        });
+
+        const responseData = await response.json();
+      } catch (error) {
+        console.error("Error confirming order: ", error);
+        return;
+      }
     }, [navigate]);
 
   return (

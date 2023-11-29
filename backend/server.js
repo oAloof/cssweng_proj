@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const adminProductRoutes = require('./routes/adminProductsRouter')
-// const adminOrdersRoutes = require('./src/routes/adminOrdersRouter')
+const adminOrdersRoutes = require('./routes/adminOrdersRouter')
 const adminSalesRoutes = require('./routes/adminSalesRouter')
 const customerSalesRoutes = require('./routes/customerSalesRouter')
 const customerGeneralRoutes = require('./routes/customerGeneralRouter')
@@ -53,6 +53,8 @@ app.post('/api/cart/update', authenticate, userController.updateCart)
 app.post('/api/cart/updateItemQuantity', authenticate, userController.updateCartItemQuantity)
 app.delete('/api/cart/delete', authenticate, userController.deleteCartItem)
 
+// Orders API
+app.use('/api/orders/', adminOrdersRoutes)
 
 // Customer API
 app.use('/api/sales', customerSalesRoutes) 

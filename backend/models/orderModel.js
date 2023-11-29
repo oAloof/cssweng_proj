@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 // Order schema
 const orderSchema = new Schema({
     orderNumber: {
-        type: Number,
+        type: String,
         required: true, 
         unique: true
     },
@@ -14,16 +14,23 @@ const orderSchema = new Schema({
         enum: ['Payment Verification', 'To Ship', 'Shipped', 'Completed'],
         default: 'Payment Verification'
     },
-    order: {
-        type: Map,
-        of: Number,
-        required: true
-    },
+    order: [{
+        product: {
+            type: Schema.Types.ObjectId,
+            ref: 'Product',
+            required: true
+        },
+        quantity: {
+            type: Number,
+            required: true,
+            min: 1
+        }
+    }],
     totalCost: {
         type: Number,
         required: true
     },
-    customer: { // idk if correct
+    customer: { 
         type: Schema.Types.ObjectId, 
         ref: 'User', 
         required: true
@@ -36,11 +43,19 @@ const orderSchema = new Schema({
         type: Number, 
         required: true
     }, 
-    screenshotOfPayment: {
+    personRecievingEmail: {
         type: String, 
-        required: false, 
+        required: true
+    },
+    screenshotOfPayment: {
+        type: [String], 
+        required: true, 
     }, 
-    paymentReferenceCode: {
+    deliveryAddress: {
+        type: String, 
+        required: true
+    },
+    referenceNumber: {
         type: Number, 
         required: true
     }

@@ -26,6 +26,7 @@ const auth = new google.auth.GoogleAuth({
 })
 
 const gDriveFolderId = '1LRHuY5uNuXqFZEvnQnkleex2DiKXEwKE' // the folder id of the google drive folder where product images will be stored
+const gDrivePaymentsFolderId = '1Y2OFNiqndL0PEqk3rWGeibFgT2scL0ui' // the folder id of the google drive folder where payment images will be stored
 
 const uploadFile = async (file) => {
     const bufferStream = new stream.PassThrough()
@@ -67,4 +68,32 @@ const uploadFile = async (file) => {
     }
 }
 
-module.exports = { uploadImage, uploadFile }
+const uploadPaymentImage = async (file, referenceCode) => {
+    const bufferStream = new stream.PassThrough()
+    bufferStream.end(file.buffer)
+
+    try {
+        // Upload the file to google drive
+        const uploadedFile = await google.drive({
+                version: 'v3',
+                auth: auth
+            }).files.create({
+                media: {
+                    mimeType: file.mimetype,
+                    body: bufferStream
+                },
+                requestBody: {
+                    name: referenceCode,
+                    parents: [gDrivePaymentsFolderId]
+                },
+                fields: "id, name"
+            })
+
+        return uploadedFile.data.id
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+}
+
+module.exports = { uploadImage, uploadFile, uploadPaymentImage }
