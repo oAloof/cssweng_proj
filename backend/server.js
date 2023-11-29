@@ -8,8 +8,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const adminProductRoutes = require("./routes/adminProductsRouter");
-// const adminOrdersRoutes = require('./src/routes/adminOrdersRouter')
+const customerOrdersRouter = require("./routes/customerOrdersRouter");
 const adminSalesRoutes = require("./routes/adminSalesRouter");
+const adminOrdersRoutes = require("./routes/adminOrdersRoutes");
 const customerSalesRoutes = require("./routes/customerSalesRouter");
 const customerGeneralRoutes = require("./routes/customerGeneralRouter");
 const userController = require("./controllers/userController");
@@ -57,6 +58,9 @@ app.post(
 );
 app.delete("/api/cart/delete", authenticate, userController.deleteCartItem);
 
+// Orders API
+app.use("/api/orders/", customerOrdersRouter);
+
 // Customer API
 app.use("/api/sales", customerSalesRoutes);
 app.use("/api/", customerGeneralRoutes);
@@ -64,7 +68,7 @@ app.use("/api/", customerGeneralRoutes);
 // Admin api
 app.use("/api/admin/sales", adminSalesRoutes); // routes related to sales
 app.use("/api/admin/products", adminProductRoutes); // routes related to products
-// app.use('/admin/orders', adminOrdersRoutes) // routes related to orders
+app.use("/api/admin/orders", adminOrdersRoutes); // routes related to orders
 
 // connect to the mongoDB database
 mongoose

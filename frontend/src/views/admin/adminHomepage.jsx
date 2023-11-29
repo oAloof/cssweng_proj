@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect} from "react";
 import Chart from "react-apexcharts";
 import AdminNavbar from "../../components/admin/adminNavbar.jsx";
 import {
@@ -12,7 +12,7 @@ import OrdersTable from "../../components/admin/ordersTable.jsx";
 // CONTEXTS
 import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
-const data = [
+var data = [
   {
     label: "Total Sales",
     path: "/",
@@ -149,7 +149,7 @@ function AdminDashboard() {
     series: [
       {
         name: "Sales",
-        data: [30, 40, 25, 50, 49, 21, 70, 51, 42, 60, 45, 30],
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0],
       },
     ],
   });
@@ -160,7 +160,7 @@ function AdminDashboard() {
         <div className="relative top-0 left-0 text-gray-400 text-2xl font-medium ">
           Total Revenue
           <h4 className="text-4xl font-semibold font-Proxima text-gray-700">
-            $100,000
+            ₱{revenue}
           </h4>
         </div>
         <Chart
@@ -173,6 +173,41 @@ function AdminDashboard() {
     );
   };
 
+  const [orders, setOrderData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const data = await getOrderData();
+
+        setOrderData(data);
+        setIsLoading(false);
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    
+    fetchOrders();
+  }, []);
+
+  const getOrderData = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/admin/orders/getOrders");
+      if (!response.ok) {
+        console.log("Error fetching data");
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   if (isLoadingAuth) {
     return <div>Loading...</div>;
   }
@@ -181,6 +216,27 @@ function AdminDashboard() {
     return <div>404 Page Not Found</div>;
   }
 
+  var total = 0
+  for (let i = 0; i < orders.length; i++) {
+    for (let j = 0; j < orders[i].order.length; j++) {
+      total += orders[i].order[j].quantity
+    }
+  }
+  data[0].value = total;
+  data[1].value = orders.length;
+
+  var notDone = 0 
+  for (let i = 0; i < orders.length; i++) {
+    if (orders[i].status != 'Completed'){
+      notDone += 1
+    }
+  }
+  data[2].value = notDone;
+
+  var revenue = 0 
+  for (let i = 0; i < orders.length; i++) {
+    revenue += orders[i].totalCost
+  }
   return (
     <div className="flex h-screen bg-gray-200 font-proxima">
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -202,7 +258,7 @@ function AdminDashboard() {
                 ))}
               </div>
             </div>
-            <ChartSection />
+            <ChartSection revenue = {revenue}/>
             <OrdersTable />
           </div>
         </main>

@@ -13,7 +13,6 @@ import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx"
 function AdminOrdersPage() {
   const { isAuthenticated, isAdmin, isLoadingAuth } = useContext(AuthenticationContext);
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
   const status = [
     { value: "To Process", label: "To Process" },
     { value: "Payment Confirmed", label: "Payment Confirmed" },
@@ -56,7 +55,7 @@ function AdminOrdersPage() {
                         htmlFor="start-date"
                         className="text-gray-700 font-medium"
                       >
-                        Start Date
+                        Order Date
                       </label>
                       <DatePicker
                         selected={startDate}
@@ -64,21 +63,6 @@ function AdminOrdersPage() {
                         dateFormat="MMMM d, yyyy"
                         className="px-3 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 borders-gray-500 focus:ring-indigo-600 font-Nunito w-full"
                         id="start-date"
-                      />
-                    </div>
-                    <div className="flex flex-col space-y-1">
-                      <label
-                        htmlFor="end-date"
-                        className="text-gray-700 font-medium"
-                      >
-                        End Date
-                      </label>
-                      <DatePicker
-                        selected={endDate}
-                        onChange={(date) => setEndDate(date)}
-                        dateFormat="MMMM d, yyyy"
-                        className="px-3 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 borders-gray-500 focus:ring-indigo-600 font-Nunito w-full"
-                        id="end-date"
                       />
                     </div>
                     <div>
