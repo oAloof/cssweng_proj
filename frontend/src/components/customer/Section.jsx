@@ -105,6 +105,7 @@ const Card = ({
   onClick,
   images,
   quantitySold,
+  availableQuantity,
 }) => {
   const navigate = useNavigate();
 
@@ -157,6 +158,11 @@ const Card = ({
                 {quantitySold > 0 && (
                   <span className="text-sm font-semibold text-slate-400">
                     {quantitySold} sold
+                  </span>
+                )}
+                {availableQuantity < 1 && (
+                  <span className="text-sm font-semibold text-slate-400">
+                    Sold Out
                   </span>
                 )}
               </span>
