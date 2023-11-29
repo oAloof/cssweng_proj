@@ -14,15 +14,46 @@ import { ShoppingCartContext } from "../../contexts/ShoppingCartContext.jsx";
 
 const CartItem = ({ item, onDelete, onQuantityChange }) => {
   const [quantity, setQuantity] = useState(item.quantity);
+  const [timer, setTimer] = useState(null);
+
+  // Clears the timer when the component unmounts or the quantity changes
+  useEffect(() => {
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [timer, quantity]);
+
+  const delayedQuantityChange = (newQuantity) => {
+    // Clear any existing timer
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    // Set a new timer
+    const newTimer = setTimeout(() => {
+      onQuantityChange(item.id, newQuantity);
+    }, 3000); // 3 seconds delay
+
+    setTimer(newTimer);
+  };
 
   const handleQuantityChange = (newQuantity) => {
-    setQuantity(newQuantity);
-    onQuantityChange(item.id, newQuantity);
+    if (newQuantity > item.availableQuantity) {
+      setQuantity(item.availableQuantity);
+      delayedQuantityChange(item.availableQuantity);
+    } else {
+      setQuantity(newQuantity);
+      delayedQuantityChange(newQuantity);
+    }
   };
 
   const handleIncrement = () => {
     const newQuantity = quantity + 1;
-    handleQuantityChange(newQuantity);
+    if (newQuantity <= item.availableQuantity) {
+      handleQuantityChange(newQuantity);
+    }
   };
 
   const handleDecrement = () => {
@@ -103,7 +134,7 @@ const CartItem = ({ item, onDelete, onQuantityChange }) => {
 };
 
 const CartPage = () => {
-  const { shoppingCart, isLoadingCart, removeFromCart } = useContext(ShoppingCartContext);
+  const { shoppingCart, isLoadingCart, removeFromCart, updateItemQuantity } = useContext(ShoppingCartContext);
   const { isAuthenticated } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
@@ -127,25 +158,18 @@ const CartPage = () => {
   const totalSaved = (totalPrice - totalDiscountedPrice).toFixed(2);
   const shippingFee = "5.00"; // ! To change
 
-  // TODO: implement item deletion
   const handleDeleteItem = (itemId) => {
     removeFromCart(itemId);
   };
 
   // TODO: implement item qty. change
   const handleQuantityChange = (itemId, newQuantity) => {
-    const updatedCartItems = cartItems.map((item) => {
-      if (item.id === itemId) {
-        return { ...item, quantity: newQuantity };
-      }
-      return item;
-    });
+    updateItemQuantity(itemId, newQuantity);
     setButtonState({
       text: "UPDATE CART",
       color: "bg-gray-300 text-gray-600",
       secondaryColor: "bg-gray-200 hover:text-gray-600",
     });
-    setCartItems(updatedCartItems);
   };
 
   const [buttonState, setButtonState] = useState({
@@ -153,8 +177,6 @@ const CartPage = () => {
     color: "bg-indigo-500 text-indigo-100",
     secondaryColor: "bg-indigo-300 hover:text-white",
   });
-
-  
 
   const handleButtonClick = () => {
     if (buttonState.text === "CHECK OUT") {

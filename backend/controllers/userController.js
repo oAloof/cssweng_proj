@@ -147,7 +147,8 @@ const getCart = async (req, res) => {
             quantity: item.quantity,
             originalPrice: item.product.originalPrice,
             discountedPrice: item.product.discountedPrice, 
-            image: item.product.images[0] 
+            image: item.product.images[0],
+            availableQuantity: item.product.availableQuantity
         };
     });
     res.status(200).send({ cart })
@@ -204,6 +205,36 @@ const deleteCartItem = async (req, res) => {
     await user.save();
     res.status(200).send({ message: 'Cart updated.' })
 }
+
+const updateCartItemQuantity = async (req, res) => {
+    // Check if user is logged in
+    if (!req.user) {
+        res.status(400).send({message: 'User is not logged in.'})
+        return
+    }
+
+    const { _id } = req.user
+    const { productId, quantity } = req.body
+
+    // Check if user exists in the database
+    const user = await User.findOne({_id})
+    if (!user) {
+        res.status(404).send({ message: 'User not found.' })
+        return
+    }
+
+    const cartIndex = user.cartItems.findIndex(item => item.product.toString() === productId);
+
+    if (cartIndex > -1) {
+        // Update quantity if product exists
+        user.cartItems[cartIndex].quantity = quantity;
+    } else {
+        // Add new item if product does not exist
+        user.cartItems.push({ product: productId, quantity });
+    }
+    await user.save();
+    res.status(200).send({ message: 'Cart updated.' })
+}
     
 module.exports = { 
     getAuthData,
@@ -212,5 +243,6 @@ module.exports = {
     logoutUser,
     getCart,
     updateCart,
-    deleteCartItem
+    deleteCartItem,
+    updateCartItemQuantity
 }
