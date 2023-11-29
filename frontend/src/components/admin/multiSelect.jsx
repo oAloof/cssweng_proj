@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import CreatableSelect from "react-select/creatable";
 import ErrorMessage from "../ErrorMessage";
 
-const MultiSelect = ({
+const MultiSelect = forwardRef(({
   onChange, // This is part of the 'field' object from react-hook-form
   value, // This is also part of the 'field' object from react-hook-form
   name,
@@ -10,7 +10,7 @@ const MultiSelect = ({
   isUserInputAllowed = true,
   isMulti,
   error,
-}) => {
+}, ref) => {
   const transformFieldValue = (value) => {
     const capitalizeFirstLetter = (string) => {
       if (!string) return string;
@@ -78,6 +78,6 @@ const MultiSelect = ({
       />
     </div>
   );
-};
+});
 
 export default MultiSelect;

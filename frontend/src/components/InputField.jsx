@@ -2,9 +2,9 @@ import { findInputError, isFormInvalid } from "../utils/";
 import { useFormContext } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdError } from "react-icons/md";
-import { useEffect } from "react";
+import { useEffect, forwardRef } from "react";
 
-const InputField = ({
+const InputField = forwardRef(({
   label,
   placeholder,
   id,
@@ -13,7 +13,8 @@ const InputField = ({
   name,
   onChange,
   defaultValue,
-}) => {
+  ...rest
+}, ref) => {
   const {
     control,
     register,
@@ -52,16 +53,18 @@ const InputField = ({
         </AnimatePresence>
       </div>
       <input
+        ref={ref} // Forward the ref to the input
         id={id}
         type={type}
         className="border-2 border-violet-300 font-semibold font-nunito text-2xs rounded-lg box-border h-auto flex flex-row items-start justify-between px-2 py-2.5 place-self-stretch bg-white text-black"
         placeholder={placeholder}
         {...register(name, validation)}
         onChange={handleChange}
+        {...rest} // Spread the rest of the props here
       />
     </div>
   );
-};
+});
 
 const InputError = ({ message }) => {
   return (
