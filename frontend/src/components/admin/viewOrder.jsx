@@ -34,7 +34,7 @@ const Modal = ({ isOpen, setIsOpen, order }) => {
           >
             <FiAlertCircle className="text-white/10 rotate-12 text-[250px] absolute z-0 -top-24 -left-24" />
             <div className="relative z-10">
-              <div className="text-sm text-slate-600 font-Nunito">
+              <div className="text-sm flex flex-col gap-0 text-slate-600 font-Nunito">
                 <h2 className="font-Proxima uppercase">
                   Order #{order.referenceNumber}
                 </h2>
@@ -44,9 +44,12 @@ const Modal = ({ isOpen, setIsOpen, order }) => {
                 <p>Phone Number: {order.personRecievingNum}</p>
                 <p>Email: {order.personRecievingEmail}</p>
                 <p>Delivery Address: {order.deliveryAddress}</p>
-                {order.order.map((item, index) => (
-                  <CartItem key={item.product._id} item={item} />
-                ))}
+                <div className="flex flex-col gap-0 mt-10">
+                  <p className="font-Nunito font-bold text-lg">Order Items</p>
+                  {order.order.map((item, index) => (
+                    <CartItem key={item.product._id} item={item} />
+                  ))}
+                </div>
               </div>
               <div className="flex gap-2">
                 <button
@@ -78,7 +81,7 @@ const CartItem = ({ item }) => {
         <div className="flex flex-col flex-grow">
           <div className="flex justify-between w-full">
             <div className="flex flex-col">
-              <p className="text-xl font-semibold font-Proxima m-0">
+              <p className="text-sm font-semibold font-Proxima m-0">
                 {product.name}
               </p>
               <p className="text-s text-indigo-400 font-Proxima mb-4">
@@ -87,7 +90,7 @@ const CartItem = ({ item }) => {
             </div>
           </div>
           <div className="flex items-center justify-start">
-            <p className="text-lg text-gray-600 font-Nunito font-bold m-0">
+            <p className="text-sm text-gray-600 font-Nunito font-bold m-0">
               Qty: {item.quantity}
             </p>
           </div>
@@ -95,7 +98,7 @@ const CartItem = ({ item }) => {
       </div>
       <div className="flex items-end">
         <div className="flex flex-col justify-center items-end h-20">
-          <p className="font-Nunito font-bold m-0 text-2xl">
+          <p className="font-Nunito font-bold m-0 text-sm">
             ₱{product.discountedPrice}
           </p>
         </div>
