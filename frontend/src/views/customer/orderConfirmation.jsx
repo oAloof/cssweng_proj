@@ -9,6 +9,7 @@ import InputField from "../../components/InputField.jsx";
 import Dropdown from "../../components/CitySelect.jsx";
 import { motion } from "framer-motion";
 import { MdError } from "react-icons/md";
+import Loader from "../../components/Loader.jsx";
 
 // CONTEXTS 
 import { AuthenticationContext } from "../../contexts/AuthenticationContext";
@@ -64,6 +65,8 @@ const CartItem = ({ item }) => {
 const OrderConfirmationPage = () => {
   const { shoppingCart, isLoadingCart } = useContext(ShoppingCartContext);
   const { isAuthenticated } = useContext(AuthenticationContext);
+  const [user, setUser] = useState({});
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -71,6 +74,60 @@ const OrderConfirmationPage = () => {
       navigate("/login");
     }
   }, [isAuthenticated]);
+
+  const methods = useForm({ mode: "onSubmit",
+    defaultValues: {
+      username: user.username,
+      firstname: user.firstName,
+      lastname: user.lastName,
+      email: user.email,
+      contactNumber: user.contactNumber,
+      streetAddress: user.streetAddress,
+      city: user.city,
+      zip: user.zip,
+    }, 
+  });
+
+  useEffect(() => {
+    getUserInformation();
+  }, [isAuthenticated, isLoadingUser, methods.reset]);
+
+  const getUserInformation = async () => {
+    if (!isAuthenticated) return;
+    
+    try {
+      const response = await fetch("http://localhost:4000/api/auth/user", 
+      {
+          method: "GET",
+          credentials: "include",
+          headers: {
+              "Content-Type": "application/json",
+          },
+      });
+      if (!response.ok) {
+          console.log("User not found.")
+          return
+      }
+      const responseData = await response.json();
+      console.log(responseData.user);
+      setUser(responseData.user);
+       // Reset form with fetched user data
+      methods.reset({
+        username: responseData.user.username,
+        firstName: responseData.user.firstName,
+        lastName: responseData.user.lastName,
+        email: responseData.user.email,
+        contactNumber: responseData.user.contactNumber,
+        streetAddress: responseData.user.streetAddress,
+        city: responseData.user.city,
+        zip: responseData.user.zip,
+      });
+      setIsLoadingUser(false);
+      return
+    } catch (error) {
+      console.error('Error fetching user data: ', error);
+    }
+  }
 
   const location = "Manila";
 
@@ -103,8 +160,6 @@ const OrderConfirmationPage = () => {
     parseFloat(shippingFee)
   ).toFixed(2);
 
-  const [loggedIn, setLoggedIn] = useState(true); // Delete later, for testing only
-
   const OnLoginClick = useCallback(() => {
     navigate("/login");
   }, [navigate]);
@@ -120,7 +175,9 @@ const OrderConfirmationPage = () => {
   // TODO: VALIDATE IF USER'S CITY MATCHES THE SALE'S SET CITY
   const [dropdownError, setdropdownError] = useState(false);
 
-  const methods = useForm({ mode: "onSubmit" });
+  if (isLoadingCart || isLoadingUser) {
+    return <Loader />;
+  } 
 
   return (
     <div className="flex flex-col pt-[9vh] min-h-screen bg-slate-200 pb-[15vh] gap-4">
@@ -135,7 +192,7 @@ const OrderConfirmationPage = () => {
               </h2>
               <div className="bg-white">
                 {/* TODO: PRE-FILL THESE FIELDS WITH THE USER'S DATA, PREVENT CITY DROPDOWN*/}
-                {loggedIn ? (
+                {isAuthenticated ? (
                   <div className="flex flex-col w-full gap-4">
                     <InputField {...username_validation} />
                     <div className="flex-row flex justify-stretch gap-4">
@@ -156,6 +213,7 @@ const OrderConfirmationPage = () => {
                           name="city"
                           {...city_validation}
                           onClick={() => setdropdownError(true)}
+                          defaultValue={user.city}
                         />
                         <div className="relative b-0 right-0 mt-2">
                           <DropdownError

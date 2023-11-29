@@ -12,13 +12,18 @@ const Cities = [
   { label: "Quezon City", value: "Quezon City" },
 ];
 
-const Dropdown = ({ control, name, validation }) => {
+const Dropdown = ({ control, name, validation, defaultValue }) => {
   const {
     formState: { errors },
   } = useFormContext();
 
   const inputErrors = findInputError(errors, name);
   const isInvalid = isFormInvalid(inputErrors);
+
+   // Function to find the corresponding option object for the default value
+   const findOptionForDefaultValue = (defaultValue) => {
+    return Cities.find((city) => city.value === defaultValue);
+  };
 
   return (
     <div className={styles.container}>
@@ -45,6 +50,7 @@ const Dropdown = ({ control, name, validation }) => {
             classNamePrefix="react-select"
             placeholder="Choose a City"
             styles={{ container: (base) => ({ ...base, flex: 1 }) }}
+            value={findOptionForDefaultValue(defaultValue)}
           />
         )}
       />
