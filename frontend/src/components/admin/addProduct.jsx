@@ -10,10 +10,10 @@ import {
 } from "../../utils/inputValidations.jsx";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import MultiSelect from "./multiSelect.jsx";
-import ErrorMessage from "../ErrorMessage.jsx";
 
 // CONTEXTS
 import { ProductsContext } from "../../contexts/ProductsContext.jsx";
+import ErrorMessage from "../ErrorMessage.jsx";
 
 const AddProduct = ({ title, setErrorMessage }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,10 +21,13 @@ const AddProduct = ({ title, setErrorMessage }) => {
   const [fileObjects, setFileObjects] = useState([]);
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    const images = files.map((file) => URL.createObjectURL(file));
-    setFileObjects((prevFiles) => prevFiles.concat(files)); // Store the file objects in state
-    setImages((prevImages) => prevImages.concat(images));
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      console.log("Selected files:", filesArray);
+      const mappedImages = filesArray.map((file) => URL.createObjectURL(file));
+      setFileObjects((prevFiles) => [...prevFiles, ...filesArray]);
+      setImages((prevImages) => [...prevImages, ...mappedImages]);
+    }
   };
 
   return (
@@ -43,18 +46,32 @@ const AddProduct = ({ title, setErrorMessage }) => {
         fileObjects={fileObjects}
         setFileObjects={setFileObjects}
         handleImageChange={handleImageChange}
-        setErrorMessage={setErrorMessage}
+        title={title}
       />
     </div>
   );
 };
 
-const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjects, handleImageChange, title, setErrorMessage }) => {
+const Modal = ({
+  isOpen,
+  setIsOpen,
+  images,
+  setImages,
+  fileObjects,
+  setFileObjects,
+  handleImageChange,
+  title,
+}) => {
   const methods = useForm({ mode: "onSubmit" });
-  const { handleSubmit, watch } = methods;
+  const {
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = methods;
   const originalPrice = watch("originalPrice", 0);
   const discountPercentage = watch("discountPercentage", 0);
-  const discountedPrice = originalPrice - (originalPrice * discountPercentage) / 100;
+  const discountedPrice =
+    originalPrice - (originalPrice * discountPercentage) / 100;
   const formattedSalePrice = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
   }).format(discountedPrice);
@@ -67,41 +84,37 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
 
   const addProduct = async (data) => {
     const formData = new FormData();
-    // Append existing form data
     Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
-    
-    // Append discounted price 
-    formData.append('discountedPrice', parseFloat(discountedPrice.toFixed(2)).toString());
-    
-    // Append images 
-    fileObjects.forEach((file) => {
-      formData.append("images", file);
-    });
-    
+
+    formData.append(
+      "discountedPrice",
+      parseFloat(discountedPrice.toFixed(2)).toString()
+    );
+
+    fileObjects.forEach((file) => formData.append("images", file));
+
     try {
       setIsLoading(true);
       setIsOpen(false); // close modal
-      const response = await fetch("http://localhost:4000/api/admin/products/addProduct", 
-      {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:4000/api/admin/products/addProduct",
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
+
       const responseData = await response.json();
-      if (!response.ok) {
-        console.error("Failed to add product: ", response.status);
-        setErrorMessage(responseData.message);
-        setIsLoading(false);
-        return;
-      }
-      setImages([]);  // reset images
+      setIsOpen(false); // close modal
+      setImages([]); // reset images
       setFileObjects([]); // reset file objects
       methods.reset(); // reset form
       setProductChanged(true); // trigger useEffect in ProductsContext to fetch products again
       console.log(responseData);
-      return
+      return;
     } catch (error) {
       console.error(error);
       return;
@@ -150,52 +163,64 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
                   <InputField {...productName_validation} />
                   <div className="flex flex-row justify-between gap-4 items-start">
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...productOriginalPrice_validation} {...methods.register("originalPrice")} />
+                      <InputField
+                        {...productOriginalPrice_validation}
+                        {...methods.register("originalPrice")}
+                      />
                     </div>
                     <div className="flex flex-col gap-1 items-end w-1/2">
-                      <InputField {...discountPercentage_validation} {...methods.register("discountPercentage")} />
+                      <InputField
+                        {...discountPercentage_validation}
+                        {...methods.register("discountPercentage")}
+                      />
                       <p className="font-Nunito font-medium mb-0">
                         Sale Price: ₱{formattedSalePrice}
                       </p>
                     </div>
                   </div>
-
                   <InputField {...availableQuantity_validation} />
-
                   <InputField {...desc_validation} />
-
                   <Controller
                     name="category"
                     control={methods.control}
-                    render={({ field }) => (
+                    rules={{ required: "Category is required" }}
+                    render={({ field, fieldState }) => (
                       <MultiSelect
-                        field={field}
-                        name={"category"}
+                        {...field}
                         selectOptions={categoryOptions}
                         isUserInputAllowed={true}
+                        isMulti={true}
+                        error={fieldState.error}
+                        onChange={field.onChange}
                       />
                     )}
                   />
-
                   <Controller
                     name="brand"
                     control={methods.control}
-                    render={({ field }) => (
+                    rules={{ required: "Brand is required" }}
+                    render={({ field, fieldState }) => (
                       <MultiSelect
-                        field={field}
-                        name="brand"
+                        {...field}
                         selectOptions={brandOptions}
                         isUserInputAllowed={true}
+                        isMulti={false}
+                        error={fieldState.error}
+                        onChange={field.onChange}
                       />
                     )}
                   />
-
                   <div className="flex flex-row gap-4">
                     <div className="flex flex-col gap-2">
                       <label htmlFor="images" className="text-lg font-medium">
                         Upload Images ({images.length})
                       </label>
                       <div className="relative">
+                        <div className="flex flex-row justify-end">
+                          {errors.images && (
+                            <ErrorMessage message={errors.images.message} />
+                          )}
+                        </div>
                         <input
                           type="file"
                           id="images"
@@ -204,7 +229,10 @@ const Modal = ({ isOpen, setIsOpen, images, setImages, fileObjects, setFileObjec
                           multiple
                           onChange={handleImageChange}
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                          required
+                          {...methods.register("images", {
+                            validate: (files) =>
+                              files.length > 0 || "Images are required",
+                          })}
                         />
 
                         <button className="bg-white hover:bg-indigo-200 text-indigo-600 font-semibold py-2 px-4 rounded-lg flex items-center gap-2">

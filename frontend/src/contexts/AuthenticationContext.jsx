@@ -32,7 +32,7 @@ export const AuthenticationProvider = ({ children }) => {
                 setIsAdmin(false);
             }
             setIsLoadingAuth(false);
-            console.log(`Fetching auth data: isAuthenticated ${isAuthenticated} isAdmin ${isAdmin}`); // ! Remove this
+            // console.log(`Fetching auth data: isAuthenticated ${isAuthenticated} isAdmin ${isAdmin}`); 
             return
         } catch (error) {
             console.error('Error fetching auth data: ', error);
@@ -40,7 +40,7 @@ export const AuthenticationProvider = ({ children }) => {
             return
         }
     }
-
+    
     const login = async (data) => {
         try {
             const response = await fetch("http://localhost:4000/api/login", 

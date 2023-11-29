@@ -4,7 +4,11 @@ import {
   faArrowRight,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+
+// CONTEXTS
+import { ShoppingCartContext } from "../../contexts/ShoppingCartContext";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext";
 
 const CARD_WIDTH = 300;
 const CARD_HEIGHT = 440;
@@ -15,7 +19,7 @@ import ProductModal from "./ProductModal";
 import Loader from "../Loader";
 
 const Section = ({ title, category, products, isLoading }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   function checkCategory(product) {
@@ -39,13 +43,6 @@ const Section = ({ title, category, products, isLoading }) => {
     filteredProducts = products;
     // setIsLoading(false)
   }
-
-  useEffect(() => {
-    console.log("Modal open state:", isOpen);
-    if (isOpen) {
-      console.log("Selected product details:", selectedProduct);
-    }
-  }, [isOpen]);
 
   const handleCardClick = (product) => {
     setSelectedProduct(product);
@@ -96,6 +93,8 @@ const Section = ({ title, category, products, isLoading }) => {
 };
 
 const Card = ({
+  url,
+  _id,
   brand,
   name,
   discountedPrice,
@@ -170,7 +169,7 @@ const Card = ({
             </div>
           </div>
           <div className="absolute bottom-4 left-0 w-full px-4 break-all">
-            <Button type={"cart"} />
+            <Button type={"cart"} productId={_id} />
           </div>
         </div>
       </div>
@@ -180,14 +179,23 @@ const Card = ({
 
 export default Section;
 
-const Button = ({ type, category, products, title}) => {
+const Button = ({ type, category, products, title, productId}) => {
+  const { addToCart } = useContext(ShoppingCartContext);
+  const { isAuthenticated } = useContext(AuthenticationContext);
+
   const [isClicked, setIsClicked] = useState(false);
 
   {
     /* TODO: ADD THE ITEM TO THE USER'S CART */
   }
   const handleClick = (e) => {
+    if (!isAuthenticated) {
+      alert("Please login to add items to your cart.");
+      e.stopPropagation();
+      return;
+    }
     setIsClicked(true);
+    addToCart(productId, 1);
     setTimeout(() => {
       setIsClicked(false);
     }, 2000);

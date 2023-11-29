@@ -4,7 +4,7 @@ import {
   faArrowRight,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate , useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { useState, useEffect, useContext } from "react";
 import NavBar from "../../components/NavBar.jsx";
@@ -16,14 +16,13 @@ import ErrorMessage from "../../components/ErrorMessage.jsx";
 import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 const CategoryPage = () => {
-  const {state} = useLocation();
+  const { state } = useLocation();
   const [saleData, setSaleData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
   const { isAuthenticated, isAdmin } = useContext(AuthenticationContext);
 
-  if (state.category == "mostDiscounted"){
-
+  if (state.category == "mostDiscounted") {
   }
 
   useEffect(() => {
@@ -33,7 +32,6 @@ const CategoryPage = () => {
 
         setSaleData(data);
         setIsLoading(false);
-
       } catch (error) {
         console.log(error);
       }
@@ -63,7 +61,6 @@ const CategoryPage = () => {
     }
   };
 
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -84,8 +81,8 @@ const CategoryPage = () => {
           <section className="overflow-auto ">
             <SearchBar />
             <Section
-              title= {state.title}
-              category= {state.category}
+              title={state.title}
+              category={state.category}
               products={state.products}
             />
           </section>
@@ -179,7 +176,7 @@ const CARD_HEIGHT = 440;
 const CARD_CONTAINER_HEIGHT = CARD_HEIGHT + 30;
 const MARGIN = 20;
 
-const Section = ({ title, category, products}) => {
+const Section = ({ title, category, products }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -212,7 +209,6 @@ const Section = ({ title, category, products}) => {
     }
   }, [isOpen]);
 
-
   const handleCardClick = (product) => {
     setSelectedProduct(product);
     setIsOpen(true);
@@ -228,10 +224,11 @@ const Section = ({ title, category, products}) => {
             </p>
           </div>
           <div
-            className="flex overflow-x-auto overflow-y-hidden w-auto"
+            className="grid grid-flow-row auto-rows-max overflow-y-auto"
             style={{
-              scrollSnapType: "x mandatory",
-              height: CARD_CONTAINER_HEIGHT,
+              gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", // Replace 250px with your card width
+              gap: "1rem", // Adjust the gap between the cards as needed
+              height: "100vh", // Adjust the height as per your design needs
             }}
           >
             {filteredProducts.map((product) => (

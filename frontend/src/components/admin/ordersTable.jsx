@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Dropdown from "../../components/admin/dropdown";
+import ViewOrder from "../../components/admin/viewOrder";
 const ordersTable = () => {
   return <Table />;
 };
@@ -18,6 +19,7 @@ const Table = () => {
             <th className="text-start p-4 font-medium">Location</th>
             <th className="text-start p-4 font-medium">Order Date</th>
             <th className="text-start p-4 font-medium">Order Status</th>
+            <th className="text-center py-4 px-0 font-medium"></th>
           </tr>
         </thead>
 
@@ -92,6 +94,9 @@ const TableRows = ({ order }) => {
           placeholder="Status"
           initialValue={{ text: selectedValue }}
         />
+      </td>
+      <td className="p-4">
+        <ViewOrder />
       </td>
     </motion.tr>
   );
