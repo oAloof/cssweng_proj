@@ -193,13 +193,12 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                         {...field}
                         selectOptions={categoryOptions}
                         isUserInputAllowed={true}
-                        error={fieldState.error}
-                        setError={methods.setError}
                         isMulti={true}
+                        error={fieldState.error}
+                        onChange={field.onChange}
                       />
                     )}
                   />
-
                   <Controller
                     name="brand"
                     control={methods.control}
@@ -209,9 +208,9 @@ const Modal = ({ isOpen, setIsOpen, title, product }) => {
                         {...field}
                         selectOptions={brandOptions}
                         isUserInputAllowed={true}
-                        error={fieldState.error}
-                        setError={methods.setError}
                         isMulti={false}
+                        error={fieldState.error}
+                        onChange={field.onChange}
                       />
                     )}
                   />

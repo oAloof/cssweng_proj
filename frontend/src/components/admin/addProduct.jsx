@@ -21,10 +21,13 @@ const AddProduct = ({ title, setErrorMessage }) => {
   const [fileObjects, setFileObjects] = useState([]);
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    const images = files.map((file) => URL.createObjectURL(file));
-    setFileObjects((prevFiles) => prevFiles.concat(files)); // Store the file objects in state
-    setImages((prevImages) => prevImages.concat(images));
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      console.log("Selected files:", filesArray);
+      const mappedImages = filesArray.map((file) => URL.createObjectURL(file));
+      setFileObjects((prevFiles) => [...prevFiles, ...filesArray]);
+      setImages((prevImages) => [...prevImages, ...mappedImages]);
+    }
   };
 
   return (
@@ -81,21 +84,16 @@ const Modal = ({
 
   const addProduct = async (data) => {
     const formData = new FormData();
-    // Append existing form data
     Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
 
-    // Append discounted price
     formData.append(
       "discountedPrice",
       parseFloat(discountedPrice.toFixed(2)).toString()
     );
 
-    // Append images
-    fileObjects.forEach((file) => {
-      formData.append("images", file);
-    });
+    fileObjects.forEach((file) => formData.append("images", file));
 
     try {
       setIsLoading(true);
@@ -108,6 +106,7 @@ const Modal = ({
           body: formData,
         }
       );
+
       const responseData = await response.json();
       setIsOpen(false); // close modal
       setImages([]); // reset images
@@ -205,7 +204,7 @@ const Modal = ({
                         {...field}
                         selectOptions={brandOptions}
                         isUserInputAllowed={true}
-                        isMulti={false} // Brand is not a multi-select in the original example
+                        isMulti={false}
                         error={fieldState.error}
                         onChange={field.onChange}
                       />
