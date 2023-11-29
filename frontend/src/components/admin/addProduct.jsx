@@ -222,6 +222,7 @@ const Modal = ({
                             <ErrorMessage message={errors.images.message} />
                           )}
                         </div>
+                        
                         <input
                           type="file"
                           id="images"
@@ -230,10 +231,7 @@ const Modal = ({
                           multiple
                           onChange={handleImageChange}
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                          {...methods.register("images", {
-                            validate: (files) =>
-                              files.length > 0 || "Images are required",
-                          })}
+                          required
                         />
 
                         <button className="bg-white hover:bg-indigo-200 text-indigo-600 font-semibold py-2 px-4 rounded-lg flex items-center gap-2">
