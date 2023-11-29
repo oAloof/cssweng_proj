@@ -23,7 +23,7 @@ export const ShoppingCartProvider = ({ children }) => {
     useEffect(() => {
         console.log(shoppingCart);
     }, [shoppingCart])
-
+    
     const fetchCartData = async () => {
         try {
             const response = await fetch("http://localhost:4000/api/cart", 

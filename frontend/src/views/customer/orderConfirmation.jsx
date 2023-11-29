@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import TopNav from "../../components/Menu";
 import Navbar from "../../components/NavBar.jsx";
 import Progress from "../../components/Progress.jsx";
@@ -9,6 +9,10 @@ import InputField from "../../components/InputField.jsx";
 import Dropdown from "../../components/CitySelect.jsx";
 import { motion } from "framer-motion";
 import { MdError } from "react-icons/md";
+
+// CONTEXTS 
+import { AuthenticationContext } from "../../contexts/AuthenticationContext";
+import { ShoppingCartContext } from "../../contexts/ShoppingCartContext.jsx";
 
 import { useForm, FormProvider } from "react-hook-form";
 import {
@@ -28,7 +32,7 @@ const CartItem = ({ item }) => {
       <div className="flex items-center w-full flex-grow">
         <img
           className="h-full w-32 object-contain mr-4"
-          src={item.image}
+          src={`https://drive.google.com/uc?export=view&id=${item.image}`}
           alt={item.name}
         />
         <div className="flex flex-col flex-grow">
@@ -51,128 +55,50 @@ const CartItem = ({ item }) => {
       </div>
       <div className="flex items-end">
         <div className="flex flex-col justify-center items-end h-20">
-          <p className="font-Nunito font-bold m-0 text-2xl">₱{item.price}</p>
+          <p className="font-Nunito font-bold m-0 text-2xl">₱{item.discountedPrice}</p>
         </div>
       </div>
     </div>
   );
 };
 const OrderConfirmationPage = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Product 1",
-      brand: "Union",
-      quantity: 2,
-      price: 15.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 3,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 4,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 5,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 6,
-      name: "Product 3",
-      brand: "Union",
-      quantity: 2,
-      price: 19.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 7,
-      name: "Product 4",
-      brand: "Union",
-      quantity: 1,
-      price: 14.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 8,
-      name: "Product 5",
-      brand: "Union",
-      quantity: 3,
-      price: 24.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 9,
-      name: "Product 6",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 10,
-      name: "Product 7",
-      brand: "Union",
-      quantity: 2,
-      price: 19.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 11,
-      name: "Product 8",
-      brand: "Union",
-      quantity: 1,
-      price: 14.99,
-      image: "/Product Photo Placeholder.png",
-    },
-  ]);
+  const { shoppingCart, isLoadingCart } = useContext(ShoppingCartContext);
+  const { isAuthenticated } = useContext(AuthenticationContext);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
 
   const location = "Manila";
 
-  const cartCount = cartItems.length;
-
-  const totalPrice = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  const cartCount = shoppingCart.length;
 
   const [isOrderSummaryOpen, setOrderSummaryOpen] = useState(true);
   const [isCartOpen, setCartOpen] = useState(false);
 
-  const subtotal = totalPrice.toFixed(2);
-  const totalSaved = "10.00";
-  const shippingFee = "5.00";
+  const totalPrice = shoppingCart.reduce(
+    (acc, item) => acc + item.originalPrice * item.quantity,
+    0
+  );
 
-  const navigate = useNavigate();
+  const totalDiscountedPrice = shoppingCart.reduce(
+    (acc, item) => acc + item.discountedPrice * item.quantity,
+    0
+  );
+
+  const subtotal = totalPrice.toFixed(2);
+  const totalSaved = (totalPrice - totalDiscountedPrice).toFixed(2);
+  const shippingFee = "5.00"; // ! To change
 
   const onUpdateClick = () => {
     navigate("/cart");
   };
 
   const total = (
-    parseFloat(subtotal) +
+    parseFloat(subtotal) -
     parseFloat(totalSaved) +
     parseFloat(shippingFee)
   ).toFixed(2);
@@ -292,7 +218,7 @@ const OrderConfirmationPage = () => {
             onToggle={() => setCartOpen(!isCartOpen)}
           >
             <div className="bg-white ">
-              {cartItems.map((item) => (
+              {shoppingCart.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
               <div className="flex justify-center mt-8">
