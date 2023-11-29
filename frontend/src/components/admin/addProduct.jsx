@@ -190,13 +190,12 @@ const Modal = ({
                         {...field}
                         selectOptions={categoryOptions}
                         isUserInputAllowed={true}
-                        error={fieldState.error}
-                        setError={methods.setError}
                         isMulti={true}
+                        error={fieldState.error}
+                        onChange={field.onChange}
                       />
                     )}
                   />
-
                   <Controller
                     name="brand"
                     control={methods.control}
@@ -206,9 +205,9 @@ const Modal = ({
                         {...field}
                         selectOptions={brandOptions}
                         isUserInputAllowed={true}
+                        isMulti={false} // Brand is not a multi-select in the original example
                         error={fieldState.error}
-                        setError={methods.setError}
-                        isMulti={false}
+                        onChange={field.onChange}
                       />
                     )}
                   />
@@ -232,11 +231,9 @@ const Modal = ({
                           onChange={handleImageChange}
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                           {...methods.register("images", {
-                            required: "Images are required",
                             validate: (files) =>
                               files.length > 0 || "Images are required",
                           })}
-                          required
                         />
 
                         <button className="bg-white hover:bg-indigo-200 text-indigo-600 font-semibold py-2 px-4 rounded-lg flex items-center gap-2">
