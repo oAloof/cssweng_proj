@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import { MdError } from "react-icons/md";
 import Loader from "../../components/Loader.jsx";
 
-// CONTEXTS 
+// CONTEXTS
 import { AuthenticationContext } from "../../contexts/AuthenticationContext";
 import { ShoppingCartContext } from "../../contexts/ShoppingCartContext.jsx";
 
@@ -56,7 +56,9 @@ const CartItem = ({ item }) => {
       </div>
       <div className="flex items-end">
         <div className="flex flex-col justify-center items-end h-20">
-          <p className="font-Nunito font-bold m-0 text-2xl">₱{item.discountedPrice}</p>
+          <p className="font-Nunito font-bold m-0 text-2xl">
+            ₱{item.discountedPrice}
+          </p>
         </div>
       </div>
     </div>
@@ -75,7 +77,8 @@ const OrderConfirmationPage = () => {
     }
   }, [isAuthenticated]);
 
-  const methods = useForm({ mode: "onSubmit",
+  const methods = useForm({
+    mode: "onSubmit",
     defaultValues: {
       username: user.username,
       firstname: user.firstName,
@@ -85,7 +88,7 @@ const OrderConfirmationPage = () => {
       streetAddress: user.streetAddress,
       city: user.city,
       zip: user.zip,
-    }, 
+    },
   });
 
   useEffect(() => {
@@ -94,23 +97,22 @@ const OrderConfirmationPage = () => {
 
   const getUserInformation = async () => {
     if (!isAuthenticated) return;
-    
+
     try {
-      const response = await fetch("http://localhost:4000/api/auth/user", 
-      {
-          method: "GET",
-          credentials: "include",
-          headers: {
-              "Content-Type": "application/json",
-          },
+      const response = await fetch("http://localhost:4000/api/auth/user", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       if (!response.ok) {
-          console.log("User not found.")
-          return
+        console.log("User not found.");
+        return;
       }
       const responseData = await response.json();
       setUser(responseData.user);
-       // Reset form with fetched user data
+      // Reset form with fetched user data
       methods.reset({
         username: responseData.user.username,
         firstName: responseData.user.firstName,
@@ -122,11 +124,11 @@ const OrderConfirmationPage = () => {
         zip: responseData.user.zip,
       });
       setIsLoadingUser(false);
-      return
+      return;
     } catch (error) {
-      console.error('Error fetching user data: ', error);
+      console.error("Error fetching user data: ", error);
     }
-  }
+  };
 
   const location = "Manila";
 
@@ -167,17 +169,20 @@ const OrderConfirmationPage = () => {
     navigate("/login");
   }, [navigate]);
 
-  const onSubmit = useCallback((data) => {
-    // Navigate to the billing page, passing the form data
-    navigate('/billing', { state: { data } });;
-  }, [navigate]);
+  const onSubmit = useCallback(
+    (data) => {
+      // Navigate to the billing page, passing the form data
+      navigate("/billing", { state: { data } });
+    },
+    [navigate]
+  );
 
   // TODO: VALIDATE IF USER'S CITY MATCHES THE SALE'S SET CITY
   const [dropdownError, setdropdownError] = useState(false);
 
   if (isLoadingCart || isLoadingUser) {
     return <Loader />;
-  } 
+  }
 
   return (
     <div className="flex flex-col pt-[9vh] min-h-screen bg-slate-200 pb-[15vh] gap-4">
@@ -186,8 +191,10 @@ const OrderConfirmationPage = () => {
         <TopNav />
         <div className="md:w-2/3">
           <FormProvider {...methods}>
-            <form className="p-4 rounded-xl border-[1px] bg-white border-slate-300  shadow-xl"
-              onSubmit={methods.handleSubmit(onSubmit)}>
+            <form
+              className="p-4 rounded-xl border-[1px] bg-white border-slate-300  shadow-xl"
+              onSubmit={methods.handleSubmit(onSubmit)}
+            >
               <h2 className="font-Proxima font-bold text-3xl mb-3">
                 Order Confirmation
               </h2>

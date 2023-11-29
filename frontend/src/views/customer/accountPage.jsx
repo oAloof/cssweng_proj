@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import NavBar from "../../components/NavBar.jsx";
 import Menu from "../../components/Menu.jsx";
 import { AnimatePresence, motion } from "framer-motion";
@@ -21,15 +21,70 @@ import Check from "../../components/Check.jsx";
 import Button from "../../components/customer/Button.jsx";
 import Dropdown from "../../components/CitySelect.jsx";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/Loader.jsx";
+
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 const AccountPage = () => {
+  const { isAuthenticated } = useContext(AuthenticationContext);
+  const [user, setUser] = useState(null);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
+
+  const methods = useForm({
+    mode: "onSubmit",
+  });
+
+  const getUserInformation = async () => {
+    if (!isAuthenticated) return;
+
+    setIsLoadingUser(true);
+    try {
+      const response = await fetch("http://localhost:4000/api/auth/user", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error("User not found");
+      }
+      const responseData = await response.json();
+      setUser(responseData.user);
+
+      methods.reset({
+        username: responseData.user.username,
+        firstname: responseData.user.firstName,
+        lastname: responseData.user.lastName,
+        email: responseData.user.email,
+        contactNumber: responseData.user.contactNumber,
+        streetAddress: responseData.user.streetAddress,
+        city: responseData.user.city,
+        zip: responseData.user.zip,
+      });
+    } catch (error) {
+      console.error("Error fetching user data: ", error);
+    }
+    setIsLoadingUser(false);
+  };
+
+  useEffect(() => {
+    getUserInformation();
+  }, [isAuthenticated]);
+
+  if (isLoadingUser) {
+    return <Loader />;
+  }
+
   return (
     <div className="h-screen bg-slate-200">
       <div>
         <div className="mt-[7vh]">
           <Menu />
           <section className="overflow-auto ">
-            <AccountSection />
+            <FormProvider {...methods}>
+              <AccountSection methods={methods} />
+            </FormProvider>
           </section>
         </div>
         <NavBar />
@@ -40,14 +95,14 @@ const AccountPage = () => {
 
 export default AccountPage;
 
-const AccountSection = () => {
+const AccountSection = ({ methods }) => {
   const [selected, setSelected] = useState(TABS[0]);
 
   return (
     <section className="overflow-hidden bg-slate-200 px-4 py-12 text-slate-800 min-h-screen pb-[20vh]">
-      <Heading />
+      <Heading methods={methods} />
       <Tabs selected={selected} setSelected={setSelected} />
-      <Headers selected={selected} />
+      <Headers selected={selected} methods={methods} />
     </section>
   );
 };
@@ -97,19 +152,21 @@ const Tabs = ({ selected, setSelected }) => {
   );
 };
 
-const Headers = ({ selected }) => {
+const Headers = ({ selected, methods }) => {
   return (
     <div className="mx-auto mt-12 max-w-3xl">
       <AnimatePresence mode="wait">
-        {selected === "Edit Account Details" && <EditAccountDetailsTab />}
+        {selected === "Edit Account Details" && (
+          <EditAccountDetailsTab methods={methods} />
+        )}
         {selected === "View Orders" && <ViewOrdersTab />}
       </AnimatePresence>
     </div>
   );
 };
 
-const EditAccountDetailsTab = () => {
-  const methods = useForm({ mode: "onSubmit" });
+const EditAccountDetailsTab = ({ methods }) => {
+  //const methods = useForm({ mode: "onSubmit" });
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
 
@@ -118,9 +175,42 @@ const EditAccountDetailsTab = () => {
   const [validateNumber, setValidateNumber] = useState(false);
   const [validatePasswordMatch, setValidatePasswordMatch] = useState(false);
 
-  const onSubmit = (data) => {
-    // TODO: EDIT USER ACCOUNT DEETS
+  const updateUserAccountDetails = async (data) => {
+    const formData = new FormData();
+
+    // Append form data
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
+
+    try {
+      const response = await fetch(
+        "http://localhost:4000/api/auth/updateUserDetails",
+        {
+          method: "PATCH",
+          credentials: "include",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to update user account details: ${response.status}`
+        );
+      }
+
+      const responseData = await response.json();
+      console.log("Account details updated:", responseData);
+    } catch (error) {
+      console.error("Error updating user account details:", error);
+    }
   };
+
+  const onSubmit = methods.handleSubmit((data) => {
+    // Handle form submission
+    console.log(data);
+    // TODO: EDIT USER ACCOUNT DETAILS
+  });
 
   const OnShippingDetailsClick = (data) => {
     // TODO: EDIT USER ACCOUNT DEETS
@@ -140,6 +230,9 @@ const EditAccountDetailsTab = () => {
       bothFieldsFilled && password === confirmedPassword
     );
   }, [password, confirmedPassword]);
+
+  const { watch } = methods;
+  const currentCity = watch("city");
 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
@@ -172,7 +265,7 @@ const EditAccountDetailsTab = () => {
       <Header header={"Account Details"}>
         <FormProvider {...methods}>
           <form
-            onSubmit={methods.handleSubmit(onSubmit)}
+            onSubmit={onSubmit}
             noValidate
             autoComplete="off"
             className="flex self-stretch flex-col items-start justify-start gap-4"
@@ -181,10 +274,10 @@ const EditAccountDetailsTab = () => {
               <InputField {...username_validation} />
               <div className="flex-row flex justify-stretch gap-4">
                 <div className="w-1/2">
-                  <InputField {...firstname_validation} />
+                  <InputField {...firstname_validation} name="firstname" />
                 </div>
                 <div className="w-1/2">
-                  <InputField {...lastname_validation} />
+                  <InputField {...lastname_validation} name="lastname" />
                 </div>
               </div>
               <InputField {...email_validation} />
@@ -244,9 +337,8 @@ const EditAccountDetailsTab = () => {
 
       <Header header={"Shipping Details"}>
         <FormProvider {...methods}>
-          <form>
+          <form className="overflow-y-visible">
             <div className="bg-white">
-              {/* TODO: PRE-FILL THESE FIELDS WITH THE USER'S DATA, PREVENT CITY DROPDOWN*/}
               <div className="flex flex-col w-full gap-4">
                 <InputField {...streetAddress_validation} />
 
@@ -256,6 +348,7 @@ const EditAccountDetailsTab = () => {
                       name="city"
                       {...city_validation}
                       onClick={() => setdropdownError(true)}
+                      defaultValue={currentCity}
                     />
                   </div>
                   <div className="w-1/2">
@@ -351,7 +444,7 @@ const Header = ({ header, children }) => {
   return (
     <motion.div
       animate={open ? "open" : "closed"}
-      className={`rounded-xl border-[1px] border-slate-300 px-4 transition-colors ${
+      className={`rounded-xl border-[1px] border-slate-300 px-4 transition-colors overflow-y-visible ${
         open ? "bg-white" : "bg-slate-100"
       }`}
     >

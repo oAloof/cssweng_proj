@@ -3,17 +3,17 @@
 require("dotenv").config(); // loads the environment variables from .env file
 
 // import necessary node_modules
-const express = require('express')
-const mongoose = require('mongoose')
-const cors = require('cors')
-const cookieParser = require('cookie-parser')
-const adminProductRoutes = require('./routes/adminProductsRouter')
-const adminOrdersRoutes = require('./routes/adminOrdersRouter')
-const adminSalesRoutes = require('./routes/adminSalesRouter')
-const customerSalesRoutes = require('./routes/customerSalesRouter')
-const customerGeneralRoutes = require('./routes/customerGeneralRouter')
-const userController = require('./controllers/userController')
-const { authenticate } = require('./middlewares/authenticate')
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const adminProductRoutes = require("./routes/adminProductsRouter");
+// const adminOrdersRoutes = require('./src/routes/adminOrdersRouter')
+const adminSalesRoutes = require("./routes/adminSalesRouter");
+const customerSalesRoutes = require("./routes/customerSalesRouter");
+const customerGeneralRoutes = require("./routes/customerGeneralRouter");
+const userController = require("./controllers/userController");
+const { authenticate } = require("./middlewares/authenticate");
 // express app
 const app = express();
 
@@ -48,13 +48,14 @@ app.post("/api/register", authenticate, userController.registerUser);
 app.post("/api/logout", authenticate, userController.logoutUser);
 
 // Shopping Cart API
-app.get('/api/cart', authenticate, userController.getCart)
-app.post('/api/cart/update', authenticate, userController.updateCart)
-app.post('/api/cart/updateItemQuantity', authenticate, userController.updateCartItemQuantity)
-app.delete('/api/cart/delete', authenticate, userController.deleteCartItem)
-
-// Orders API
-app.use('/api/orders/', adminOrdersRoutes)
+app.get("/api/cart", authenticate, userController.getCart);
+app.post("/api/cart/update", authenticate, userController.updateCart);
+app.post(
+  "/api/cart/updateItemQuantity",
+  authenticate,
+  userController.updateCartItemQuantity
+);
+app.delete("/api/cart/delete", authenticate, userController.deleteCartItem);
 
 // Customer API
 app.use("/api/sales", customerSalesRoutes);
