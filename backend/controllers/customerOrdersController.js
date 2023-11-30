@@ -123,7 +123,36 @@ const addOrder = async (req, res) => {
     res.status(200).send({message: 'Payment verification successful.', orderNumber: orderNumber})
 }
 
+const getUserOrders = async (req, res) => {
+    id = req.params.id
+    try {
+        const order = await Order.find({customer: id}).sort({createdAt: -1})
+        res.status(200).json(order)
+    return
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({message: 'Server error'})
+        return
+    }
+}
+
+const getFirstProduct = async (req, res) => {
+    id = req.params.id
+    try {
+        const product = await Product.findOne({_id: id})
+        res.status(200).json(product)
+    return
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({message: 'Server error'})
+        return
+    }
+}
+
+
 module.exports = {
     addOrder,
-    getOrder
+    getOrder,
+    getUserOrders, 
+    getFirstProduct
 }
