@@ -20,7 +20,6 @@ router.patch('/editProduct', upload.uploadImage.any(), productController.editPro
 router.delete('/delete', productController.deleteProduct)
 
 // // GET a single product
-// router.get('/:id', productController.singleProductView)
-
+router.get('/:id', productController.getProduct);
 // export the router
 module.exports = router
