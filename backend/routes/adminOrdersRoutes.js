@@ -5,11 +5,10 @@ const router = express.Router()
 const orderController = require('../controllers/adminOrderController')
 const { authenticate, isAdmin } = require('../middlewares/authenticate')
 
-// GET all sales
+// GET all orders
 router.get('/getOrders', orderController.getOrders) //authenticate, isAdmin
 
 router.get('/user/:id', orderController.getUser);
-
 
 // export the router
 module.exports = router

@@ -1,12 +1,15 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import TopNav from "../../components/Menu.jsx";
 import Navbar from "../../components/NavBar.jsx";
 import Progress from "../../components/InvoiceProgress.jsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import ExpandableSection from "../../components/customer/ExpandableSection.jsx";
 import Button from "../../components/customer/Button.jsx";
 import Logo from "../../components/Logo.jsx";
-import { useForm, FormProvider } from "react-hook-form";
+import Loader from "../../components/Loader.jsx";
+
+// CONTEXTS
+import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 const CartItem = ({ item }) => {
   return (
@@ -42,96 +45,55 @@ const CartItem = ({ item }) => {
   );
 };
 const Billing = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Product 1",
-      brand: "Union",
-      quantity: 2,
-      price: 15.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 3,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 4,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 5,
-      name: "Product 2",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 6,
-      name: "Product 3",
-      brand: "Union",
-      quantity: 2,
-      price: 19.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 7,
-      name: "Product 4",
-      brand: "Union",
-      quantity: 1,
-      price: 14.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 8,
-      name: "Product 5",
-      brand: "Union",
-      quantity: 3,
-      price: 24.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 9,
-      name: "Product 6",
-      brand: "Union",
-      quantity: 1,
-      price: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 10,
-      name: "Product 7",
-      brand: "Union",
-      quantity: 2,
-      price: 19.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 11,
-      name: "Product 8",
-      brand: "Union",
-      quantity: 1,
-      price: 14.99,
-      image: "/Product Photo Placeholder.png",
-    },
-  ]);
+  const [cartItems, setCartItems] = useState([]); // ! Remove this
+  const [isLoadingOrder, setIsLoadingOrder] = useState(true);
+  const [orderDetails, setOrderDetails] = useState(null);
+  const { isAuthenticated } = useContext(AuthenticationContext);
+  const locationObject = useLocation();
+  const orderNumber = locationObject.state?.orderNumber;
+
+  // get order details from backend
+  const fetchOrderDetails = async () => {
+    console.log(orderNumber);
+
+    try {
+      const response = await fetch(
+        `http://localhost:4000/api/orders/${orderNumber}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        console.log("Order not found.");
+        return;
+      }
+      const responseData = await response.json();
+      console.log(responseData.order);
+      setOrderDetails(responseData.order);
+      return;
+    } catch (error) {
+      console.error("Error fetching order details: ", error);
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated && isLoadingOrder) {
+      fetchOrderDetails();
+      setIsLoadingOrder(false);
+    }
+  }, [isAuthenticated, isLoadingOrder]);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
 
   const cartCount = cartItems.length;
 
@@ -148,8 +110,6 @@ const Billing = () => {
   const totalSaved = "10.00";
   const shippingFee = "5.00";
 
-  const navigate = useNavigate();
-
   const userInfo = [
     { label: "Name", value: "Juju Juwia" },
     { label: "Contact Number", value: "09199999999" },
@@ -163,6 +123,10 @@ const Billing = () => {
     total: "12300.00",
     status: "Pending Confirmation",
   };
+
+  if (isLoadingOrder) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex flex-col min-h-screen pt-[9vh] bg-slate-200 pb-[15vh] gap-4">

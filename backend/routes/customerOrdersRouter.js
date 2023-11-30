@@ -7,5 +7,7 @@ const orderController = require('../controllers/customerOrdersController')
 
 // POST new order
 router.post('/checkout', authenticate, upload.uploadImage.any(), orderController.addOrder)
+// GET a specific order
+router.get('/:orderNumber', authenticate, orderController.getOrder)
 
 module.exports = router

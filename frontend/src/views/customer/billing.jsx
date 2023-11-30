@@ -141,10 +141,16 @@ const Billing = () => {
             body: formData,
           }
         );
-
-        navigate("/invoice");
-
+        
         const responseData = await response.json();
+        if (!response.ok) {
+          console.log(responseData.message);
+          return;
+        }
+
+
+        // navigate to invoice, pass order id
+        navigate("/invoice", { state: { data: responseData.orderNumber } });
       } catch (error) {
         console.error("Error confirming order: ", error);
         return;

@@ -4,6 +4,41 @@ const Product = require('../models/productModel')
 const upload = require('../middlewares/fileUpload')
 const crypto = require('crypto')
 
+const getOrder = async (req, res) => {
+    // Check if user is logged in
+    if (!req.user) {
+        res.status(400).send({message: 'User is not logged in.'})
+        return
+    }
+
+    const { _id } = req.user
+
+    // Check if user exists in the database
+    const user = await User.findOne({_id})
+    if (!user) {
+        res.status(404).send({ message: 'User not found.' })
+        return
+    }
+
+    console.log(req.params);
+    const { orderNumber } = req.params
+
+    // Check if order exists in the database
+    const order = await Order.findOne({orderNumber: orderNumber})
+    if (!order) {
+        res.status(404).send({ message: 'Order not found.' })
+        return
+    }
+
+    // Check if user is the owner of the order
+    if (order.customer.toString() !== user._id.toString()) {
+        res.status(401).send({ message: 'You are not authorized to view this order.' })
+        return
+    }
+
+    res.status(200).send(order)
+}
+
 const addOrder = async (req, res) => {
     // Check if user is logged in
     if (!req.user) {
@@ -85,9 +120,10 @@ const addOrder = async (req, res) => {
         screenshotOfPayment: imageIDs
     })
     
-    res.status(200).send({message: 'Payment verification successful.'})
+    res.status(200).send({message: 'Payment verification successful.', orderNumber: orderNumber})
 }
 
 module.exports = {
-    addOrder
+    addOrder,
+    getOrder
 }
