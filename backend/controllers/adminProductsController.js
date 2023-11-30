@@ -192,9 +192,23 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+const getProduct = async (req, res) => {
+    id = req.params.id
+    try {
+        const product = await Product.findOne({_id: id})
+        res.status(200).json(product)
+    return
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({message: 'Server error'})
+        return
+    }
+}
+
 module.exports = {
     getProducts,
     addProduct,
     editProduct,
-    deleteProduct
+    deleteProduct,
+    getProduct
 }

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FiAlertCircle, FiEye } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 
 const ViewOrder = ({ order }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +36,7 @@ const Modal = ({ isOpen, setIsOpen, order }) => {
             <div className="relative z-10">
               <div className="text-sm flex flex-col gap-0 text-slate-600 font-Nunito">
                 <h2 className="font-Proxima uppercase">
-                  Order #{order.referenceNumber}
+                  Order #{order.orderNumber}
                 </h2>
                 <p>Status: {order.status}</p>
                 <p>Total Cost: ₱{order.totalCost}</p>
@@ -46,7 +46,7 @@ const Modal = ({ isOpen, setIsOpen, order }) => {
                 <p>Delivery Address: {order.deliveryAddress}</p>
                 <div className="flex flex-col gap-0 mt-10">
                   <p className="font-Nunito font-bold text-lg">Order Items</p>
-                  {order.order.map((item, index) => (
+                  {order.order.map((item) => (
                     <CartItem key={item.product._id} item={item} />
                   ))}
                 </div>
@@ -68,16 +68,46 @@ const Modal = ({ isOpen, setIsOpen, order }) => {
 };
 
 const CartItem = ({ item }) => {
-  const product = item.product;
+  const id = item.product;
+  const [product, setProductData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const data = await getProductData();
+
+        setProductData(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchProduct();
+  }, []);
+
+  const getProductData = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:4000/api/admin/products/" + id
+      );
+      if (!response.ok) {
+        console.log("Error fetching data");
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex flex-grow items-center justify-between border-b border-gray-200 py-3">
       <div className="flex items-center w-full flex-grow">
-        {/* <img
-          className="h-full w-32 object-contain mr-4"
-          src={`https://drive.google.com/uc?export=view&id=${product.images[0]}`}
-          alt={product.name}
-        /> */}
         <div className="flex flex-col flex-grow">
           <div className="flex justify-between w-full">
             <div className="flex flex-col">
