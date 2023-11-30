@@ -12,22 +12,25 @@ import Loader from "../../components/Loader.jsx";
 import { AuthenticationContext } from "../../contexts/AuthenticationContext.jsx";
 
 const CartItem = ({ item }) => {
+  useEffect(() => {
+    console.log(item);
+  })
   return (
     <div className="flex flex-grow items-center justify-between border-b border-gray-200 py-3">
       <div className="flex items-center w-full flex-grow">
         <img
           className="h-full w-14 object-contain mr-4"
-          src={item.image}
+          src={`https://drive.google.com/uc?export=view&id=${item.product.images[0]}`}
           alt={item.name}
         />
         <div className="flex flex-col flex-grow">
           <div className="flex justify-between w-full">
             <div className="flex flex-col">
               <p className="text-xl font-semibold font-Proxima m-0">
-                {item.name}
+                {item.product.name}
               </p>
               <p className="text-s text-indigo-400 font-Proxima mb-2 ">
-                {item.brand}
+                {item.product.brand}
               </p>
             </div>
           </div>
@@ -36,7 +39,7 @@ const CartItem = ({ item }) => {
               Qty: {item.quantity}
             </p>
             <div className="flex flex-col justify-center items-end ">
-              <p className="font-Nunito font-bold m-0 text-xl">₱{item.price}</p>
+              <p className="font-Nunito font-bold m-0 text-xl">₱{item.product.discountedPrice}</p>
             </div>
           </div>
         </div>
@@ -95,6 +98,7 @@ const Billing = () => {
       ]
       setOrderDetails(formattedOrderData);
       setUserInfo(formattedUserInfo)
+      setCartItems(responseData.order.order)  
       setIsLoadingOrder(false);
       return;
     } catch (error) {
@@ -128,9 +132,9 @@ const Billing = () => {
         <div className="md:w-1/3 w-full gap-4 flex flex-col">
           <div className="px-4 pt-4 pb-10 rounded-xl border-[1px] bg-white border-slate-300 shadow-xl flex flex-col gap-2">
             <div className="flex flex-row justify-between items-center mb-6">
-              <Logo name="invoice" />
-              <p className="font-Nunito font-bold text-2xl mb-0 text-slate-400">
-                ORDER {orderDetails.number}
+              <Logo name="invoice" className = "h-12"/>
+              <p className="font-Nunito font-bold text-sm mb-0 text-slate-400">
+                ORDER #{orderDetails.number}
               </p>
             </div>
             <h2 className="font-Proxima font-bold text-3xl m-0 ">
@@ -166,7 +170,7 @@ const Billing = () => {
           >
             <div className="bg-white ">
               {cartItems.map((item) => (
-                <CartItem key={item.id} item={item} />
+                <CartItem key={item._id} item={item} />
               ))}
             </div>
             <div className="flex flex-col justify-end items-end pt-4">
