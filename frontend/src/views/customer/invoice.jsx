@@ -48,9 +48,19 @@ const Billing = () => {
   const [cartItems, setCartItems] = useState([]); // ! Remove this
   const [isLoadingOrder, setIsLoadingOrder] = useState(true);
   const [orderDetails, setOrderDetails] = useState(null);
+  // const [userInfo, setUserInfo] = useState(null);
   const { isAuthenticated } = useContext(AuthenticationContext);
   const locationObject = useLocation();
   const orderNumber = locationObject.state?.orderNumber;
+  const subtotal = locationObject.state?.subtotal;
+  const totalSaved = locationObject.state?.totalSaved;
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
 
   // get order details from backend
   const fetchOrderDetails = async () => {
@@ -71,7 +81,14 @@ const Billing = () => {
       }
       const responseData = await response.json();
       console.log(responseData.order);
-      setOrderDetails(responseData.order);
+      const formattedOrderData = {
+        number: responseData.order.orderNumber,
+        date: new Date(responseData.order.createdAt).toLocaleDateString(), // format the creation date
+        total: responseData.order.totalCost.toFixed(2), // format the total cost
+        status: responseData.order.status // status of the order
+      }
+      setOrderDetails(formattedOrderData);
+      setIsLoadingOrder(false);
       return;
     } catch (error) {
       console.error("Error fetching order details: ", error);
@@ -82,30 +99,15 @@ const Billing = () => {
   useEffect(() => {
     if (isAuthenticated && isLoadingOrder) {
       fetchOrderDetails();
-      setIsLoadingOrder(false);
     }
   }, [isAuthenticated, isLoadingOrder]);
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
-    }
-  }, [isAuthenticated]);
-
   const cartCount = cartItems.length;
-
-  const totalPrice = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
 
   const [isOrderSummaryOpen, setOrderSummaryOpen] = useState(true);
   const [isCartOpen, setCartOpen] = useState(false);
   const [isInformationOpen, setInformationOpen] = useState(true);
 
-  const subtotal = totalPrice.toFixed(2);
-  const totalSaved = "10.00";
   const shippingFee = "5.00";
 
   const userInfo = [
@@ -114,13 +116,6 @@ const Billing = () => {
     { label: "Address", value: "no doxxing plz, Paradis Island, Marley" },
     { label: "Email", value: "juwiatheGOAT@gmail.com" },
   ];
-
-  const order = {
-    number: "123456789",
-    date: "2022-01-01",
-    total: "12300.00",
-    status: "Pending Confirmation",
-  };
 
   if (isLoadingOrder) {
     return <Loader />;
@@ -135,7 +130,7 @@ const Billing = () => {
             <div className="flex flex-row justify-between items-center mb-6">
               <Logo name="invoice" />
               <p className="font-Nunito font-bold text-2xl mb-0 text-slate-400">
-                ORDER {order.number}
+                ORDER {orderDetails.number}
               </p>
             </div>
             <h2 className="font-Proxima font-bold text-3xl m-0 ">
@@ -147,7 +142,7 @@ const Billing = () => {
               regularly to receive the latest updates regarding the status of
               your order.
             </p>
-            <Progress currentStatus={order.status} />
+            <Progress currentStatus={orderDetails.status} />
             <div className="mt-10 w-3/4 md:w-1/3 self-center">
               <Button text="CONTINUE SHOPPING" onClick={() => navigate("/")} />
             </div>
@@ -165,7 +160,7 @@ const Billing = () => {
           </div>
           <ExpandableSection
             title="Invoice"
-            subtitle={`₱ ${order.total}`}
+            subtitle={`₱ ${orderDetails.total}`}
             isOpen={isOrderSummaryOpen}
             onToggle={() => setOrderSummaryOpen(!isOrderSummaryOpen)}
           >
@@ -185,7 +180,7 @@ const Billing = () => {
                 Shipping Fee: ₱{shippingFee}
               </p>
               <p className="text-3xl font-bold font-Proxima text-indigo-400 m-0">
-                Total: ₱{order.total}
+                Total: ₱{orderDetails.total}
               </p>
             </div>
           </ExpandableSection>
