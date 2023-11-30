@@ -83,7 +83,7 @@ const AccountPage = () => {
           <Menu />
           <section className="overflow-auto ">
             <FormProvider {...methods}>
-              <AccountSection methods={methods} />
+              <AccountSection methods={methods} user={user}/>
             </FormProvider>
           </section>
         </div>
@@ -95,14 +95,14 @@ const AccountPage = () => {
 
 export default AccountPage;
 
-const AccountSection = ({ methods }) => {
+const AccountSection = ({ methods, user }) => {
   const [selected, setSelected] = useState(TABS[0]);
 
   return (
     <section className="overflow-hidden bg-slate-200 px-4 py-12 text-slate-800 min-h-screen pb-[20vh]">
       <Heading methods={methods} />
       <Tabs selected={selected} setSelected={setSelected} />
-      <Headers selected={selected} methods={methods} />
+      <Headers selected={selected} methods={methods} user ={user}/>
     </section>
   );
 };
@@ -152,14 +152,14 @@ const Tabs = ({ selected, setSelected }) => {
   );
 };
 
-const Headers = ({ selected, methods }) => {
+const Headers = ({ selected, methods, user }) => {
   return (
     <div className="mx-auto mt-12 max-w-3xl">
       <AnimatePresence mode="wait">
         {selected === "Edit Account Details" && (
           <EditAccountDetailsTab methods={methods} />
         )}
-        {selected === "View Orders" && <ViewOrdersTab />}
+        {selected === "View Orders" && <ViewOrdersTab user = {user}/>}
       </AnimatePresence>
     </div>
   );
@@ -370,54 +370,43 @@ const EditAccountDetailsTab = ({ methods }) => {
   );
 };
 
-const ViewOrdersTab = () => {
-  const [orderItems, setOrderItems] = useState([
-    {
-      id: 1,
-      number: "38734927",
-      status: "Pending Confirmation",
-      date: "2022-01-01",
-      itemQuantity: 2,
-      total: 15.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 2,
-      number: "457485",
-      status: "Processing Your Order",
-      date: "2022-01-01",
-      itemQuantity: 1,
-      total: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 3,
-      number: "4395384985",
-      status: "Processing Your Order",
-      date: "2022-01-01",
-      itemQuantity: 1,
-      total: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 4,
-      number: "48759834",
-      status: "Delivered",
-      date: "2022-01-01",
-      itemQuantity: 1,
-      total: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-    {
-      id: 5,
-      number: "485793475",
-      status: "Shipped Out",
-      date: "2022-01-01",
-      itemQuantity: 1,
-      total: 9.99,
-      image: "/Product Photo Placeholder.png",
-    },
-  ]);
+const ViewOrdersTab = ({user}) => {
+  const [orderItems, setOrderItems] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const data = await getOrderData();
+
+        setOrderItems(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const getOrderData = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:4000/api/orders/user/" + user._id
+      );
+      if (!response.ok) {
+        console.log("Error fetching data");
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <motion.div
@@ -430,7 +419,7 @@ const ViewOrdersTab = () => {
       <Header header={"Orders"}>
         <div className="bg-white ">
           {orderItems.map((item) => (
-            <OrderItem key={item.id} item={item} />
+            <OrderItem key={item._id} item={item} />
           ))}
         </div>
       </Header>
@@ -499,6 +488,50 @@ const OrderItem = ({ item }) => {
     navigate(`/order-${item.number}`);
   };
 
+  var totalItems = 0 
+
+  for (let i = 0; i < item.order.length; i++)
+  {
+    totalItems += item.order[i].quantity
+  }
+
+  const [firstProduct, setFirstProduct] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFirstProduct = async () => {
+      try {
+        const data = await getFirstProduct();
+
+        setFirstProduct(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchFirstProduct();
+  }, []);
+
+  const getFirstProduct = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:4000/api/orders/product/" + item.order[0].product
+      );
+      if (!response.ok) {
+        console.log("Error fetching data");
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div
       className="flex flex-grow items-center justify-between border-b border-gray-200 py-3"
@@ -507,14 +540,14 @@ const OrderItem = ({ item }) => {
       <div className="flex items-center w-full flex-grow">
         <img
           className="h-full w-32 object-contain mr-4"
-          src={item.image}
+          src={`https://drive.google.com/uc?export=view&id=${firstProduct.images[0]}`}
           alt={item.name}
         />
         <div className="flex flex-col flex-grow">
           <div className="flex justify-between w-full">
             <div className="flex flex-col">
               <p className="text-lg font-semibold font-Proxima m-0">
-                Order #{item.number}
+                Order #{item.orderNumber}
               </p>
               <p className="text-sm text-indigo-400 font-Proxima mb-4 ">
                 {item.status}
@@ -523,10 +556,10 @@ const OrderItem = ({ item }) => {
           </div>
           <div className="flex items-center justify-between">
             <p className="text-xs text-gray-600 m-0 font-Nunito font-bold">
-              {item.itemQuantity} item/s
+              {totalItems} item/s
             </p>
             <p className="font-Nunito font-bold m-0 text-lg align-bottom">
-              Total: ₱{item.total}
+              Total: ₱{item.totalCost}
             </p>
           </div>
         </div>
