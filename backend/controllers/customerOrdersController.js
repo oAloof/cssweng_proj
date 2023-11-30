@@ -36,7 +36,7 @@ const getOrder = async (req, res) => {
         return
     }
 
-    res.status(200).send(order)
+    res.status(200).send({order: order})
 }
 
 const addOrder = async (req, res) => {

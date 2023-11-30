@@ -54,8 +54,6 @@ const Billing = () => {
 
   // get order details from backend
   const fetchOrderDetails = async () => {
-    console.log(orderNumber);
-
     try {
       const response = await fetch(
         `http://localhost:4000/api/orders/${orderNumber}`,
