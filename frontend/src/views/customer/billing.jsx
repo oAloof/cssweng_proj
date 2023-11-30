@@ -63,6 +63,10 @@ const Billing = () => {
     }
   }, [isAuthenticated]);
 
+  if (!isAuthenticated) {
+    return <Loader />
+  }
+
   const locationObject = useLocation();
   const userData = locationObject.state?.data;
 
