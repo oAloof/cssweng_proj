@@ -149,7 +149,7 @@ const Billing = () => {
         }
   
         // navigate to invoice, pass order id
-        navigate("/invoice", { state: { orderNumber: responseData.orderNumber } });
+        navigate("/invoice", { state: { orderNumber: responseData.orderNumber, subtotal: subtotal, totalSaved: totalSaved } });
       } catch (error) {
         console.error("Error confirming order: ", error);
         return;

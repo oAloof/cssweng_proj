@@ -2,6 +2,16 @@ import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Progress = ({ currentStatus }) => {
+  const statusMapping = {
+    'Payment Verification': 'Pending Confirmation',
+    'To Ship': 'Processing Your Order',
+    'Shipped': 'Shipped Out',
+    'Completed': 'Delivered'
+  };
+
+  // Map the currentStatus using the statusMapping object
+  const mappedStatus = statusMapping[currentStatus] || currentStatus;
+
   const orderStatus = [
     "Pending Confirmation",
     "Processing Your Order",
@@ -17,7 +27,7 @@ const Progress = ({ currentStatus }) => {
   ];
 
   const numSteps = orderStatus.length;
-  const stepsComplete = orderStatus.indexOf(currentStatus) + 1;
+  const stepsComplete = orderStatus.indexOf(mappedStatus) + 1;
 
   return (
     <div className="pl-6 flex justify-start rounded-md w-full ">
