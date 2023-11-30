@@ -48,7 +48,7 @@ const Billing = () => {
   const [cartItems, setCartItems] = useState([]); // ! Remove this
   const [isLoadingOrder, setIsLoadingOrder] = useState(true);
   const [orderDetails, setOrderDetails] = useState(null);
-  // const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const { isAuthenticated } = useContext(AuthenticationContext);
   const locationObject = useLocation();
   const orderNumber = locationObject.state?.orderNumber;
@@ -87,7 +87,14 @@ const Billing = () => {
         total: responseData.order.totalCost.toFixed(2), // format the total cost
         status: responseData.order.status // status of the order
       }
+      const formattedUserInfo = [    
+        { label: "Name", value: responseData.order.personReceiving },
+        { label: "Contact Number", value: responseData.order.personRecievingNum },
+        { label: "Address", value: responseData.order.deliveryAddress },
+        { label: "Email", value: responseData.order.personRecievingEmail },
+      ]
       setOrderDetails(formattedOrderData);
+      setUserInfo(formattedUserInfo)
       setIsLoadingOrder(false);
       return;
     } catch (error) {
@@ -109,13 +116,6 @@ const Billing = () => {
   const [isInformationOpen, setInformationOpen] = useState(true);
 
   const shippingFee = "5.00";
-
-  const userInfo = [
-    { label: "Name", value: "Juju Juwia" },
-    { label: "Contact Number", value: "09199999999" },
-    { label: "Address", value: "no doxxing plz, Paradis Island, Marley" },
-    { label: "Email", value: "juwiatheGOAT@gmail.com" },
-  ];
 
   if (isLoadingOrder) {
     return <Loader />;
