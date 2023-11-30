@@ -20,11 +20,10 @@ const getOrder = async (req, res) => {
         return
     }
 
-    console.log(req.params);
     const { orderNumber } = req.params
 
     // Check if order exists in the database
-    const order = await Order.findOne({orderNumber: orderNumber})
+    const order = await Order.findOne({orderNumber: orderNumber}).populate('order.product')
     if (!order) {
         res.status(404).send({ message: 'Order not found.' })
         return
