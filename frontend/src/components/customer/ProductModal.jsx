@@ -1,14 +1,20 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useForm, FormProvider } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FiPlus, FiMinus } from "react-icons/fi";
 import ErrorMessage from "../ErrorMessage";
 
+// CONTEXTS
+import { ShoppingCartContext } from "../../contexts/ShoppingCartContext";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext";
+
 const ProductModal = ({ isOpen, setIsOpen, product }) => {
   const navigate = useNavigate();
+
+  const { addToCart } = useContext(ShoppingCartContext)
 
   const methods = useForm({ mode: "onSubmit" });
   const {
@@ -16,13 +22,6 @@ const ProductModal = ({ isOpen, setIsOpen, product }) => {
     handleSubmit,
     formState: { errors },
   } = methods;
-
-  const onSubmit = (data) => {
-    console.log(data);
-    // Add any additional submission logic here !!!
-    // Close the modal after successful form submission
-    setIsOpen(false);
-  };
 
   const handleCategoryClick = (category) => {
     navigate(`/category/${encodeURIComponent(category)}`);
@@ -60,6 +59,12 @@ const ProductModal = ({ isOpen, setIsOpen, product }) => {
   const capitalizeFirstLetter = (string) => {
     if (!string) return string;
     return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  const onSubmit = (data) => {
+    console.log(data);
+    addToCart(product._id, quantity)
+    setIsOpen(false);
   };
 
   return (

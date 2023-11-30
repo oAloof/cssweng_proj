@@ -190,7 +190,7 @@ const updateCart = async (req, res) => {
     }
 
     const cartIndex = user.cartItems.findIndex(item => item.product.toString() === productId);
-
+    console.log(productId);
     if (cartIndex > -1) {
         // Update quantity if product exists
         user.cartItems[cartIndex].quantity += quantity;
