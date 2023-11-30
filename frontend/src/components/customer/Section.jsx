@@ -62,7 +62,12 @@ const Section = ({ title, category, products, isLoading }) => {
               {title}
             </p>
             <div>
-              <Button type="viewAll" category={category} products={products} title={title}/>
+              <Button
+                type="viewAll"
+                category={category}
+                products={products}
+                title={title}
+              />
             </div>
           </div>
           <div
@@ -157,12 +162,13 @@ const Card = ({
               <span className="text-sm font-semibold text-slate-400">
                 {quantitySold > 0 && (
                   <span className="text-sm font-semibold text-slate-400 ">
-                    {quantitySold} sold 
+                    {quantitySold} sold
                   </span>
                 )}
                 {availableQuantity < 1 && quantitySold > 0 && (
                   <span className="text-sm font-semibold text-slate-400">
-                    {' '} / {' '}
+                    {" "}
+                    /{" "}
                   </span>
                 )}
                 {availableQuantity < 1 && (
@@ -174,7 +180,11 @@ const Card = ({
             </div>
           </div>
           <div className="absolute bottom-4 left-0 w-full px-4 break-all">
-            <Button type={"cart"} productId={_id} />
+            <Button
+              type={"cart"}
+              productId={_id}
+              availableQuantity={availableQuantity}
+            />
           </div>
         </div>
       </div>
@@ -184,9 +194,18 @@ const Card = ({
 
 export default Section;
 
-const Button = ({ type, category, products, title, productId}) => {
+const Button = ({
+  type,
+  category,
+  products,
+  title,
+  productId,
+  availableQuantity,
+}) => {
   const { addToCart } = useContext(ShoppingCartContext);
   const { isAuthenticated } = useContext(AuthenticationContext);
+
+  const isDisabled = type === "cart" && availableQuantity < 1;
 
   const [isClicked, setIsClicked] = useState(false);
 
@@ -199,6 +218,11 @@ const Button = ({ type, category, products, title, productId}) => {
       e.stopPropagation();
       return;
     }
+
+    if (isDisabled) {
+      e.stopPropagation();
+      return;
+    }
     setIsClicked(true);
     addToCart(productId, 1);
     setTimeout(() => {
@@ -207,31 +231,38 @@ const Button = ({ type, category, products, title, productId}) => {
     e.stopPropagation();
   };
 
-  const clickedClass = isClicked
-    ? `bg-indigo-300 
+  let buttonClass;
+  if (isDisabled) {
+    buttonClass = `bg-gray-300 text-gray-500 cursor-not-allowed`;
+  } else if (isClicked) {
+    buttonClass = `bg-indigo-300 
     before:absolute before:inset-0
     before:-z-10 before:translate-x-[0%]
     before:translate-y-[0%] before:scale-[2.5]
     before:rounded-[100%] before:bg-green-500
     before:transition-transform before:duration-4000
-    before:content-[""] text-white`
-    : `bg-indigo-500 border-indigo-300   text-indigo-100 
-     transition-all duration-500 flex-grow w-full
-     before:absolute before:inset-0
-     before:-z-10 before:translate-x-[150%]
-     before:translate-y-[150%] before:scale-[2.5]
-     before:rounded-[100%] before:bg-indigo-300
-     before:transition-transform before:duration-1000
-     before:content-[""] hover:scale-105 hover:text-white
-     hover:before:translate-x-[0%]
-     hover:before:translate-y-[0%] active:scale-95`;
+    before:content-[""] text-white`;
+  } else {
+    buttonClass = `bg-indigo-500 border-indigo-300   text-indigo-100 
+    transition-all duration-500 flex-grow w-full
+    before:absolute before:inset-0
+    before:-z-10 before:translate-x-[150%]
+    before:translate-y-[150%] before:scale-[2.5]
+    before:rounded-[100%] before:bg-indigo-300
+    before:transition-transform before:duration-1000
+    before:content-[""] hover:scale-105 hover:text-white
+    hover:before:translate-x-[0%]
+    hover:before:translate-y-[0%] active:scale-95`;
+  }
 
   const clickedText = isClicked ? "ADDED TO CART!" : "ADD TO CART";
 
   const navigate = useNavigate();
 
   const handleNavigation = () => {
-    navigate(`/products/category`, {state: {title: title, category: category, products: products}});
+    navigate(`/products/category`, {
+      state: { title: title, category: category, products: products },
+    });
     console.log("View all button clicked");
   };
 
@@ -240,12 +271,13 @@ const Button = ({ type, category, products, title, productId}) => {
       <button
         className={`
         font-semibold uppercase relative z-0 flex items-center justify-center gap-2 overflow-hidden rounded-lg border-[1px] px-4 py-2 flex-grow w-full
-          ${clickedClass}
+          ${buttonClass}
         `}
         onClick={handleClick}
+        disabled={isDisabled}
       >
         <FontAwesomeIcon icon={faShoppingCart} />
-        <span>{clickedText}</span>
+        <span>{isDisabled ? "SOLD OUT" : clickedText}</span>
       </button>
     );
   } else if (type === "viewAll") {
