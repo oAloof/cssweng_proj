@@ -132,9 +132,9 @@ const Billing = () => {
         <div className="md:w-1/3 w-full gap-4 flex flex-col">
           <div className="px-4 pt-4 pb-10 rounded-xl border-[1px] bg-white border-slate-300 shadow-xl flex flex-col gap-2">
             <div className="flex flex-row justify-between items-center mb-6">
-              <Logo name="invoice" />
-              <p className="font-Nunito font-bold text-2xl mb-0 text-slate-400">
-                ORDER {orderDetails.number}
+              <Logo name="invoice" className = "h-12"/>
+              <p className="font-Nunito font-bold text-sm mb-0 text-slate-400">
+                ORDER #{orderDetails.number}
               </p>
             </div>
             <h2 className="font-Proxima font-bold text-3xl m-0 ">

@@ -163,7 +163,7 @@ const Billing = () => {
       <Progress stepsComplete="3" />
       <div className="md:justify-center flex flex-col md:flex-row gap-4 px-[2vw]">
         <TopNav />
-        <div className="md:w-1/4 w-full gap-4 flex flex-col">
+        <div className="md:w-1/2 w-full gap-4 flex flex-col">
           <div className="md:order-first order-2">
             <ExpandableSection
               title="Your Information"
@@ -184,7 +184,7 @@ const Billing = () => {
                 <div className="flex flex-col w-full gap-4">
                   <InputField {...referenceNumber_validation} />
 
-                  <div className="max-w-1/3 w-full flex flex-row gap-4 jus">
+                  <div className="max-w-1/2 w-full flex flex-row gap-4 jus">
                     <div className="relative">
                       <input
                         type="file"
@@ -237,7 +237,7 @@ const Billing = () => {
             </form>
           </FormProvider>
         </div>
-        <div className="md:w-1/4 w-full flex flex-col gap-4">
+        <div className="md:w-1/2 w-full flex flex-col gap-4">
           <ExpandableSection
             title="Order Summary"
             subtitle={`₱ ${total}`}

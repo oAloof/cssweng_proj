@@ -36,7 +36,6 @@ export const ShoppingCartProvider = ({ children }) => {
             }
             const responseData = await response.json();
             setShoppingCart(responseData.cart);
-            // console.log(`Fetching cart data: ${shoppingCart}`); // ! Remove this
             return
         } catch (error) {
             console.error('Error fetching cart data: ', error);
