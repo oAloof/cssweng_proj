@@ -157,6 +157,14 @@ const getCart = async (req, res) => {
         res.status(404).send({ message: 'User not found.' })
         return
     }
+     // Filter out cart items where the product is null
+     const validCartItems = user.cartItems.filter(item => item.product);
+
+     // Update user's cart in the database if any null products were found
+     if (validCartItems.length !== user.cartItems.length) {
+         user.cartItems = validCartItems;
+         await user.save();
+     }
     // For each cart item, add to array of products
     const cart = user.cartItems.map(item => {
         return {
