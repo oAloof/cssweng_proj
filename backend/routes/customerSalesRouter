@@ -1,0 +1,10 @@
+const express = require('express')
+const router = express.Router()
+
+const salesController = require('../controllers/customerSalesController')
+
+// GET sale data of the current ongoing sale
+router.get('/ongoing', salesController.getOngoingSale)
+
+
+module.exports = router

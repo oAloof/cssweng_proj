@@ -1,0 +1,112 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1,
+  h3 {
+    @apply relative leading-loose font-[Proxima];
+  }
+
+  h1 {
+    @apply text-inherit font-Nunito;
+  }
+
+  h3 {
+    @apply text-sm font-semibold text-black;
+  }
+
+  h6 {
+    @apply relative leading-loose text-inherit font-medium font-Nunito;
+  }
+}
+
+@layer components {
+  .addToCartButton {
+    @apply relative w-0.5 h-0.5 bg-[gray-4] cursor-pointer flex items-center justify-center p-0 rounded-full;
+  }
+
+  .logoDefault {
+    @apply relative w-fit h-11 object-cover;
+  }
+
+  .header {
+    @apply self-stretch flex flex-col justify-start text-left text-lg;
+  }
+
+  .inputFields {
+    @apply flex flex-col items-start self-stretch justify-start gap-3;
+  }
+
+  .blueh6 {
+    @apply font-[Nunito] cursor-pointer text-[light-blue];
+  }
+
+  .blueh6:hover {
+    @apply text-[light-blue];
+  }
+
+  .redh6 {
+    @apply font-[Nunito] cursor-pointer text-red-600;
+  }
+
+  .registerTextContainer {
+    @apply flex flex-row items-center justify-center gap-1.5;
+  }
+
+  .grayh6 {
+    @apply relative leading-loose text-inherit font-medium font-Nunito cursor-pointer text-gray-500;
+  }
+
+  .grayh6:hover {
+    @apply text-[#414141];
+  }
+
+  .prompts {
+    @apply self-stretch gap-1.5;
+  }
+
+  .page {
+    @apply relative bg-white w-full h-[932px] overflow-hidden py-[115px] px-[54px] box-border gap-9;
+  }
+
+  .pageContent {
+    @apply flex flex-col items-center justify-center gap-7 text-left text-xs text-black font-[Nunito];
+  }
+
+  .footer {
+    @apply flex flex-row items-center justify-center gap-1.5;
+  }
+
+  /* Additional Styles */
+  .validationCheckTitle {
+    @apply relative leading-[150%];
+  }
+
+  .checkIcon {
+    @apply relative w-[14.8px] h-[14.8px];
+  }
+
+  .validationText {
+    @apply relative leading-loose font-medium flex items-center w-[297px] flex-shrink-0;
+  }
+
+  .validationField {
+    @apply relative top-0 left-0 w-[324px] flex flex-row items-center justify-start gap-1.5;
+  }
+
+  .validationChecks {
+    @apply self-stretch relative;
+  }
+
+  .passwordValidation {
+    @apply self-stretch flex flex-col items-start justify-start gap-1.5;
+  }
+
+  .inputFields {
+    @apply flex flex-col items-start self-stretch justify-start;
+  }
+}
+
+/* --drop-shadow-mobile: 2px 4px 8.8px rgba(0.2, 0.2, 0.2, 0.137); */

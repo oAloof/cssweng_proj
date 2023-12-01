@@ -1,0 +1,13 @@
+.addToCartButton {
+  position: relative;
+  width: 2.33rem;
+  height: 2.33rem;
+  border-radius: 50%;
+  background-color: var(--gray-4);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
