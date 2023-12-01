@@ -72,8 +72,21 @@ const TableRows = ({ order }) => {
   const [user, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleSelection = (text) => {
-    console.log(`${text} selected`);
+  const handleSelection = async (text) => {
+    // Update the order status in the backend
+    const response = await fetch(
+      "http://localhost:4000/api/admin/orders/update/" + order._id,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: text }),
+      }
+    );
+    if (!response.ok) {
+      console.log("Error updating order status");
+    }
     setSelectedValue(text);
   };
 
@@ -112,8 +125,8 @@ const TableRows = ({ order }) => {
 
   const dropdownOptions = [
     {
-      text: "To Process",
-      onClick: () => handleSelection("To Process"),
+      text: "Payment Verification",
+      onClick: () => handleSelection("Payment Verification"),
       className: "bg-blue-200 text-blue-800",
     },
     {

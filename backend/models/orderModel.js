@@ -11,7 +11,7 @@ const orderSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['Payment Verification', 'To Ship', 'Shipped', 'Completed'],
+        enum: ['Payment Verification', 'Payment Confirmed', 'Shipped Out', 'Completed'],
         default: 'Payment Verification'
     },
     order: [{

@@ -17,7 +17,6 @@ const getUser = async (req, res) => {
     id = req.params.id
     try {
         const user = await User.findOne({_id: id})
-        console.log(user)
         res.status(200).json(user)
     return
     } catch (error) {
@@ -27,7 +26,31 @@ const getUser = async (req, res) => {
     }
 }
 
+const updateOrderStatus = async (req, res) => {
+    try {
+        const orderId = req.params.orderId;
+        const newStatus = req.body.status;
+
+        // Find the order by ID and update its status
+        const updatedOrder = await Orders.findByIdAndUpdate(
+            orderId,
+            { status: newStatus },
+            { new: true } // This option returns the updated document
+        );
+
+        if (!updatedOrder) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        res.status(200).json({ message: 'Order Status Updated', order: updatedOrder });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error updating order status', error: error.message });
+    }
+}
+
 module.exports = {
     getOrders, 
     getUser, 
+    updateOrderStatus
 }
